@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimaryDark">#d32f2f</color>
+    <color name="colorPrimaryLight">#FFCDD2</color>
+    <color name="colorAccent">#e96756</color>
+    <color name="colorBlack">#000000</color>
+    <color name="secondary_text">#7e757575</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+    <color name="black_overlay">#66000000</color>
+    <color name="windows_color">#007acc</color>
+    <color name="descent_orange">#ff7260</color>
+    <color name="taskbar_orange">#e96756</color>
+    <color name="Slight_white_green">#c2c7c2</color>
+    <color name="cyan_type">#FF009D97</color>
+    <color name="Slight_white_orange">#dad2ce</color>
+    <color name="cyan_azure">#4f7cac</color>
+    <color name="heildberg_red">#a20021</color>
+    <color name="bazzled_blue">#2e5077</color>
+    <color name="opac_transparent">#aa000000</color>
+    <color name="boston_red">#d00000</color>
+
+    <!--Pallete Colours-->
+    <color name="selective_yellow">#ffba08</color> <!---->
+    <color name="tufts_blue">#3f88c5</color> <!---->
+    <color name="oxford_blue">#032b43</color>
+    <color name="green_cyan">#136f63</color> <!---->
+    <color name="rich_black">#07393c</color>
+    <color name="infra_red">#ef476f</color>
+
+
+    <!--material -->
+    <color name="pomegranate">#c0392b</color>
+    <color name="sunflower">#f1c40f</color>
+    <color name="green_sea">#16a085</color>
+    <color name="nephritis">#27ae60</color>
+    <color name="belize">#2980b9</color>
+    <color name="amethyst">#8e44ad</color>
+    <color name="teal">#00aba9</color>
+
+    <color name="primaryTextColor">#212121</color>
+    <color name="secTextColor">#757575</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="black_transparent">#72000000</color>
+
+    <!--Tutorial Colors-->
+
+        <!-- Screens background color-->
+        <color name="bg_screen1">#f64c73</color>
+        <color name="bg_screen2">#20d2bb</color>
+        <color name="bg_screen3">#3395ff</color>
+        <color name="bg_screen4">#c873f4</color>
+        <color name="bg_screen5">#e74c3c</color> <!--alizerin-->
+        <color name="bg_screen6">#ffba08</color>
+        <color name="bg_screen7">#16a085</color>
+
+        <!-- dots inactive colors -->
+        <color name="dot_dark_screen1">#d1395c</color>
+        <color name="dot_dark_screen2">#14a895</color>
+        <color name="dot_dark_screen3">#2278d4</color>
+        <color name="dot_dark_screen4">#a854d4</color>
+        <color name="dot_dark_screen5">#b08e02</color>
+        <color name="dot_dark_screen6">#9f3126</color>
+
+        <!-- dots active colors -->
+        <color name="dot_light_screen1">#f98da5</color>
+        <color name="dot_light_screen2">#8cf9eb</color>
+        <color name="dot_light_screen3">#93c6fd</color>
+        <color name="dot_light_screen4">#e4b5fc</color>
+        <color name="dot_light_screen5">#eed262</color>
+        <color name="dot_light_screen6">#e57165</color>
+
+
+    <array name="array_dot_active">
+            <item>@color/dot_light_screen1</item>
+            <item>@color/dot_light_screen2</item>
+            <item>@color/dot_light_screen3</item>
+            <item>@color/dot_light_screen4</item>
+            <item>@color/dot_light_screen5</item>
+            <item>@color/dot_light_screen6</item>
+            <item>@color/dot_light_screen2</item>
+        </array>
+
+        <array name="array_dot_inactive">
+            <item>@color/dot_dark_screen1</item>
+            <item>@color/dot_dark_screen2</item>
+            <item>@color/dot_dark_screen3</item>
+            <item>@color/dot_dark_screen4</item>
+            <item>@color/dot_dark_screen5</item>
+            <item>@color/dot_dark_screen6</item>
+            <item>@color/colorAccentTeal</item>
+        </array>
+
+    <!--BLUE THEME-->
+    <color name="colorPrimaryDarkBlue">#1976D2</color>
+    <color name="colorPrimaryBlue">#1976D2</color>
+    <color name="colorAccentBlue">#03A9F4</color>
+
+    <!--TEAL THEME-->
+    <color name="colorPrimaryDarkTeal">#009688</color>
+    <color name="colorPrimaryTeal">#009688</color>
+    <color name="colorAccentTeal">#009688</color>
+
+    <!--RED THEME-->
+    <color name="colorPrimaryRed">#F44336</color>
+    <color name="colorPrimaryDarkRed">#F44336</color>
+    <color name="colorAccentRed">#e96756</color>
+    <color name="colorTextRed">#d32f2f</color>
+
+    <!--PINK THEME-->
+    <color name="colorPrimaryPink">#ff5252</color>
+    <color name="colorPrimaryDarkPink">#ff5252</color>
+    <color name="colorAccentPink">#e96756</color>
+    <color name="colorTextPink">#d32f2f</color>
+
+    <!--YELLOW THEME-->
+    <color name="colorPrimaryYellow">#ffeb3b</color>
+    <color name="colorPrimaryDarkYellow">#ffeb3b</color>
+    <color name="colorAccentYellow">#ffeb3b</color>
+    <color name="colorTextYellow">#c8b900</color>
+
+    <!--Black THEME-->
+    <color name="colorPrimaryBlack">#212121</color>
+    <color name="colorPrimaryDarkBlack">#212121</color>
+    <color name="colorAccentBlack">#212121</color>
+    <color name="colorTextBlack">#212121</color>
+
+    <!--Purple THEME-->
+    <color name="colorPrimaryPurple">#673bb7</color>
+    <color name="colorPrimaryDarkPurple">#673bb7</color>
+    <color name="colorAccentPurple">#673bb7</color>
+    <color name="colorTextPurple">#673bb7</color>
+    </resources>

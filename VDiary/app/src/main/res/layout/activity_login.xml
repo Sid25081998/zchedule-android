@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/taskbar_orange"
+    tools:context="com.example.sridh.vdiary.Activities.scrapper"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="FFCS Login"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:textSize="17sp"
+        android:id="@+id/tv_ffcs"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/loginView"
+        android:visibility="visible"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/tv_ffcs">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:visibility="visible">
+
+    <ImageView
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:id="@+id/imageView"
+        android:src="@drawable/logo_4"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/cred_reg_input"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/regBox"
+        android:inputType="textCapCharacters"
+        android:width="300dp"
+        android:hint="Registration Number"
+        android:textColor="@android:color/white" />
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/cred_pwd_input"
+        android:layout_alignStart="@+id/cred_reg_input"
+        android:layout_alignEnd="@+id/cred_reg_input"
+        android:layout_below="@+id/cred_reg_input">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:id="@+id/passbox"
+        android:hint="Password"
+        android:textColor="@android:color/white"
+        android:paddingEnd="60dp"
+        android:layout_marginTop="7dp"/>
+    </android.support.design.widget.TextInputLayout>
+    <ImageButton
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_view_password"
+        android:background="@android:color/transparent"
+        android:layout_alignEnd="@id/cred_pwd_input"
+        android:layout_alignTop="@id/cred_pwd_input"
+        android:layout_alignBottom="@id/cred_pwd_input"
+        android:layout_marginEnd="15dp"
+        android:id="@+id/toogle_showPassword"/>
+
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember Credentials"
+        android:textSize="12sp"
+        android:id="@+id/saveCreds"
+        android:checked="true"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="7dp"
+        android:layout_below="@id/cred_pwd_input"
+        android:layout_alignEnd="@id/cred_pwd_input"/>
+    <Button
+        android:layout_alignEnd="@id/cred_pwd_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/cred_pwd_input"
+        android:height="40dp"
+        android:background="@drawable/softcorner_login_button"
+        android:layout_below="@id/saveCreds"
+        android:text="Login"
+        android:textColor="@android:color/white"
+        android:id="@+id/login"
+        android:layout_marginTop="7dp"/>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:paddingStart="40dp"
+        android:paddingEnd="40dp"
+        android:textColor="@android:color/white"
+        android:text="Note: Credentials are neither shared nor stored on any other device."
+        android:layout_below="@id/login"
+        android:id="@+id/note"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"/>
+
+    <!--Loading content-->
+</RelativeLayout>
+    </ScrollView>
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/loadView"
+        android:visibility="invisible"
+        android:padding="16dp"
+        android:layout_below="@id/tv_ffcs">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/Loadlogo"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/logo_4"
+            android:layout_marginBottom="203dp"
+            />
+         <!--android:layout_below="@id/status"-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/status"
+            android:text="Fetching Courses..."
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:layout_alignBottom="@id/Loadlogo"
+            android:textAlignment="center" />
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:indicatorName="BallClipRotatePulseIndicator"
+            app:indicatorColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/pb_login"
+            android:layout_below="@id/status"
+            style="@style/AVLoadingIndicatorView"
+            android:layout_marginTop="30dp"/>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/status"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:id="@+id/refresh_FloatButton"
+            android:src="@drawable/refresh"
+            android:visibility="invisible"
+            app:backgroundTint="@color/colorPrimaryDark" />
+    </RelativeLayout>
+</RelativeLayout>

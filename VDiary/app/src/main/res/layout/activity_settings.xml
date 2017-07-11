@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Activities.settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/settingsActivity"
+    android:background="@android:color/white">
+    <android.support.v7.widget.Toolbar
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:title="Settings"
+        android:id="@+id/toolbar_settings"
+        app:titleTextColor="@android:color/white" />
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@id/toolbar_settings"
+        android:padding="16dp"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="7dp"
+            android:paddingTop="7dp"
+            >
+    <Switch
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Notify me before a class"
+        android:textSize="22sp"
+        android:id="@+id/toggle_showNotification" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notifies about room no. and course title of next class"
+            android:maxWidth="300dp"/>
+        </LinearLayout>
+        <TextView
+            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="7dp"
+            android:paddingTop="7dp">
+            <Switch
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Show attendance on widget"
+                android:textSize="22sp"
+                android:id="@+id/toggle_showAttendance" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shows attendance with rest content on the widget."
+                android:maxWidth="300dp"
+                />
+        </LinearLayout>
+        <TextView
+            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="7dp"
+            android:paddingTop="7dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:id="@+id/themeSelectText"
+                android:text="App Theme"
+                android:textColor="@android:color/black" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change the theme color of the app."
+                android:maxWidth="300dp"
+                />
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingTop="5dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                    <!--TODO ADD THE CIRCLES FOR SELECTING THE THEMES-->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/circle_red_nots"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/theme_circle_red"
+                    android:onClick="onRedClick"/>
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:paddingStart="10dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/circle_blue_nots"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/theme_circle_blue"
+                        android:onClick="onBlueClick"
+                        android:layout_toEndOf="@id/theme_circle_red"/>
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:paddingStart="10dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/circle_teal_nots"
+                        android:background="@android:color/transparent"
+                        android:id="@+id/theme_circle_teal"
+                        android:onClick="onTealClick"
+                        android:layout_toEndOf="@id/theme_circle_blue"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:paddingStart="10dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/circle_yellow_nots"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/theme_circle_yellow"
+                    android:onClick="onYellowClick"
+                    android:layout_toEndOf="@id/theme_circle_teal"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:paddingStart="10dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/circle_pink_nots"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/theme_circle_pink"
+                    android:onClick="onPinkClick"
+                    android:layout_toEndOf="@id/theme_circle_yellow"/>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:paddingStart="10dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/circle_purple_nots"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/theme_circle_purple"
+                    android:onClick="onPurpleClick"
+                    android:layout_toEndOf="@id/theme_circle_pink"/>
+
+                <!--ImageButton
+                    android:layout_width="wrap_content"
+                    android:paddingStart="10dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/circle_black_nots"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/theme_circle_black"
+                    android:onClick="onBlackClick"
+                    android:layout_toEndOf="@id/theme_circle_purple"/-->
+            </LinearLayout>
+            </LinearLayout>
+        <TextView
+            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:background="@android:color/darker_gray"/>
+        </LinearLayout>
+    </RelativeLayout>

@@ -1,0 +1,51 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        applicationId "com.fourthstatelabs.zchedule2"
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "Fall Release"
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile files('libs/mpandroidchartlibrary-2-2-4.jar')
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+    compile 'com.firebase:firebase-client-android:2.4.0'
+    compile 'com.android.support:support-vector-drawable:25.1.0'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.google.firebase:firebase-database:10.2.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha7'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile 'com.sothree.slidinguppanel:library:3.3.1'
+    compile 'co.infinum:materialdatetimepicker-support:3.2.2'
+    compile 'com.wang.avi:library:2.1.3'
+    compile 'com.google.firebase:firebase-messaging:10.2.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.4.5'
+    testCompile 'junit:junit:4.12'
+}
+
+
+
+apply plugin: 'com.google.gms.google-services'

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sothree.slidinguppanel.SlidingUpPanelLayout
+    xmlns:sothree="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/show_sub_sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    sothree:umanoPanelHeight="63dp"
+    sothree:umanoShadowHeight="4dp">
+<LinearLayout
+    android:id="@+id/activity_show_subject"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/show_subject_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout android:id="@+id/rv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+            <TextView
+                android:text="Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/subject_Title"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="18sp"
+                android:layout_alignParentStart="true"
+                android:textColor="@android:color/white"/>
+            <TextView
+                android:text="Teacher"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/subject_Teacher"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="16sp"
+                android:layout_below="@+id/subject_Title"
+                android:layout_alignParentStart="true"
+                android:textColor="@android:color/white"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:padding="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/show_subject_day_view">
+            <TextView
+                android:textSize="17sp"
+                android:textColor="@android:color/black" android:id="@+id/subject_slot" android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true" />
+            <TextView android:textSize="15sp" android:textColor="@color/opac_transparent" android:id="@+id/tv_wed" android:layout_width="45dp" android:layout_height="30dp" android:layout_marginTop="10dp" android:text="Wed" android:layout_below="@id/subject_slot" android:layout_centerHorizontal="true" android:textAlignment="4" />
+            <TextView android:textSize="15sp" android:textColor="@color/opac_transparent" android:id="@+id/tv_tue" android:layout_width="45dp" android:layout_height="30dp" android:layout_marginTop="10dp" android:text="Tue" android:layout_below="@id/subject_slot" android:textAlignment="4" android:layout_marginStart="20dp" android:layout_marginEnd="20dp" android:layout_toStartOf="@id/tv_wed" />
+            <TextView android:textSize="15sp" android:textColor="@color/opac_transparent" android:id="@+id/tv_mon" android:layout_width="45dp" android:layout_height="30dp" android:layout_marginTop="10dp" android:text="Mon" android:layout_below="@id/subject_slot" android:textAlignment="4" android:layout_marginEnd="80dp" android:layout_toStartOf="@id/tv_wed" />
+            <TextView android:textSize="15sp" android:textColor="@color/opac_transparent" android:id="@+id/tv_thu" android:layout_width="45dp" android:layout_height="30dp" android:layout_marginTop="10dp" android:text="Thu" android:layout_below="@id/subject_slot" android:textAlignment="4" android:layout_marginStart="20dp" android:layout_toEndOf="@id/tv_wed" />
+            <TextView android:textSize="15sp" android:textColor="@color/opac_transparent" android:id="@+id/tv_fri" android:layout_width="45dp" android:layout_height="30dp" android:layout_marginTop="10dp" android:text="Fri" android:layout_below="@id/subject_slot" android:textAlignment="4" android:layout_marginStart="80dp" android:layout_toEndOf="@id/tv_wed" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:background="@android:color/darker_gray"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp" />
+        <HorizontalScrollView
+            android:id="@+id/hsv_show_subject"
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/attTrackView"
+                android:padding="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:divider="@drawable/att_tracker_divider"
+                android:showDividers="middle" />
+        </HorizontalScrollView>
+        <RelativeLayout android:id="@+id/attLayout"  android:padding="14dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <NumberPicker android:theme="@style/AppTheme.Picker" android:id="@+id/leave_picker" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="16dp" android:layout_centerHorizontal="true" />
+            <TextView android:textSize="22sp" android:textColor="@android:color/black" android:id="@+id/tv_newAtt" android:layout_width="80dp" android:layout_height="wrap_content" android:layout_marginTop="65dp" android:text="100.0%" android:layout_alignTop="@id/leave_picker" android:textAlignment="4" android:layout_marginEnd="40dp" android:layout_toStartOf="@id/leave_picker" />
+            <TextView android:textSize="19sp" android:textColor="@color/opac_transparent" android:id="@+id/classRatio" android:layout_width="80dp" android:layout_height="wrap_content" android:text="10/11" android:layout_below="@id/tv_newAtt" android:textAlignment="4" android:layout_alignStart="@id/tv_newAtt" android:layout_alignEnd="@id/tv_newAtt" />
+            <TextView android:textColor="@android:color/darker_gray" android:id="@+id/tv_attend" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Attend" android:textAlignment="4" android:layout_alignStart="@id/leave_picker" android:layout_alignEnd="@id/leave_picker" />
+            <TextView android:textColor="@android:color/darker_gray" android:id="@+id/tv_bunk" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bunk" android:layout_below="@id/leave_picker" android:textAlignment="4" android:layout_alignStart="@id/leave_picker" android:layout_alignEnd="@id/leave_picker" />
+            <TextView android:textSize="10dp" android:textColor="@android:color/black" android:id="@+id/tv_lastUpdated" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_below="@id/leave_picker" />
+            <Button
+                android:textSize="12dp"
+                android:textColor="@android:color/white"
+                android:id="@+id/jumpTo"
+                android:background="@drawable/soft_corner_button_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Apply"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="35dp"
+                android:layout_toEndOf="@id/leave_picker" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:layout_height="65dp"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:background="@color/colorPrimary"
+        android:id="@+id/show_sub_assignment"
+        android:titleTextColor="@android:color/white">
+        <RelativeLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                >
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:text="Assignments"
+                    android:textSize="30sp"
+                    android:id="@+id/show_sub_ass_head"
+                    android:padding="10dp"
+                    android:alpha="0"
+                    android:textColor="@android:color/white"/>
+                </LinearLayout>
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_height="20dp"
+                android:layout_width="20dp"
+                android:src="@drawable/ic_swipe_up"
+                android:id="@+id/pane_slide_indicator"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="20dp"
+                android:text="Assignments"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:id="@+id/show_sub_assignment_head"/>
+        </LinearLayout>
+        </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+        </LinearLayout>
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
