@@ -14,6 +14,7 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -27,19 +28,35 @@ public class HttpRequest {
     private Method method;
     private String url;
     private Map<String,String> params= new HashMap<>();
-    private static String herokuBaseUrl_server1 = "https://zchedule-server1.herokuapp.com";
-    private static String herokuBaseUrl_server2 = "https://zchedule-server2.herokuapp.com";
-    public static String[] servers = {herokuBaseUrl_server1,herokuBaseUrl_server2};
     private String authentication =null;
     private Context context;
+    private boolean shouldExecuteResponse = true;
+    private OkHttpClient client;
+
+    private static ArrayList<HttpRequest> allRequests = new ArrayList<>();
+    public static void stopAll(){
+        for (HttpRequest request : allRequests){
+            request.stop();
+        }
+        allRequests.clear();
+    }
+
     public HttpRequest(Context context,String url){
         this.url= config.server.link +url;
         this.context=context;
         this.method=Method.POST;
+        allRequests.add(this);
     }
 
     public HttpRequest(Context context){
         this.context= context;
+        allRequests.add(this);
+    }
+
+    void stop(){
+        shouldExecuteResponse=false;
+        if(client!=null) client.cancel("Cancelled");
+        allRequests.remove(this);
     }
 
     public void getBestServer(OnResponseListener onResponseListener){
@@ -124,34 +141,37 @@ public class HttpRequest {
         }
         @Override
         protected String doInBackground(Boolean... booleans) {
-            OkHttpClient client = new OkHttpClient();
-
-            Request request = buildRequest(booleans[0]);
-            Response response = null;
-            try {
-                client.setConnectTimeout(60, TimeUnit.SECONDS);
-                client.setReadTimeout(60,TimeUnit.SECONDS);
-                client.setWriteTimeout(60,TimeUnit.SECONDS);
-                response = client.newCall(request).execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if(response!=null && response.isSuccessful()){
+            if(shouldExecuteResponse) {
+                client = new OkHttpClient();
+                Request request = buildRequest(booleans[0]);
+                Response response = null;
                 try {
-                    return response.body().string();
+                    client.setConnectTimeout(60, TimeUnit.SECONDS);
+                    client.setReadTimeout(60, TimeUnit.SECONDS);
+                    client.setWriteTimeout(60, TimeUnit.SECONDS);
+                    response = client.newCall(request).execute();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
-                return null;
+                if (response != null && response.isSuccessful()) {
+                    try {
+                        return response.body().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    return null;
+                }
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
-            onResponseListener.OnResponse(s);
+            if(shouldExecuteResponse) {
+                onResponseListener.OnResponse(s);
+                allRequests.remove(HttpRequest.this);
+            }
             super.onPostExecute(s);
         }
     }

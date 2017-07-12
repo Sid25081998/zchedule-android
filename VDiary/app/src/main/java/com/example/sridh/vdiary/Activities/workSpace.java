@@ -350,6 +350,7 @@ public class workSpace extends AppCompatActivity {
                         pb_syncing.setVisibility(View.GONE);
                         action_sync.setVisibility(View.VISIBLE);
                     }
+                    refreshing=false;
                 }
             });
         }
@@ -456,7 +457,6 @@ public class workSpace extends AppCompatActivity {
             catch (Exception e){
                 //COURSE ADAPTER NIT YET READY
             }
-            refreshing=false;
             pb_syncing.setVisibility(View.GONE);
             action_sync.setVisibility(View.VISIBLE);
         }
@@ -610,6 +610,7 @@ public class workSpace extends AppCompatActivity {
                         progressDialog.setMessage("Logging Out");
                         progressDialog.setCancelable(false);
                         progressDialog.show();
+                        HttpRequest.stopAll();
                         sendLogoutRequest(progressDialog);
                         break;
                 }
