@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import static com.example.sridh.vdiary.Utils.prefs.*;
 
-import com.example.sridh.vdiary.Activities.scrapper;
+import com.example.sridh.vdiary.Activities.Login;
 import com.example.sridh.vdiary.Classes.Notification_Holder;
 import com.example.sridh.vdiary.Classes.Subject;
 import com.example.sridh.vdiary.Utils.DataContainer;
@@ -48,9 +48,9 @@ public class AtBoot extends BroadcastReceiver {
             pendingIntent=PendingIntent.getBroadcast(context, DataContainer.notes.get(i).id,x,PendingIntent.FLAG_UPDATE_CURRENT);
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, DataContainer.notes.get(i).cal.getTimeInMillis(),pendingIntent);
         }
-        String timeTableJson = get(context,schedule,null);//sharedPreferences.getString("schedule",null);
+        String timeTableJson = get(context,schedule,null);//sharedPreferences.getString("Schedule",null);
         List<List<Subject>> timeTable = (new Gson()).fromJson(timeTableJson,new TypeToken<List<List<Subject>>>(){}.getType());
-        if(timeTableJson!=null) scrapper.createNotification(context,timeTable);
+        if(timeTableJson!=null) Login.createNotification(context,timeTable);
         //Daily timetable reschedule end
         if(get(context,isWidgetEnabled,true)){  //widgetPrefs.getBoolean("isEnabled",false)
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

@@ -37,7 +37,7 @@ public class widgetListFactory implements RemoteViewsService.RemoteViewsFactory 
     @Override
     public void onDataSetChanged() {
         today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        String scheduleJson = get(context,schedule,null);//prefs.getString("schedule", null);
+        String scheduleJson = get(context,schedule,null);//prefs.getString("Schedule", null);
         if (scheduleJson != null && today>1 && today<7) {
             Gson g = new Gson();
             timeTable = g.fromJson(scheduleJson, new TypeToken<ArrayList<List<Subject>>>() {

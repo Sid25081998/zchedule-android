@@ -7,4 +7,74 @@
     <string name="skip">SKIP</string>
     <string name="start">GOT IT</string>
     <string name="ServerKey">SidSparsha</string>
+
+    <string name="privacyIntroduction">
+        Zchedule Provides complete information replica of what you see in your
+        FFCS. Currently we only provide service to VIT Chennai Campus. Our
+        Privacy Policy helps explain our information practices. For Example,
+        we talk about information we collect and how this affects you. We also
+        explain the steps we take to protect your privacy without compromising
+        on the quality of service.
+
+        Whenever we say \'Zchedule\', \'our\', \'we\', we refer to developers of Zchedule
+        , Fourth State Lab. And those will be only and only 2 persons who will be hold
+        responsible Sparsha(9790722134) and Sridhar(9790700912).
+
+        This Privacy Policy applies only to Zchedule x.x.x .
+    </string>
+
+    <string name="privacyInformationCollect">
+        Zchedule collects information when we operate and provide information, which is Login and Sync.
+    </string>
+
+    <string name="privacyInformationProvide">
+        You provide your FFCS account information which includes you Registration number
+        and FFCS password only. Zchedule doesn\'t collect any other account information
+        either from your phone, or your FFCS automatically other then running semester\'s
+        Courses, TimeTable, Attendance and Assignments, not even your name.
+    </string>
+
+    <string name="privacyInformationTransfer">
+        Your information is transferred to servers within encrypted Basic Authentication headers
+        through HTTPS(HTTP with SSL Certificate Validation) protocol using POST method. Hence,
+        your Highly confidential credentials can neither be sniffed, tampered or blocked by any
+        third party.
+    </string>
+
+    <string name="privacyInformationStored">
+        Your information is stored nowhere else other then your own personal mobile phone and this
+        information can never be accessed by any one, not even you. However, your credentials are
+        cached in servers for 3 minutes since your last request to provide faster services. And
+        while cached no one can see those information, not even we can see or tamper with that
+        information.
+
+        Your information is not logged anywhere, neither on your phone\'s logger nor on server\'s logger.
+    </string>
+
+    <string name="privacyInformationUsage">
+        Login : When you log-in from giving your credentials, we allocate a server for you to which
+        your information will be sent to provide service(in this process your credentials are not used).
+        Later, your information is sent to the allocated server, which logs you in using VIT\'s FFCS
+        Login Form, and your credentials are now cached for 3 minutes in the server and saved in your
+        phone after successful login.
+
+        Syncing : When you open the app for the second time, Zchedule then synchronises your FFCS
+        information to your phone following VIT\'s FFCS Login Procedure again. This time your credentials
+        are collected from your phone directly which was saved when login.
+
+        We can assure you that, we neither collect or temper with any information in your FFCS. Our
+        sole motive is to directly send you information only about running semester\'s Courses, Time-Table
+        , Attendance and Assignments and that\'s all.
+    </string>
+
+    <string name="privacyInformationShared">
+        Absolutely nothing, we do not share any information with any third party or any other machine
+        than our servers. We respect your privacy, which is not to share any information without you
+        knowing.
+    </string>
+
+    <string name="copyright">
+        To report copyright infringement and request that Zchedule App remove any infringement content
+        it is hosting, please email to fourthstatelab@gmail.com .
+    </string>
 </resources>

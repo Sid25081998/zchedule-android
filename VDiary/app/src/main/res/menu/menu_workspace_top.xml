@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.sridh.vdiary.Activities.workSpace">
+    tools:context="com.example.sridh.vdiary.Activities.WorkSpace">
     <item
         android:id="@+id/toSchedule"
         android:orderInCategory="0"

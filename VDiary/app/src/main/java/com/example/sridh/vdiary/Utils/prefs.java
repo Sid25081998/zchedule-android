@@ -11,7 +11,7 @@ import com.example.sridh.vdiary.Classes.Theme;
 
 public class prefs {
     public static String allSub="allSub";
-    public static String schedule="schedule";
+    public static String schedule="Schedule";
     public static String teachers="teachers";
     public static String holidays="holidays";
     public static String customTeachers="customTeachers";

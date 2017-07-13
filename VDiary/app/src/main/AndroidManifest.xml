@@ -16,21 +16,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.scrapper"
+            android:name=".Activities.Login"
             android:clearTaskOnLaunch="true"
             android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.schedule"
+            android:name=".Activities.Schedule"
             android:screenOrientation="portrait"
             android:theme="@style/MyAppBar.Workspace" />
         <activity
-            android:name=".Activities.workSpace"
+            android:name=".Activities.WorkSpace"
             android:screenOrientation="portrait"
             android:theme="@style/MyAppBar.Workspace"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <receiver android:name=".Widget.widget">
             <intent-filter>
@@ -54,7 +53,7 @@
         </receiver>
 
         <activity
-            android:name=".Activities.showSubject"
+            android:name=".Activities.ShowSubject"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
@@ -64,9 +63,9 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <receiver
@@ -89,26 +88,27 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.settings"
+            android:name=".Activities.Settings"
             android:screenOrientation="portrait"
-            android:theme="@style/MyAppBar" >
-
-        </activity>
+            android:theme="@style/MyAppBar" />
 
         <receiver
             android:name=".Widget.widgetServiceReceiver"
             android:enabled="true"
             android:exported="true" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/logo" />
-        <service
-            android:name=".Services.FirebaseNotificationService">
+
+        <service android:name=".Services.FirebaseNotificationService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
+        <activity android:name=".Activities.Privacy" />
+        <activity android:name=".Activities.Licenses"></activity>
     </application>
 
 </manifest>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout
+    <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Activities.settings"
+    tools:context=".Activities.Settings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,6 +15,21 @@
         app:title="Settings"
         android:id="@+id/toolbar_settings"
         app:titleTextColor="@android:color/white" />
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="4dp"
+        >
+
 
     <LinearLayout
         android:layout_height="match_parent"
@@ -171,4 +186,63 @@
             android:layout_width="match_parent"
             android:background="@android:color/darker_gray"/>
         </LinearLayout>
-    </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
+        <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_below="@id/toolbar_settings"
+            android:padding="10dp"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="7dp"
+                android:paddingTop="7dp"
+                android:id="@+id/privacy"
+                android:onClick="toPrivacyPolicy"
+                >
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:text="Privacy Policy"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:layout_height="1dp"
+                android:layout_width="match_parent"
+                android:background="@android:color/darker_gray"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="7dp"
+                android:paddingTop="7dp"
+                android:onClick="toLicenses"
+                android:id="@+id/license">
+                <TextView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:text="Open Source Licenses"
+                    android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                     />
+            </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+    </LinearLayout>

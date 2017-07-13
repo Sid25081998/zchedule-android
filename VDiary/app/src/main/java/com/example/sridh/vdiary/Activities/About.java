@@ -38,11 +38,11 @@ public class About extends AppCompatActivity {
         ((TextView)findViewById(R.id.thanks_view)).setText(thanks);*/
         TextView about=((TextView)findViewById(R.id.about));
         about.setText("It is said that Necessity is the mother of Invention. Well, Zchedule has been born right from the " +
-                "necessity of a VITian. The ever increasing and demanding schedule in VIT has made it very " +
+                "necessity of a VITian. The ever increasing and demanding Schedule in VIT has made it very " +
                 "difficult for the students to manage things efficiently. Also the high compulsory attendance criteria " +
                 "makes time management a tad bit difficult too. Thus the students end up falling short at the end of " +
                 "the semester. Thus Fourth State Lab have decided to come up with something that promises to be a " +
-                "blessing in disguise. If you feel that you need an assistant to cope up with the tight schedule in VIT, " +
+                "blessing in disguise. If you feel that you need an assistant to cope up with the tight Schedule in VIT, " +
                 "Zchedule promises to be there for you whenever you need. :)");
         about.setTypeface(config.nunito_reg);
         RelativeLayout bottom = (RelativeLayout)findViewById(R.id.bottom_bar);

@@ -24,13 +24,13 @@ public class SplashScreen extends AppCompatActivity {
                     startActivity(new Intent(SplashScreen.this,TutorialActivity.class));
                 }
                 else {
-                    if(scrapper.readFromPrefs(getApplicationContext())){
-                        startActivity(new Intent(SplashScreen.this, workSpace.class));
+                    if(Login.readFromPrefs(getApplicationContext())){
+                        startActivity(new Intent(SplashScreen.this, WorkSpace.class));
                         overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_up);
                         finish();
                     }
                     else {
-                        startActivity(new Intent(SplashScreen.this, scrapper.class));
+                        startActivity(new Intent(SplashScreen.this, Login.class));
                         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                     }
                 }

@@ -13,11 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.config;
 
@@ -134,7 +132,7 @@ public class TutorialActivity extends AppCompatActivity {
 
     void toLogin(){
         setIsFirstLaunch();
-        startActivity(new Intent(TutorialActivity.this,scrapper.class));
+        startActivity(new Intent(TutorialActivity.this,Login.class));
         overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_up);
         finish();
     }

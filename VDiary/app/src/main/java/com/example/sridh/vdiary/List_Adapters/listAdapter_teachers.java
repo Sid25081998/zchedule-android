@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.sridh.vdiary.Activities.workSpace;
+import com.example.sridh.vdiary.Activities.WorkSpace;
 import com.example.sridh.vdiary.Classes.Teacher;
 import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.Utils.DataContainer;
@@ -71,7 +71,7 @@ public class listAdapter_teachers extends BaseAdapter// LIST ADAPTER FOR CABIN V
             public void onClick(View view) {
                 DataContainer.cablist.remove(position);
                 updatecontent(DataContainer.cablist);
-                workSpace.writeCabListToPrefs();
+                WorkSpace.writeCabListToPrefs();
             }
         });
         return view;

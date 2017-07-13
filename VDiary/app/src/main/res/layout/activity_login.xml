@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/taskbar_orange"
-    tools:context="com.example.sridh.vdiary.Activities.scrapper"
+    tools:context="com.example.sridh.vdiary.Activities.Login"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true">
     <TextView
@@ -169,5 +169,13 @@
             android:src="@drawable/refresh"
             android:visibility="invisible"
             app:backgroundTint="@color/colorPrimaryDark" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/refresh_FloatButton"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:id="@+id/current_status"/>
     </RelativeLayout>
 </RelativeLayout>

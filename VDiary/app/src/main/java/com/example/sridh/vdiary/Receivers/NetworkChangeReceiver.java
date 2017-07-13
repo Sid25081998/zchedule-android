@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 
-import com.example.sridh.vdiary.Activities.workSpace;
+import com.example.sridh.vdiary.Activities.WorkSpace;
 import com.example.sridh.vdiary.Classes.Holiday;
 import com.example.sridh.vdiary.Classes.Teacher;
 import com.example.sridh.vdiary.Utils.DataContainer;
@@ -89,7 +89,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
                             String teacherJsonTest = serializer.toJson(DataContainer.teachers);
                             put(context, teachers, teacherJsonTest);
                             try {
-                                workSpace.updateSearcher();
+                                WorkSpace.updateSearcher();
                             }
                             catch (Exception e){
                                 //APP NOT RUNNING

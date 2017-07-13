@@ -65,7 +65,7 @@ public class widgetServiceReceiver extends BroadcastReceiver {
                 }
             } else {
                 changeStatus(views,true);
-                views.setTextViewText(R.id.widget_status, "Login to Zchedule to view today's schedule");
+                views.setTextViewText(R.id.widget_status, "Login to Zchedule to view today's Schedule");
             }
             appWidgetManager.updateAppWidget(appWidgetId, views);
 
