@@ -20,12 +20,25 @@ public class Notification_Holder {
     public int hourOfDay;
     public int minute;
     public Calendar startTime;
+    public Calendar endTime;
     //long mills;
-    public Notification_Holder(Calendar i,String title,String content,String ticker ){
+    public Notification_Holder(Calendar startTime,Calendar endTime,String title,String content,String ticker ){
         this.title=title;
         this.content=content;
         this.ticker=ticker;
-        startTime =i;
+        this.startTime =startTime;
+        this.endTime= endTime;
+        dayofweek= startTime.get(Calendar.DAY_OF_WEEK);
+        hourOfDay= startTime.get(Calendar.HOUR_OF_DAY);
+        minute= startTime.get(Calendar.MINUTE);
+    }
+
+    public Notification_Holder(Calendar startTime,String title,String content,String ticker ){
+        this.title=title;
+        this.content=content;
+        this.ticker=ticker;
+        this.startTime =startTime;
+        this.endTime= endTime;
         dayofweek= startTime.get(Calendar.DAY_OF_WEEK);
         hourOfDay= startTime.get(Calendar.HOUR_OF_DAY);
         minute= startTime.get(Calendar.MINUTE);

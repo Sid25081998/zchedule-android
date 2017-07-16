@@ -108,7 +108,6 @@ public class Login extends AppCompatActivity {
         reload=(FloatingActionButton)findViewById(R.id.refresh_FloatButton);
         pb_loading=(AVLoadingIndicatorView)findViewById(R.id.pb_login);
         toggle_showPassword =(ImageButton)findViewById(R.id.toogle_showPassword);
-        ((TextView)findViewById(R.id.tv_ffcs)).setTypeface(config.nunito_reg);
         ((TextView)findViewById(R.id.note)).setTypeface(config.nunito_reg);
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -323,7 +322,7 @@ public class Login extends AppCompatActivity {
                     toNotifyService.putExtra("fromClass","scheduleNotification");
                     Calendar calendar = GregorianCalendar.getInstance();
                     int startHour,startMin;
-                    String time=formattedTime(sub);
+                    String time=formattedTime(sub.startTime);
                     startHour=Integer.parseInt(time.substring(0, 2));
                     startMin=Integer.parseInt(time.substring(3, 5));
 
@@ -333,7 +332,19 @@ public class Login extends AppCompatActivity {
                     calendar.set(GregorianCalendar.DAY_OF_WEEK,day);
                     calendar.set(GregorianCalendar.SECOND,0);
 
-                    Notification_Holder newNotification =  new Notification_Holder(calendar,sub.title,sub.room,"Upcoming class in 5 minutes");
+                    Calendar calendarEnd = Calendar.getInstance();
+                    int endHour,endMin;
+                    String endTime=formattedTime(sub.endTime);
+                    endHour=Integer.parseInt(endTime.substring(0, 2));
+                    endMin=Integer.parseInt(endTime.substring(3, 5));
+
+                    calendarEnd.setLenient(false);
+                    calendarEnd.set(Calendar.HOUR_OF_DAY,endHour);
+                    calendarEnd.set(Calendar.MINUTE,endMin);
+                    calendarEnd.set(Calendar.DAY_OF_WEEK,day);
+                    calendarEnd.set(Calendar.SECOND,0);
+
+                    Notification_Holder newNotification =  new Notification_Holder(calendar,calendarEnd,sub.title,sub.room,"Upcoming class in 5 minutes");
                     toNotifyService.putExtra("notificationContent",(new Gson()).toJson(newNotification));
                     toNotifyService.putExtra("notificationCode",notificationCode);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context,notificationCode,toNotifyService,PendingIntent.FLAG_UPDATE_CURRENT);
@@ -378,15 +389,16 @@ public class Login extends AppCompatActivity {
         put(context,password,null);//credPrefs.putString("password", null);
     }  //DELETE THE SAVED CREDENTIALS IF USER WANTS TO
 
-    static String formattedTime(Subject sub){
-        String rawTime= sub.startTime;
-        String meridian =rawTime.substring(6,8);
-        int hour = Integer.parseInt(rawTime.substring(0,2));
+    static String formattedTime(String time){
+        String rawTime[]= time.split(" ");
+        String meridian =rawTime[1];
+        int hour = Integer.parseInt(rawTime[0].substring(0,2));
         if(meridian.equals("PM") && hour<12){
             hour = hour+12;
-            return hour+rawTime.substring(2);
+            String t=hour+time.substring(2);
+            return t;
         }
-        return rawTime;
+        return time;
     } //GET THE 24-HOUR FORMAT OF THE TIME OF THE SUBJECT
 
     void load(boolean x){

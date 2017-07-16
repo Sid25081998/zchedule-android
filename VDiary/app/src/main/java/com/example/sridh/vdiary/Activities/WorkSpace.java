@@ -456,24 +456,36 @@ public class WorkSpace extends AppCompatActivity {
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
                     Intent toNotifyService = new Intent(context,NotifyService.class);
                     toNotifyService.putExtra("fromClass","scheduleNotification");
-                    Calendar calendar = Calendar.getInstance();
-                    int startHour,startMin,AMPM;
-                    String time=formattedTime(sub.startTime);
-                    startHour=Integer.parseInt(time.substring(0, 2));
-                    startMin=Integer.parseInt(time.substring(3, 5));
+                    Calendar calendarStart = Calendar.getInstance();
+                    int startHour,startMin;
+                    String startTime=formattedTime(sub.startTime);
+                    startHour=Integer.parseInt(startTime.substring(0, 2));
+                    startMin=Integer.parseInt(startTime.substring(3, 5));
 
-                    calendar.setLenient(false);
-                    calendar.set(Calendar.HOUR_OF_DAY,startHour);
-                    calendar.set(Calendar.MINUTE,startMin);
-                    calendar.set(Calendar.DAY_OF_WEEK,day);
-                    calendar.set(Calendar.SECOND,0);
+                    calendarStart.setLenient(false);
+                    calendarStart.set(Calendar.HOUR_OF_DAY,startHour);
+                    calendarStart.set(Calendar.MINUTE,startMin);
+                    calendarStart.set(Calendar.DAY_OF_WEEK,day);
+                    calendarStart.set(Calendar.SECOND,0);
 
-                    Notification_Holder newNotification =  new Notification_Holder(calendar,sub.title,sub.room,"Upcoming class in 5 minutes");
+                    Calendar calendarEnd = Calendar.getInstance();
+                    int endHour,endMin;
+                    String endTime=formattedTime(sub.endTime);
+                    endHour=Integer.parseInt(endTime.substring(0, 2));
+                    endMin=Integer.parseInt(endTime.substring(3, 5));
+
+                    calendarEnd.setLenient(false);
+                    calendarEnd.set(Calendar.HOUR_OF_DAY,endHour);
+                    calendarEnd.set(Calendar.MINUTE,endMin);
+                    calendarEnd.set(Calendar.DAY_OF_WEEK,day);
+                    calendarEnd.set(Calendar.SECOND,0);
+
+                    Notification_Holder newNotification =  new Notification_Holder(calendarStart,calendarEnd,sub.title,sub.room,"Upcoming class in 5 minutes");
                     toNotifyService.putExtra("notificationContent",(new Gson()).toJson(newNotification));
                     toNotifyService.putExtra("notificationCode",notificationCode);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context,notificationCode,toNotifyService,PendingIntent.FLAG_CANCEL_CURRENT);
                     notificationCode++;
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() - 5 * 60 * 1000, 24 * 7 * 60 * 60 * 1000, pendingIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendarEnd.getTimeInMillis() - 5 * 60 * 1000, 24 * 7 * 60 * 60 * 1000, pendingIntent);
                 }
             }
             day++;

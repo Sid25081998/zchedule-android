@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.util.Log;
 
 import com.example.sridh.vdiary.Classes.Notification_Creator;
@@ -16,8 +17,11 @@ import com.google.gson.reflect.TypeToken;
 import java.util.Calendar;
 import java.util.List;
 
+import static com.example.sridh.vdiary.Utils.prefs.AUDIO_PROFILE;
+import static com.example.sridh.vdiary.Utils.prefs.CHANGE_PROFILE;
 import static com.example.sridh.vdiary.Utils.prefs.get;
 import static com.example.sridh.vdiary.Utils.prefs.holidays;
+import static com.example.sridh.vdiary.Utils.prefs.put;
 import static com.example.sridh.vdiary.Utils.prefs.showNotification;
 
 /**
@@ -42,11 +46,12 @@ public class NotifyService extends BroadcastReceiver {
                 Notification_Holder notificationHolder = (new Gson()).fromJson(intent.getStringExtra("notificationContent"), new TypeToken<Notification_Holder>() {
                 }.getType());
                 Log.i("Received",notificationHolder.content);
-                Calendar notiCalendar = notificationHolder.startTime;
-                notiCalendar.setLenient(false);
+                Calendar CalendarStart = notificationHolder.startTime;
+                CalendarStart.setLenient(false);
                 if ((notificationHolder.dayofweek == cal.get(Calendar.DAY_OF_WEEK) && notificationHolder.hourOfDay >= cal.get(Calendar.HOUR_OF_DAY))) {
                     Notification_Creator notifcreator = new Notification_Creator(notificationHolder.title, notificationHolder.content, notificationHolder.ticker, context);
                     notifcreator.create_notification(0);
+                    createQuietHour(context,notificationHolder.startTime,notificationHolder.endTime);
                 }
             }
         }
@@ -71,10 +76,25 @@ public class NotifyService extends BroadcastReceiver {
     }
 
     void createQuietHour(Context context,Calendar startTime, Calendar endTime){
-        AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        Intent quietHour = new Intent(context,ChangeProfileReceiver.class);
-        PendingIntent  pendingIntent = PendingIntent.getBroadcast(context,501,quietHour,PendingIntent.FLAG_CANCEL_CURRENT);
-        
+        if(get(context,CHANGE_PROFILE,true)) {
+            AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            Intent quietHourStart = new Intent(context, ChangeProfileReceiver.class);
+            Intent quietHourEnd = new Intent(context, ChangeProfileReceiver.class);
 
+            quietHourStart.putExtra("profile", AudioManager.RINGER_MODE_VIBRATE);
+            Calendar calendar = Calendar.getInstance();
+            startTime.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
+            endTime.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
+
+            PendingIntent pendingIntentStart = PendingIntent.getBroadcast(context, 501, quietHourStart, PendingIntent.FLAG_CANCEL_CURRENT);
+            PendingIntent pendingIntentEnd = PendingIntent.getBroadcast(context, 502, quietHourEnd, PendingIntent.FLAG_CANCEL_CURRENT);
+
+            manager.setExact(AlarmManager.RTC_WAKEUP, startTime.getTimeInMillis(), pendingIntentStart);
+            manager.setExact(AlarmManager.RTC_WAKEUP, endTime.getTimeInMillis(), pendingIntentEnd);
+
+            AudioManager audioManager = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+            put(context,AUDIO_PROFILE,audioManager.getRingerMode());
+            Log.d("Quiet Hours created","Created");
+        }
     }
 }
