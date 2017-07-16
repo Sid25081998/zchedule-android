@@ -46,7 +46,7 @@ public class AtBoot extends BroadcastReceiver {
             x.putExtra("notificationContent",m);
             x.putExtra("notificationCode",DataContainer.notes.get(i).id);
             pendingIntent=PendingIntent.getBroadcast(context, DataContainer.notes.get(i).id,x,PendingIntent.FLAG_UPDATE_CURRENT);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, DataContainer.notes.get(i).cal.getTimeInMillis(),pendingIntent);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, DataContainer.notes.get(i).startTime.getTimeInMillis(),pendingIntent);
         }
         String timeTableJson = get(context,schedule,null);//sharedPreferences.getString("Schedule",null);
         List<List<Subject>> timeTable = (new Gson()).fromJson(timeTableJson,new TypeToken<List<List<Subject>>>(){}.getType());

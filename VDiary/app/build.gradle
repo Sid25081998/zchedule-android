@@ -9,7 +9,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 3
-        versionName "Fall Release"
+        versionName "Beta 2.0.3"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

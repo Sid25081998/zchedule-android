@@ -1,5 +1,7 @@
 package com.example.sridh.vdiary.Receivers;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -39,8 +41,8 @@ public class NotifyService extends BroadcastReceiver {
                 Calendar cal = Calendar.getInstance();
                 Notification_Holder notificationHolder = (new Gson()).fromJson(intent.getStringExtra("notificationContent"), new TypeToken<Notification_Holder>() {
                 }.getType());
-                Log.i("Recived",notificationHolder.content);
-                Calendar notiCalendar = notificationHolder.cal;
+                Log.i("Received",notificationHolder.content);
+                Calendar notiCalendar = notificationHolder.startTime;
                 notiCalendar.setLenient(false);
                 if ((notificationHolder.dayofweek == cal.get(Calendar.DAY_OF_WEEK) && notificationHolder.hourOfDay >= cal.get(Calendar.HOUR_OF_DAY))) {
                     Notification_Creator notifcreator = new Notification_Creator(notificationHolder.title, notificationHolder.content, notificationHolder.ticker, context);
@@ -66,5 +68,13 @@ public class NotifyService extends BroadcastReceiver {
 
     boolean isNotificationOn(Context context){
         return get(context,showNotification,true);
+    }
+
+    void createQuietHour(Context context,Calendar startTime, Calendar endTime){
+        AlarmManager manager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent quietHour = new Intent(context,ChangeProfileReceiver.class);
+        PendingIntent  pendingIntent = PendingIntent.getBroadcast(context,501,quietHour,PendingIntent.FLAG_CANCEL_CURRENT);
+        
+
     }
 }

@@ -27,6 +27,7 @@ public class prefs {
     public static String showNotification="showNotification";
     public static String isWidgetEnabled ="isEnabled";
     public static String showAttendanceOnwidget ="showAttendance";
+    public static String CHANGE_PROFILE = "changeProfile";
     public static String dataVersion="dataVersion";
     public static String tipid="tipId";
     public static String scheduleNotificationCount="notificationCount";

@@ -4,6 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -14,12 +16,15 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.sridh.vdiary.Classes.Theme;
 import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.Widget.widgetServiceReceiver;
 
+import static com.example.sridh.vdiary.Utils.prefs.CHANGE_PROFILE;
 import static com.example.sridh.vdiary.Utils.prefs.putTheme;
 import static com.example.sridh.vdiary.Utils.prefs.showAttendanceOnwidget;
 import static com.example.sridh.vdiary.Utils.prefs.showNotification;
@@ -31,7 +36,7 @@ import static com.example.sridh.vdiary.config.getCurrentTheme;
 public class Settings extends AppCompatActivity {
 
     Context context;
-    Switch toggle_showNotification, toggle_showAttendance;
+    Switch toggle_showNotification, toggle_showAttendance,toggle_quiet;
     ImageButton selectedCircle;
     int[] circleIDs= new int[]{R.id.theme_circle_red,R.id.theme_circle_blue,R.id.theme_circle_teal,R.id.theme_circle_yellow,R.id.theme_circle_pink/*,R.id.theme_circle_black*/,R.id.theme_circle_purple};
     int[] circleNotsId =new int[]{R.drawable.circle_red_nots,R.drawable.circle_blue_nots,R.drawable.circle_teal_nots,R.drawable.circle_yellow_nots,R.drawable.circle_pink_nots/*,R.drawable.circle_black_nots*/,R.drawable.circle_purple_nots};
@@ -69,6 +74,7 @@ public class Settings extends AppCompatActivity {
 
         toggle_showNotification= (Switch)findViewById(R.id.toggle_showNotification);
         toggle_showAttendance=(Switch)findViewById(R.id.toggle_showAttendance);
+        toggle_quiet = (Switch)findViewById(R.id.toggle_changeProfile);
         setSettingConfig();
         toggle_showNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -83,11 +89,27 @@ public class Settings extends AppCompatActivity {
                 updateWidget();
             }
         });
+        toggle_quiet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                put(context,CHANGE_PROFILE,isChecked);
+            }
+        });
+
+        TextView buildVersion = (TextView)findViewById(R.id.build_version);
+        try {
+            PackageManager manager = context.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            buildVersion.setText(info.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     void setSettingConfig(){
         toggle_showNotification.setChecked(get(context,showNotification,true));//settingPrefs.getBoolean(SHOW_NOTIF_KEY,true));
         toggle_showAttendance.setChecked(get(context,showAttendanceOnwidget,false));//settingPrefs.getBoolean(SHOW_ATT_KEY,false));
+        toggle_quiet.setChecked(get(context,CHANGE_PROFILE,true));  //SHOULD CHANGE AUDIO PROFILE TO VIBRATE OR NOT
     }
    void updateWidget(){
         (new widgetServiceReceiver()).onReceive(context,(new Intent(context,widgetServiceReceiver.class)));

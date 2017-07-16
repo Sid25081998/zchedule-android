@@ -70,7 +70,6 @@ import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.Utils.DataContainer;
 import com.example.sridh.vdiary.Utils.HttpRequest;
 import com.example.sridh.vdiary.config;
-import com.example.sridh.vdiary.Utils.prefs;
 import com.example.sridh.vdiary.Widget.widgetServiceReceiver;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -95,7 +94,6 @@ import java.util.Set;
 import static com.example.sridh.vdiary.Activities.Login.getType;
 import static com.example.sridh.vdiary.Activities.Login.toTitleCase;
 import static com.example.sridh.vdiary.Utils.prefs.*;
-import static com.example.sridh.vdiary.config.CurrentTheme;
 import static com.example.sridh.vdiary.config.getCurrentTheme;
 
 
@@ -460,7 +458,7 @@ public class WorkSpace extends AppCompatActivity {
                     toNotifyService.putExtra("fromClass","scheduleNotification");
                     Calendar calendar = Calendar.getInstance();
                     int startHour,startMin,AMPM;
-                    String time=formattedTime(sub);
+                    String time=formattedTime(sub.startTime);
                     startHour=Integer.parseInt(time.substring(0, 2));
                     startMin=Integer.parseInt(time.substring(3, 5));
 
@@ -495,16 +493,16 @@ public class WorkSpace extends AppCompatActivity {
         (new widgetServiceReceiver()).onReceive(context,(new Intent(context,widgetServiceReceiver.class)));
     }  // UPDATE THE CONTENTS OF WIDGET TO SHOW TODAYS SCHEDULE
 
-    static String formattedTime(Subject sub){
-        String rawTime[]= sub.startTime.split(" ");
+    static String formattedTime(String time){
+        String rawTime[]= time.split(" ");
         String meridian =rawTime[1];
         int hour = Integer.parseInt(rawTime[0].substring(0,2));
         if(meridian.equals("PM") && hour<12){
             hour = hour+12;
-            String t=hour+sub.startTime.substring(2);
+            String t=hour+time.substring(2);
             return t;
         }
-        return sub.startTime;
+        return time;
     } //GET THE 24-HOUR FORMAT OF THE TIME OF THE SUBJECT
 
     void setTabLayout(TabLayout tabLayout){
@@ -650,7 +648,7 @@ public class WorkSpace extends AppCompatActivity {
                     toNotifyService.putExtra("fromClass","scheduleNotification");
                     Calendar calendar = GregorianCalendar.getInstance();
                     int startHour,startMin;
-                    String time=formattedTime(sub);
+                    String time=formattedTime(sub.startTime);
                     startHour=Integer.parseInt(time.substring(0, 2));
                     startMin=Integer.parseInt(time.substring(3, 5));
 
@@ -944,7 +942,7 @@ public class WorkSpace extends AppCompatActivity {
             return rootViewSummary;
         }
         public void schedule_todo_notification(Notification_Holder n) {
-            if (n.cal.getTimeInMillis() > System.currentTimeMillis()) {
+            if (n.startTime.getTimeInMillis() > System.currentTimeMillis()) {
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
                 Intent intent = new Intent(getActivity(), NotifyService.class);
                 Gson js = new Gson();
@@ -955,7 +953,7 @@ public class WorkSpace extends AppCompatActivity {
                 id++;
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 put(context,notificationIdentifier,id);//editor.putInt("identifier", id);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, n.cal.getTimeInMillis(), pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, n.startTime.getTimeInMillis(), pendingIntent);
             }
         }
         Calendar c;
@@ -1265,7 +1263,7 @@ public class WorkSpace extends AppCompatActivity {
                     editTask(index);
                 }
             });
-            Calendar deadLine = cTask.cal;
+            Calendar deadLine = cTask.startTime;
             deadLineTextView.setText(getDateTimeString(deadLine));
             //taskView.setBackground(getResources().getDrawable(R.drawable.soft_corner_taskview));
             GradientDrawable softShape = (GradientDrawable) taskView.getBackground();
@@ -1302,7 +1300,7 @@ public class WorkSpace extends AppCompatActivity {
                     editTask(index);
                 }
             });
-            Calendar deadLine = cTask.cal;
+            Calendar deadLine = cTask.startTime;
             deadLineTextView.setText(getDateTimeString(deadLine));
             //taskView.setBackground(getResources().getDrawable(R.drawable.soft_corner_taskview));
             GradientDrawable softShape = (GradientDrawable) taskView.getBackground();

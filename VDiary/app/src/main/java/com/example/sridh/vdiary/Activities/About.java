@@ -29,12 +29,6 @@ public class About extends AppCompatActivity {
         TextView developers=((TextView)findViewById(R.id.about_core_developers));
         developers.setText("Developed By : Sparsha, Sridhar");
         developers.setTypeface(config.nunito_reg);
-        /*String thanks="";
-        thanks = "Special Thanks to:\n";
-        thanks= thanks+ "Prasang Sharma, Aman Hussain\n";
-        thanks= thanks+ "\n\nAlpha Testers:\n";
-        thanks= thanks+ "Gaurav, Subhojeet, Dipankar, Hemant, Mohit, Abhishek, Madhurima, Akanksha, Amrit";
-        ((TextView)findViewById(R.id.thanks_view)).setText(thanks);*/
         TextView about=((TextView)findViewById(R.id.about));
         about.setText("It is said that Necessity is the mother of Invention. Well, Zchedule has been born right from the " +
                 "necessity of a VITian. The ever increasing and demanding Schedule in VIT has made it very " +

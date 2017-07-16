@@ -19,16 +19,16 @@ public class Notification_Holder {
     public int dayofweek;
     public int hourOfDay;
     public int minute;
-    public Calendar cal;
+    public Calendar startTime;
     //long mills;
     public Notification_Holder(Calendar i,String title,String content,String ticker ){
         this.title=title;
         this.content=content;
         this.ticker=ticker;
-        cal=i;
-        dayofweek= cal.get(Calendar.DAY_OF_WEEK);
-        hourOfDay=cal.get(Calendar.HOUR_OF_DAY);
-        minute=cal.get(Calendar.MINUTE);
+        startTime =i;
+        dayofweek= startTime.get(Calendar.DAY_OF_WEEK);
+        hourOfDay= startTime.get(Calendar.HOUR_OF_DAY);
+        minute= startTime.get(Calendar.MINUTE);
     }
 
     public static String convert_to_jason(List<Notification_Holder> lis)

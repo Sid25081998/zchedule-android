@@ -57,8 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:id="@+id/cred_pwd_input"
-        android:layout_alignStart="@+id/cred_reg_input"
-        android:layout_alignEnd="@+id/cred_reg_input"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/cred_reg_input">
     <EditText
         android:layout_width="match_parent"
@@ -66,6 +65,7 @@
         android:inputType="textPassword"
         android:id="@+id/passbox"
         android:hint="Password"
+        android:width="300dp"
         android:textColor="@android:color/white"
         android:paddingEnd="60dp"
         android:layout_marginTop="7dp"/>
