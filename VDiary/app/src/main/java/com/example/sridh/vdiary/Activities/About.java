@@ -2,6 +2,8 @@ package com.example.sridh.vdiary.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,18 +20,15 @@ public class About extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ThemeProperty = getCurrentTheme();
+        ThemeProperty = getCurrentTheme(this);
         setTheme(ThemeProperty.theme);
+
         View parent = View.inflate(getApplicationContext(),R.layout.activity_about,null);
-        parent.setBackgroundColor(ThemeProperty.colorPrimary);
+        parent.setBackgroundColor(getResources().getColor(ThemeProperty.colorPrimary));
         setContentView(parent);
-        config.setStatusBar(getWindow(),getApplicationContext(),R.color.colorPrimaryDark);
         TextView developers=((TextView)findViewById(R.id.about_core_developers));
         developers.setText("Developed By : Sparsha, Sridhar");
         developers.setTypeface(config.nunito_reg);
-        TextView versionView=((TextView)findViewById(R.id.about_name_and_version));
-        versionView.setText("Zchedule "+ config.VERSION);
-        versionView.setTypeface(config.nunito_reg);
         /*String thanks="";
         thanks = "Special Thanks to:\n";
         thanks= thanks+ "Prasang Sharma, Aman Hussain\n";
@@ -45,8 +44,16 @@ public class About extends AppCompatActivity {
                 "blessing in disguise. If you feel that you need an assistant to cope up with the tight Schedule in VIT, " +
                 "Zchedule promises to be there for you whenever you need. :)");
         about.setTypeface(config.nunito_reg);
-        RelativeLayout bottom = (RelativeLayout)findViewById(R.id.bottom_bar);
-        bottom.setBackgroundColor(ThemeProperty.colorPrimaryDark);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

@@ -17,7 +17,7 @@ public class Privacy extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Theme = getCurrentTheme();
+        Theme = getCurrentTheme(this);
         setTheme(Theme.theme);
 
         setContentView(R.layout.activity_privacy);
@@ -37,10 +37,10 @@ public class Privacy extends AppCompatActivity {
     void initLayout(){
         Toolbar toolbar = (Toolbar)findViewById(R.id.privacyToolbar);
         toolbar.setTitle("Privacy Policy");
-        toolbar.setBackgroundColor(getResources().getColor(Theme.colorPrimaryDark));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setBackgroundColor(getResources().getColor(Theme.colorPrimary));
     }
 }

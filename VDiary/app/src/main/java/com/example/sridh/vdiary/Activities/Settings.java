@@ -42,12 +42,12 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context=getApplicationContext();
         CircleIndex = getIdOf(CurrentTheme);
-        setTheme(getCurrentTheme().theme);
+        setTheme(getCurrentTheme(this).theme);
         setContentView(R.layout.activity_settings);
         selectedCircle= (ImageButton)findViewById(circleIDs[CircleIndex]);
         selectedCircle.setImageDrawable(getResources().getDrawable(circleSId[CircleIndex]));
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar_settings);
-        toolbar.setBackgroundColor(getResources().getColor(getCurrentTheme().colorPrimary));
+        toolbar.setBackgroundColor(getResources().getColor(getCurrentTheme(this).colorPrimary));
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

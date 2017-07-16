@@ -18,7 +18,6 @@
         <activity
             android:name=".Activities.Login"
             android:clearTaskOnLaunch="true"
-            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -31,7 +30,8 @@
             android:theme="@style/MyAppBar.Workspace"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <receiver android:name=".Widget.widget">
+        <receiver android:name=".Widget.widget"
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -45,8 +45,10 @@
             android:name=".Widget.widgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <receiver android:name=".Receivers.NotifyService" />
-        <receiver android:name=".Receivers.NetworkChangeReceiver">
+        <receiver android:name=".Receivers.NotifyService"
+            android:enabled="true"/>
+        <receiver android:name=".Receivers.NetworkChangeReceiver"
+            android:enabled="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -108,7 +110,7 @@
         </service>
 
         <activity android:name=".Activities.Privacy" />
-        <activity android:name=".Activities.Licenses"></activity>
+        <activity android:name=".Activities.Licenses" />
     </application>
 
 </manifest>

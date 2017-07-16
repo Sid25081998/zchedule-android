@@ -116,6 +116,7 @@ public class Login extends AppCompatActivity {
                 tip.setText(getTip());
                 reload.setVisibility(View.INVISIBLE);
                 pb_loading.setVisibility(View.VISIBLE);
+                status.setVisibility(View.VISIBLE);
                 loggedIn = false;
                 if(isServerFetched)
                     requestAll();
@@ -126,9 +127,9 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hideSoftKeyboard(Login.this);
                 load(true);
                 getBestServer();
-                hideSoftKeyboard(Login.this);
                 if(cb.isChecked()) saveCreds();
                 else delCreds();
             }
@@ -179,6 +180,9 @@ public class Login extends AppCompatActivity {
                         }.getType());
                         if(!allResponse.error){
                             new compileInf(allResponse).execute();
+                        }
+                        else if(allResponse.message.equals("Retry")){
+                            requestAll();
                         }
                         else{
                             Toast.makeText(Login.this, allResponse.message, Toast.LENGTH_SHORT).show();
@@ -402,6 +406,7 @@ public class Login extends AppCompatActivity {
         load(true);
         reload.setVisibility(View.VISIBLE);
         pb_loading.setVisibility(View.GONE);
+        status.setVisibility(View.INVISIBLE);
         tip.setText("Connection Failed");
         //captchaBox.setText("");
     } //SHOW THE RETRY VIEW
@@ -438,6 +443,10 @@ public class Login extends AppCompatActivity {
                         Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(
                 activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public void toPrivacyPolicy(View view){
+        startActivity(new Intent(Login.this,Privacy.class));
     }
 
     String getTip(){

@@ -149,7 +149,7 @@ public class WorkSpace extends AppCompatActivity {
 
     static CourseAdapter courseAdapter;
     static View rootView;
-
+    static TextView lastRef;
     @Override
     public void onBackPressed() {
         if (resultList.getVisibility() == View.VISIBLE) {
@@ -164,8 +164,7 @@ public class WorkSpace extends AppCompatActivity {
         context = this;
         activity=this;
 
-        CurrentTheme = prefs.getTheme(context); //GETTING THE THEME FROM THE SHARED PREFERENCES
-        ThemeProperty= getCurrentTheme();
+        ThemeProperty= getCurrentTheme(context);
         setTheme(ThemeProperty.theme);
 
         rootView = getLayoutInflater().inflate(R.layout.activity_workspace,null);
@@ -348,6 +347,7 @@ public class WorkSpace extends AppCompatActivity {
     private static class compileInf extends AsyncTask<Void,Void,Void>{
         Map<String,Integer> codeMap = new HashMap<>();
         AllResponse response;
+        Calendar cal;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -429,13 +429,15 @@ public class WorkSpace extends AppCompatActivity {
             cancelNotifications(context);
             createNotification(context, DataContainer.timeTable);
             Log.i("Updated","Updated");
-            put(context,lastRefreshed,(new Gson()).toJson(Calendar.getInstance()));//editor.putString("last_ref",last_ref);
+            cal = Calendar.getInstance();
+            put(context,lastRefreshed,(new Gson()).toJson(cal));//editor.putString("last_ref",last_ref);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            lastRef.setText("Last Synced:\n" + getDateTimeString(cal));
             try {
                 courseAdapter.update(DataContainer.subList);
             }
@@ -717,11 +719,12 @@ public class WorkSpace extends AppCompatActivity {
                         @Override
                         public void onRefresh() {
                             swipeRefreshLayout.setRefreshing(false);
-
-                            pb_syncing.setVisibility(View.VISIBLE);
-                            action_sync.setVisibility(View.GONE);
-                            refreshing=true;
-                            requestAll(activity);
+                            if(!refreshing) {
+                                pb_syncing.setVisibility(View.VISIBLE);
+                                action_sync.setVisibility(View.GONE);
+                                refreshing = true;
+                                requestAll(activity);
+                            }
 
                         }
                     });
@@ -805,7 +808,7 @@ public class WorkSpace extends AppCompatActivity {
                                 public boolean onMenuItemClick(MenuItem item) {
                                     int id = item.getItemId();
                                     if(id==R.id.action_add_todo) {
-                                        if (!title.getText().toString().isEmpty() && !other.getText().toString().isEmpty()) {
+                                        if (!title.getText().toString().isEmpty()) {
                                             Notification_Holder n;
                                             if(c!=null) {
                                                 n = new Notification_Holder(c, title.getText().toString(), other.getText().toString(),"You have a deadline to meet");
@@ -822,7 +825,7 @@ public class WorkSpace extends AppCompatActivity {
                                             alert.cancel();
                                             WorkSpace.hideSoftKeyboard(getActivity());
                                         } else
-                                            Toast.makeText(getContext(), "Both title and note must contain some text", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getContext(), "Title must not be empty", Toast.LENGTH_SHORT).show();
                                         return true;
                                     }
                                     else if(id== R.id.action_cancel_todo){
@@ -867,7 +870,7 @@ public class WorkSpace extends AppCompatActivity {
             data.setDrawValues(false);
             pie.getLegend().setEnabled(false);
 
-            TextView lastRef= (TextView)rootViewSummary.findViewById(R.id.lastRefreshed);
+            WorkSpace.lastRef= (TextView)rootViewSummary.findViewById(R.id.lastRefreshed);
             lastRef.setTypeface(config.nunito_bold);
             String lastSyncedJson = get(context,lastRefreshed,"");
             try {
@@ -876,7 +879,7 @@ public class WorkSpace extends AppCompatActivity {
                 lastRef.setText("Last Synced:\n" + getDateTimeString(lastSynced));
             }
             catch (Exception e){
-                lastRef.setText("Last Synced:\n" +lastSyncedJson);
+                lastRef.setText("");
             }
 
             RelativeLayout logoutButt = (RelativeLayout)rootViewSummary.findViewById(R.id.rl_logout);
@@ -1033,6 +1036,11 @@ public class WorkSpace extends AppCompatActivity {
                             alert.cancel();
                             return true;
                         }
+                    }
+                    else{
+                        WorkSpace.hideSoftKeyboard(getActivity());
+                        alert.cancel();
+                        return true;
                     }
                     return false;
                 }

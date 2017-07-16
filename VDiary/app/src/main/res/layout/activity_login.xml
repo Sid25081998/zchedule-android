@@ -111,10 +111,11 @@
         android:paddingStart="40dp"
         android:paddingEnd="40dp"
         android:textColor="@android:color/white"
-        android:text="Note: Credentials are neither shared nor stored on any other device."
+        android:text="@string/acceptance"
         android:layout_below="@id/login"
         android:id="@+id/note"
         android:layout_marginTop="20dp"
+        android:onClick="toPrivacyPolicy"
         android:layout_centerHorizontal="true"/>
 
     <!--Loading content-->

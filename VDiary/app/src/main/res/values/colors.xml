@@ -93,9 +93,9 @@
         </array>
 
     <!--BLUE THEME-->
-    <color name="colorPrimaryDarkBlue">#1976D2</color>
-    <color name="colorPrimaryBlue">#1976D2</color>
-    <color name="colorAccentBlue">#03A9F4</color>
+    <color name="colorPrimaryDarkBlue">#45b3e0</color>
+    <color name="colorPrimaryBlue">#45b3e0</color>
+    <color name="colorAccentBlue">#45b3e0</color>
 
     <!--TEAL THEME-->
     <color name="colorPrimaryDarkTeal">#009688</color>
@@ -127,8 +127,8 @@
     <color name="colorTextBlack">#212121</color>
 
     <!--Purple THEME-->
-    <color name="colorPrimaryPurple">#673bb7</color>
-    <color name="colorPrimaryDarkPurple">#673bb7</color>
-    <color name="colorAccentPurple">#673bb7</color>
-    <color name="colorTextPurple">#673bb7</color>
+    <color name="colorPrimaryPurple">#5252ff</color>
+    <color name="colorPrimaryDarkPurple">#5252ff</color>
+    <color name="colorAccentPurple">#5252ff</color>
+    <color name="colorTextPurple">#5252ff</color>
     </resources>

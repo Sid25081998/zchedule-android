@@ -61,7 +61,7 @@ public class ShowSubject extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ThemeProperty = getCurrentTheme();
+        ThemeProperty = getCurrentTheme(this);
         View parent = View.inflate(getApplicationContext(),R.layout.activity_show_subject,null);
         //parent.setBackgroundColor(getResources().getColor(ThemeProperty.colorPrimary));
         setTheme(ThemeProperty.theme);

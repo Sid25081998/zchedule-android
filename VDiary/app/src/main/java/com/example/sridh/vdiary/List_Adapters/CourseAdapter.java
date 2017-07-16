@@ -41,7 +41,7 @@ import static com.example.sridh.vdiary.config.getCurrentTheme;
         public CourseAdapter(Context context,List<Subject> subjectList){
             this.list = subjectList;
             this.context = context;
-            ThemeProperty = getCurrentTheme();
+            ThemeProperty = getCurrentTheme(context);
         }
         @Override
         public int getCount() {

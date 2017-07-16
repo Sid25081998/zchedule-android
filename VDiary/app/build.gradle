@@ -8,7 +8,7 @@ android {
         applicationId "com.fourthstatelabs.zchedule2"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 2
+        versionCode 3
         versionName "Fall Release"
         vectorDrawables.useSupportLibrary = true
     }
@@ -46,6 +46,7 @@ dependencies {
     compile 'com.android.support:cardview-v7:25.3.1'
     testCompile 'junit:junit:4.12'
 }
+
 
 
 

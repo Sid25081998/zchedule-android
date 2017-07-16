@@ -51,7 +51,7 @@ public class Schedule extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ThemeProperty= getCurrentTheme();
+        ThemeProperty= getCurrentTheme(this);
         setTheme(ThemeProperty.theme);
         setContentView(R.layout.activity_schedule);
         s=getApplicationContext();

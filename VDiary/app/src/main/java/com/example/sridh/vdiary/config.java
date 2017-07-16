@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import com.example.sridh.vdiary.Classes.Server;
 import com.example.sridh.vdiary.Classes.Theme;
 import com.example.sridh.vdiary.Classes.themeProperty;
+import com.example.sridh.vdiary.Utils.prefs;
 
 
 import java.util.HashMap;
@@ -62,7 +63,10 @@ public class config {
         //AppThemes.put(Theme.black, new themeProperty(Theme.black));
         AppThemes.put(Theme.purple, new themeProperty(Theme.purple));
     }
-    public static themeProperty getCurrentTheme(){
+    public static themeProperty getCurrentTheme(Context context){
+        if(CurrentTheme==null){
+            CurrentTheme = prefs.getTheme(context); //GETTING THE THEME FROM THE SHARED PREFERENCES
+        }
         return AppThemes.get(CurrentTheme);
     }
     public static String CHENNAI_URL = "https://academicscc.vit.ac.in/";
