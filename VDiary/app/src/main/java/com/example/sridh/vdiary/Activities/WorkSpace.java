@@ -71,6 +71,7 @@ import com.example.sridh.vdiary.Utils.DataContainer;
 import com.example.sridh.vdiary.Utils.HttpRequest;
 import com.example.sridh.vdiary.config;
 import com.example.sridh.vdiary.Widget.widgetServiceReceiver;
+
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -943,10 +944,34 @@ public class WorkSpace extends AppCompatActivity {
             shareButt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    handle_shared_alert_dialog(context);
+                }
+            });
+            return rootViewSummary;
+        }
+
+        //This method inflates the Alert Dialog for sharing app via whatsapp or Facebook messenger
+
+        public void handle_shared_alert_dialog(final Context context)
+        {
+            final AlertDialog alertDialog;
+            View shareview=getActivity().getLayoutInflater().inflate(R.layout.shareview,null);
+            ImageButton messengershare,whatsappshare;
+            messengershare=(ImageButton)shareview.findViewById(R.id.messengershare);
+            whatsappshare=(ImageButton)shareview.findViewById(R.id.whatsappshare);
+            AlertDialog.Builder builder=new AlertDialog.Builder(context);
+            builder.setView(shareview);
+            alertDialog=builder.create();
+            alertDialog.show();
+
+            whatsappshare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
                     whatsappIntent.setType("text/plain");
                     whatsappIntent.setPackage("com.whatsapp");
-                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.fourthstatelabs.zchedule2");
+                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.fourthstatelabs.zchedule2&hl=en");
                     try {
                         context.startActivity(whatsappIntent);
                     } catch (android.content.ActivityNotFoundException ex) {
@@ -954,8 +979,37 @@ public class WorkSpace extends AppCompatActivity {
                     }
                 }
             });
-            return rootViewSummary;
+
+            messengershare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent
+                            .putExtra(Intent.EXTRA_TEXT,
+                                    "https://play.google.com/store/apps/details?id=com.fourthstatelabs.zchedule2&hl=en");
+                    sendIntent.setType("text/plain");
+                    sendIntent.setPackage("com.facebook.orca");
+                    try {
+                        startActivity(sendIntent);
+                        alertDialog.dismiss();
+                    }
+                    catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(context,"Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
+                    }
+
+
+                }
+            });
+
         }
+
+
+
+
+
+
         public void schedule_todo_notification(Notification_Holder n) {
             if (n.startTime.getTimeInMillis() > System.currentTimeMillis()) {
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
