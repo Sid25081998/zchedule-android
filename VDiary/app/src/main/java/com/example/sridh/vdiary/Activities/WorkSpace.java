@@ -71,6 +71,7 @@ import com.example.sridh.vdiary.Utils.DataContainer;
 import com.example.sridh.vdiary.Utils.HttpRequest;
 import com.example.sridh.vdiary.config;
 import com.example.sridh.vdiary.Widget.widgetServiceReceiver;
+
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -946,7 +947,7 @@ public class WorkSpace extends AppCompatActivity {
                     Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
                     whatsappIntent.setType("text/plain");
                     whatsappIntent.setPackage("com.whatsapp");
-                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.fourthstatelabs.zchedule2");
+                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.fourthstatelabs.zchedule2&hl=en");
                     try {
                         context.startActivity(whatsappIntent);
                     } catch (android.content.ActivityNotFoundException ex) {
