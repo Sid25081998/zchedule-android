@@ -944,6 +944,30 @@ public class WorkSpace extends AppCompatActivity {
             shareButt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    handle_shared_alert_dialog(context);
+                }
+            });
+            return rootViewSummary;
+        }
+
+        //This method inflates the Alert Dialog for sharing app via whatsapp or Facebook messenger
+
+        public void handle_shared_alert_dialog(final Context context)
+        {
+            AlertDialog alertDialog;
+            View shareview=getActivity().getLayoutInflater().inflate(R.layout.shareview,null);
+            ImageButton messengershare,whatsappshare;
+            messengershare=(ImageButton)shareview.findViewById(R.id.messengershare);
+            whatsappshare=(ImageButton)shareview.findViewById(R.id.whatsappshare);
+            AlertDialog.Builder builder=new AlertDialog.Builder(context);
+            builder.setView(shareview);
+            alertDialog=builder.create();
+            alertDialog.show();
+
+            whatsappshare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
                     whatsappIntent.setType("text/plain");
                     whatsappIntent.setPackage("com.whatsapp");
@@ -955,8 +979,14 @@ public class WorkSpace extends AppCompatActivity {
                     }
                 }
             });
-            return rootViewSummary;
+
         }
+
+
+
+
+
+
         public void schedule_todo_notification(Notification_Holder n) {
             if (n.startTime.getTimeInMillis() > System.currentTimeMillis()) {
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
