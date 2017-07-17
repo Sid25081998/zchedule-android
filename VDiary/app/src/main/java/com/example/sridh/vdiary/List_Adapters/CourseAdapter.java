@@ -96,7 +96,7 @@ import static com.example.sridh.vdiary.config.getCurrentTheme;
                         onItemClickListener.onItemClick(sub,pos);
                 }
             });
-            setAnimation(rowview,position);
+            //setAnimation(rowview,position);
             return rowview;
         }
 

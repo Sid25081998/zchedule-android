@@ -963,20 +963,25 @@ public class WorkSpace extends AppCompatActivity {
             AlertDialog.Builder builder=new AlertDialog.Builder(context);
             builder.setView(shareview);
             alertDialog=builder.create();
-            alertDialog.show();
 
+            Toolbar toolbar = (Toolbar)shareview.findViewById(R.id.toolbarShare);
+            toolbar.setBackgroundColor(getResources().getColor(ThemeProperty.colorPrimary));
+
+            alertDialog.show();
+            final String url = "https://play.google.com/store/apps/details?id=com.fourthstatelabs.zchedule2";
             whatsappshare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
                     whatsappIntent.setType("text/plain");
                     whatsappIntent.setPackage("com.whatsapp");
-                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.fourthstatelabs.zchedule2&hl=en");
+                    whatsappIntent.putExtra(Intent.EXTRA_TEXT,url);
                     try {
                         context.startActivity(whatsappIntent);
                     } catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(context, "Whatsapp is not installed", Toast.LENGTH_SHORT).show();
                     }
+                    alertDialog.dismiss();
                 }
             });
 
@@ -988,16 +993,16 @@ public class WorkSpace extends AppCompatActivity {
                     sendIntent.setAction(Intent.ACTION_SEND);
                     sendIntent
                             .putExtra(Intent.EXTRA_TEXT,
-                                    "https://play.google.com/store/apps/details?id=com.fourthstatelabs.zchedule2&hl=en");
+                                    url);
                     sendIntent.setType("text/plain");
                     sendIntent.setPackage("com.facebook.orca");
                     try {
                         startActivity(sendIntent);
-                        alertDialog.dismiss();
                     }
                     catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(context,"Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
                     }
+                    alertDialog.dismiss();
 
 
                 }
