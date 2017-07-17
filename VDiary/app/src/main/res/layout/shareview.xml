@@ -5,22 +5,35 @@
 
     <ImageButton
         android:id="@+id/messengershare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        app:srcCompat="@drawable/circle_blue_nots"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="93dp"
+        android:layout_marginTop="114dp"
+        android:background="#ffffff"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/messenger"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="96dp" />
+        android:layout_alignParentEnd="true" />
 
     <ImageButton
         android:id="@+id/whatsappshare"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+
+        android:background="#ffffff"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/whatsapp"
+        android:layout_alignBottom="@+id/messengershare"
+        android:layout_toStartOf="@+id/messengershare"
+        android:layout_marginEnd="59dp" />
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_alignTop="@+id/messengershare"
-        android:layout_marginEnd="42dp"
-        android:layout_toStartOf="@+id/messengershare"
-        android:background="#ffffff"
-        app:srcCompat="@drawable/whatsapp" />
+        android:layout_marginTop="65dp"
+        android:text="Share Zchedule via :"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="28dp" />
 </RelativeLayout>

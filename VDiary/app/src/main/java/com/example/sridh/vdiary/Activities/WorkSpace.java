@@ -955,7 +955,7 @@ public class WorkSpace extends AppCompatActivity {
 
         public void handle_shared_alert_dialog(final Context context)
         {
-            AlertDialog alertDialog;
+            final AlertDialog alertDialog;
             View shareview=getActivity().getLayoutInflater().inflate(R.layout.shareview,null);
             ImageButton messengershare,whatsappshare;
             messengershare=(ImageButton)shareview.findViewById(R.id.messengershare);
@@ -977,6 +977,29 @@ public class WorkSpace extends AppCompatActivity {
                     } catch (android.content.ActivityNotFoundException ex) {
                         Toast.makeText(context, "Whatsapp is not installed", Toast.LENGTH_SHORT).show();
                     }
+                }
+            });
+
+            messengershare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent
+                            .putExtra(Intent.EXTRA_TEXT,
+                                    "https://play.google.com/store/apps/details?id=com.fourthstatelabs.zchedule2&hl=en");
+                    sendIntent.setType("text/plain");
+                    sendIntent.setPackage("com.facebook.orca");
+                    try {
+                        startActivity(sendIntent);
+                        alertDialog.dismiss();
+                    }
+                    catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(context,"Please Install Facebook Messenger", Toast.LENGTH_LONG).show();
+                    }
+
+
                 }
             });
 
