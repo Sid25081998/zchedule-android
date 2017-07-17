@@ -38,9 +38,9 @@ public class Settings extends AppCompatActivity {
     Context context;
     Switch toggle_showNotification, toggle_showAttendance,toggle_quiet;
     ImageButton selectedCircle;
-    int[] circleIDs= new int[]{R.id.theme_circle_red,R.id.theme_circle_blue,R.id.theme_circle_teal,R.id.theme_circle_yellow,R.id.theme_circle_pink/*,R.id.theme_circle_black*/,R.id.theme_circle_purple};
-    int[] circleNotsId =new int[]{R.drawable.circle_red_nots,R.drawable.circle_blue_nots,R.drawable.circle_teal_nots,R.drawable.circle_yellow_nots,R.drawable.circle_pink_nots/*,R.drawable.circle_black_nots*/,R.drawable.circle_purple_nots};
-    int[] circleSId= new int[]{R.drawable.circle_red_s,R.drawable.circle_blue_s,R.drawable.circle_teal_s,R.drawable.circle_yellow_s,R.drawable.circle_pink_s/*,R.drawable.circle_black_s*/,R.drawable.circle_purple_s};
+    int[] circleIDs= new int[]{R.id.theme_circle_red,R.id.theme_circle_blue,R.id.theme_circle_teal,R.id.theme_circle_yellow,R.id.theme_circle_pink,R.id.theme_circle_purple,R.id.theme_circle_gray,R.id.theme_circle_orange,R.id.theme_circle_green};
+    int[] circleNotsId =new int[]{R.drawable.circle_red_nots,R.drawable.circle_blue_nots,R.drawable.circle_teal_nots,R.drawable.circle_yellow_nots,R.drawable.circle_pink_nots,R.drawable.circle_purple_nots,R.drawable.circle_gray_nots,R.drawable.circle_orange_nots,R.drawable.circle_green_nots};
+    int[] circleSId= new int[]{R.drawable.circle_red_s,R.drawable.circle_blue_s,R.drawable.circle_teal_s,R.drawable.circle_yellow_s,R.drawable.circle_pink_s,R.drawable.circle_purple_s,R.drawable.circle_gray_s,R.drawable.circle_orange_s,R.drawable.circle_green_s};
     int CircleIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,11 +129,17 @@ public class Settings extends AppCompatActivity {
     public void onPinkClick(View view){
         handleThemeCircleSelection(Theme.pink);
     }
-    public void onBlackClick(View view){
-        handleThemeCircleSelection(Theme.black);
-    }
     public void onPurpleClick(View view){
         handleThemeCircleSelection(Theme.purple);
+    }
+    public void onGrayClick(View view){
+        handleThemeCircleSelection(Theme.gray);
+    }
+    public void onOrangeClick(View view){
+        handleThemeCircleSelection(Theme.orange);
+    }
+    public void onGreenClick(View view){
+        handleThemeCircleSelection(Theme.green);
     }
 
     public void toPrivacyPolicy(View view){
@@ -181,8 +187,12 @@ public class Settings extends AppCompatActivity {
                 return 4;
             case purple:
                 return 5;
-            case black:
+            case gray:
                 return 6;
+            case orange:
+                return 7;
+            case green:
+                return 8;
         }
         return 0;
     }

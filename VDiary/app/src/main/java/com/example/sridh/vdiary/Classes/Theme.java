@@ -10,5 +10,8 @@ public enum Theme{
     blue,
     pink,
     black,
-    purple
+    purple,
+    gray,
+    orange,
+    green,
 }

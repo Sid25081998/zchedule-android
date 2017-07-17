@@ -321,6 +321,9 @@ public class WorkSpace extends AppCompatActivity {
                                         }
                                     }).show();
                         }
+                        else if(allResponse.message.equals("Retry")){
+                            requestAll(activity);
+                        }
                         else{
                             pb_syncing.setVisibility(View.GONE);
                             action_sync.setVisibility(View.VISIBLE);

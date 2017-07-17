@@ -93,9 +93,9 @@
         </array>
 
     <!--BLUE THEME-->
-    <color name="colorPrimaryDarkBlue">#45b3e0</color>
-    <color name="colorPrimaryBlue">#45b3e0</color>
-    <color name="colorAccentBlue">#45b3e0</color>
+    <color name="colorPrimaryDarkBlue">#2196F3</color>
+    <color name="colorPrimaryBlue">#2196F3</color>
+    <color name="colorAccentBlue">#2196F3</color>
 
     <!--TEAL THEME-->
     <color name="colorPrimaryDarkTeal">#009688</color>
@@ -115,10 +115,10 @@
     <color name="colorTextPink">#d32f2f</color>
 
     <!--YELLOW THEME-->
-    <color name="colorPrimaryYellow">#ffeb3b</color>
-    <color name="colorPrimaryDarkYellow">#ffeb3b</color>
-    <color name="colorAccentYellow">#ffeb3b</color>
-    <color name="colorTextYellow">#c8b900</color>
+    <color name="colorPrimaryYellow">#FFC107</color>
+    <color name="colorPrimaryDarkYellow">#FFC107</color>
+    <color name="colorAccentYellow">#FFC107</color>
+    <color name="colorTextYellow">#FFC107</color>
 
     <!--Black THEME-->
     <color name="colorPrimaryBlack">#212121</color>
@@ -127,8 +127,26 @@
     <color name="colorTextBlack">#212121</color>
 
     <!--Purple THEME-->
-    <color name="colorPrimaryPurple">#5252ff</color>
-    <color name="colorPrimaryDarkPurple">#5252ff</color>
-    <color name="colorAccentPurple">#5252ff</color>
-    <color name="colorTextPurple">#5252ff</color>
+    <color name="colorPrimaryPurple">#9C27B0</color>
+    <color name="colorPrimaryDarkPurple">#9C27B0</color>
+    <color name="colorAccentPurple">#9C27B0</color>
+    <color name="colorTextPurple">#9C27B0</color>
+
+    <!--Gray THEME-->
+    <color name="colorPrimaryGray">#607D8B</color>
+    <color name="colorPrimaryDarkGray">#607D8B</color>
+    <color name="colorAccentGray">#607D8B</color>
+    <color name="colorTextGray">#607D8B</color>
+
+    <!--Orange THEME-->
+    <color name="colorPrimaryOrange">#FF5722</color>
+    <color name="colorPrimaryDarkOrange">#FF5722</color>
+    <color name="colorAccentOrange">#FF5722</color>
+    <color name="colorTextOrange">#FF5722</color>
+
+    <!--Orange THEME-->
+    <color name="colorPrimaryGreen">#4CAF50</color>
+    <color name="colorPrimaryDarkGreen">#4CAF50</color>
+    <color name="colorAccentGreen">#4CAF50</color>
+    <color name="colorTextGreen">#4CAF50</color>
     </resources>

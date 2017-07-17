@@ -56,6 +56,25 @@ public class themeProperty{
                 colorAccent=R.color.colorAccentPurple;
                 this.theme = R.style.AppTheme_Purple;
                 break;
+            case gray:
+                colorPrimaryDark=R.color.colorPrimaryDarkGray;
+                colorPrimary=R.color.colorPrimaryGray;
+                colorAccent=R.color.colorAccentGray;
+                this.theme = R.style.AppTheme_Gray;
+                break;
+            case orange:
+                colorPrimaryDark=R.color.colorPrimaryDarkOrange;
+                colorPrimary=R.color.colorPrimaryOrange;
+                colorAccent=R.color.colorAccentOrange;
+                this.theme = R.style.AppTheme_Orange;
+                break;
+            case green:
+                colorPrimaryDark=R.color.colorPrimaryDarkGreen;
+                colorPrimary=R.color.colorPrimaryGreen;
+                colorAccent=R.color.colorAccentGreen;
+                this.theme = R.style.AppTheme_Green;
+                break;
+
             //TODO ADD MORE THEMES
         }
     }
