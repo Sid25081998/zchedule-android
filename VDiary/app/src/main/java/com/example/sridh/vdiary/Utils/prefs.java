@@ -88,7 +88,7 @@ public class prefs {
     }
     public static Theme getTheme (Context context){
         SharedPreferences prefsInstance =  getPrefsInstance(context);
-        String themeString=prefsInstance.getString(THEME,Theme.red.toString());
+        String themeString=prefsInstance.getString(THEME,Theme.pink.toString());
         return Theme.valueOf(themeString);
     }
 }

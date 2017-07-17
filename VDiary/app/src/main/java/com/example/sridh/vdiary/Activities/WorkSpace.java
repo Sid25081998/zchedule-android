@@ -427,7 +427,7 @@ public class WorkSpace extends AppCompatActivity {
                 rowIndex++;
             }
             writeToPrefs();
-            cancelNotifications(context);
+            //cancelNotifications(context);
             createNotification(context, DataContainer.timeTable);
             Log.i("Updated","Updated");
             cal = Calendar.getInstance();

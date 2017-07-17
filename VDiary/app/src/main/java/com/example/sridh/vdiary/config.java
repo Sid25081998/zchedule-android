@@ -60,7 +60,6 @@ public class config {
         AppThemes.put(Theme.teal,new themeProperty(Theme.teal));
         AppThemes.put(Theme.yellow, new themeProperty(Theme.yellow));
         AppThemes.put(Theme.pink, new themeProperty(Theme.pink));
-
         AppThemes.put(Theme.purple, new themeProperty(Theme.purple));
         AppThemes.put(Theme.gray, new themeProperty(Theme.gray));
         AppThemes.put(Theme.green, new themeProperty(Theme.green));

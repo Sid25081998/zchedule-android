@@ -148,11 +148,13 @@
                     android:src="@drawable/circle_red_nots"
                     android:background="@android:color/transparent"
                     android:id="@+id/theme_circle_red"
+                    android:paddingEnd="5dp"
                     android:onClick="onRedClick"/>
 
                     <ImageButton
                         android:layout_width="wrap_content"
-                        android:paddingStart="10dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/circle_blue_nots"
                         android:background="@android:color/transparent"
@@ -162,7 +164,8 @@
 
                     <ImageButton
                         android:layout_width="wrap_content"
-                        android:paddingStart="10dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/circle_teal_nots"
                         android:background="@android:color/transparent"
@@ -171,7 +174,8 @@
 
                 <ImageButton
                     android:layout_width="wrap_content"
-                    android:paddingStart="10dp"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/circle_yellow_nots"
                     android:background="@android:color/transparent"
@@ -180,7 +184,7 @@
                     />
                 <ImageButton
                     android:layout_width="wrap_content"
-                    android:paddingStart="10dp"
+                    android:paddingStart="5dp"
                     android:layout_height="wrap_content"
                     android:src="@drawable/circle_pink_nots"
                     android:background="@android:color/transparent"
@@ -197,7 +201,7 @@
 
                     <ImageButton
                         android:layout_width="wrap_content"
-                        android:paddingStart="10dp"
+                        android:paddingEnd="5dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/circle_gray_nots"
                         android:background="@android:color/transparent"
@@ -206,7 +210,8 @@
 
                     <ImageButton
                         android:layout_width="wrap_content"
-                        android:paddingStart="10dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/circle_orange_nots"
                         android:background="@android:color/transparent"
@@ -215,7 +220,8 @@
 
                     <ImageButton
                         android:layout_width="wrap_content"
-                        android:paddingStart="10dp"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/circle_green_nots"
                         android:background="@android:color/transparent"
@@ -223,7 +229,7 @@
                         android:onClick="onGreenClick" />
                     <ImageButton
                         android:layout_width="wrap_content"
-                        android:paddingStart="10dp"
+                        android:paddingStart="5dp"
                         android:layout_height="wrap_content"
                         android:src="@drawable/circle_purple_nots"
                         android:background="@android:color/transparent"
