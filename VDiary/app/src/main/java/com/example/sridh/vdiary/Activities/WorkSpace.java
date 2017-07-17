@@ -943,7 +943,7 @@ public class WorkSpace extends AppCompatActivity {
                     Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
                     whatsappIntent.setType("text/plain");
                     whatsappIntent.setPackage("com.whatsapp");
-                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.fourthstatelabs.zchedule&hl=en");
+                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/apps/testing/com.fourthstatelabs.zchedule2");
                     try {
                         context.startActivity(whatsappIntent);
                     } catch (android.content.ActivityNotFoundException ex) {

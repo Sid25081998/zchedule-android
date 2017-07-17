@@ -61,7 +61,7 @@
         information to your phone following VIT\'s FFCS Login Procedure again. This time your credentials
         are collected from your phone directly which was saved when login.
 
-        We can assure you that, we neither collect or temper with any information in your FFCS. Our
+        We can assure you that, we neither collect or tamper with any information in your FFCS. Our
         sole motive is to directly send you information only about running semester\'s Courses, Time-Table
         , Attendance and Assignments and that\'s all.
     </string>
@@ -177,6 +177,6 @@ limitations under the License.
         </string>
 
     <string name="acceptance">
-        Note: By Logging you accept our <b><u>Privacy Policy</u></b>.
+        Note: By Logging in you agree to our <b><u>Privacy Policy</u></b>.
         </string>
 </resources>

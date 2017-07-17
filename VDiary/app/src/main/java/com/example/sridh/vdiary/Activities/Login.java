@@ -215,7 +215,7 @@ public class Login extends AppCompatActivity {
             isPasswordShown=true;
             passBox.setSelection(passBox.getText().length());
         }
-    } //SHOW AND INSHOW PASSWORD CONTROLLER
+    } //SHOW AND IN SHOW PASSWORD CONTROLLER
 
     private class compileInf extends AsyncTask<Void,Void,Void>{
         AllResponse response=null;

@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:textStyle="bold"
-            android:text="Where are my data stored?"
+            android:text="Where is the data stored?"
             android:textSize="25sp"/>
 
         <TextView
