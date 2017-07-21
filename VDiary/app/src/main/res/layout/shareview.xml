@@ -23,10 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:id="@+id/messengershare">
 
     <ImageButton
-        android:id="@+id/messengershare"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="#ffffff"
@@ -50,10 +50,10 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:id="@+id/whatsappshare">
 
     <ImageButton
-        android:id="@+id/whatsappshare"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="#ffffff"

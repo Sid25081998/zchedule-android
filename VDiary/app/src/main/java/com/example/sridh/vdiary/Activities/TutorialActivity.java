@@ -133,7 +133,7 @@ public class TutorialActivity extends AppCompatActivity {
     void toLogin(){
         setIsFirstLaunch();
         startActivity(new Intent(TutorialActivity.this,Login.class));
-        overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_up);
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
         finish();
     }
 

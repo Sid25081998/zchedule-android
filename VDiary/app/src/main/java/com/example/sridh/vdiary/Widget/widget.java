@@ -29,13 +29,13 @@ public class widget extends AppWidgetProvider {
         // Enter relevant functionality for when the first widget is created
         put(context,isWidgetEnabled,true);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent toWidgetService = new Intent(context,widgetServiceReceiver.class);
+        Intent toWidgetService = new Intent(context.getApplicationContext(),widgetServiceReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,toWidgetService,PendingIntent.FLAG_UPDATE_CURRENT);
         Calendar calendarMan = Calendar.getInstance();
         calendarMan.set(Calendar.HOUR,12);
         calendarMan.set(Calendar.MINUTE,0);
         calendarMan.set(Calendar.SECOND,0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendarMan.getTimeInMillis(), 12 * 60 * 60 * 1000, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendarMan.getTimeInMillis(), 12 * 60 * 60 * 1000, pendingIntent);
     }
 
     @Override
@@ -44,8 +44,8 @@ public class widget extends AppWidgetProvider {
         super.onDisabled(context);
         put(context,isWidgetEnabled,false);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent toWidgetService = new Intent(context,widgetServiceReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,toWidgetService,0);
+        Intent toWidgetService = new Intent(context.getApplicationContext(),widgetServiceReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,0,toWidgetService,PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(pendingIntent);
     }
 }

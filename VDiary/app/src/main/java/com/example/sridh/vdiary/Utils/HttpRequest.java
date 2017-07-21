@@ -170,8 +170,8 @@ public class HttpRequest {
         protected void onPostExecute(String s) {
             if(shouldExecuteResponse) {
                 onResponseListener.OnResponse(s);
-                allRequests.remove(HttpRequest.this);
             }
+            allRequests.remove(HttpRequest.this);
             super.onPostExecute(s);
         }
     }

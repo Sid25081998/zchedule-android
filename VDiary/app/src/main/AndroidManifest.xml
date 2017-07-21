@@ -14,7 +14,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
         <activity
             android:name=".Activities.Login"
             android:clearTaskOnLaunch="true"
@@ -28,7 +29,7 @@
             android:name=".Activities.WorkSpace"
             android:screenOrientation="portrait"
             android:theme="@style/MyAppBar.Workspace"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
         <receiver android:name=".Widget.widget"
             android:enabled="true">
@@ -81,6 +82,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.TIME_SET" />
             </intent-filter>
         </receiver>
 

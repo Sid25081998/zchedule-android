@@ -140,7 +140,7 @@ public class ShowSubject extends Activity {
         WorkSpace.currentShowSubjectTextView=lastUpdated;
         lastUpdated.setTypeface(nunito_reg);
         if(!clicked.lastUpdated.equals("")) lastUpdated.setText("Last Uploaded: "+clicked.lastUpdated);
-        else lastUpdated.setText("Last Uploaded: Fetching");
+        else lastUpdated.setText("");
         classRatio= (TextView)findViewById(R.id.classRatio);
         classRatio.setTypeface(nunito_reg);
         classRatio.setText(clicked.classAttended+"/"+clicked.ctd);

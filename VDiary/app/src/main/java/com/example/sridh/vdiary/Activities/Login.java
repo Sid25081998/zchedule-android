@@ -26,10 +26,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.sridh.vdiary.Classes.AllResponse;
 import com.example.sridh.vdiary.Classes.Attendance;
+import com.example.sridh.vdiary.Classes.AttendanceDetail;
+import com.example.sridh.vdiary.Classes.AttendanceEntry;
 import com.example.sridh.vdiary.Classes.Course;
 import com.example.sridh.vdiary.Classes.Credential;
+import com.example.sridh.vdiary.Classes.Error;
 import com.example.sridh.vdiary.Classes.Server;
 import com.example.sridh.vdiary.Classes.Subject;
+import com.example.sridh.vdiary.Classes.subjectDay;
 import com.example.sridh.vdiary.Utils.DataContainer;
 import com.example.sridh.vdiary.Utils.HttpRequest;
 import com.example.sridh.vdiary.Receivers.NetworkChangeReceiver;
@@ -166,8 +170,8 @@ public class Login extends AppCompatActivity {
 
     void requestAll(){
         status.setText("Fetching Courses, Time-Table and Attendance");
-        String regno = regBox.getText().toString().trim();
-        String password = passBox.getText().toString();
+        final String regno = regBox.getText().toString().trim();
+        final String password = passBox.getText().toString();
         if(!regno.isEmpty() && !password.isEmpty()){
             load(true);
             HttpRequest.getAll(this,regno, password, new HttpRequest.OnResponseListener() {
@@ -175,10 +179,11 @@ public class Login extends AppCompatActivity {
                 public void OnResponse(String response) {
                     if(response!=null) {
                         Gson serializer = new Gson();
+                        Log.i("Response",response);
                         AllResponse allResponse = serializer.fromJson(response, new TypeToken<AllResponse>() {
                         }.getType());
                         if(!allResponse.error){
-                            new compileInf(allResponse).execute();
+                            new compileInf(allResponse, new Credential(regno,password)).execute();
                         }
                         else if(allResponse.message.equals("Retry")){
                             requestAll();
@@ -219,14 +224,16 @@ public class Login extends AppCompatActivity {
 
     private class compileInf extends AsyncTask<Void,Void,Void>{
         AllResponse response=null;
+        Credential credential;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             NetworkChangeReceiver.attachFirebaseListener(context);
         }
 
-        compileInf(AllResponse allResponse){
+        compileInf(AllResponse allResponse, Credential credential){
             this.response= allResponse;
+            this.credential = credential;
         }
 
         @Override
@@ -238,6 +245,7 @@ public class Login extends AppCompatActivity {
             Attendance[] attendances = response.attendanceSummary;
 
             int index = 0;
+            int attSum = 0;
             for(Course course : courses){
                 Subject subject = new Subject();
                 subject.code = course.code;
@@ -251,10 +259,13 @@ public class Login extends AppCompatActivity {
                 subject.ctd = Integer.parseInt(attendances[index].total);
                 subject.classAttended= Integer.parseInt(attendances[index].attended);
                 subject.attString = attendances[index].percentage+"%";
-
+                attSum+=Integer.parseInt(attendances[index].percentage);
                 DataContainer.subList.add(subject);
                 index++;
             }
+
+            put(context,avgAttendance,((int)(attSum/courses.length)));
+
             int rowIndex=0;
             for (String[] today : contents){
                 ArrayList<Subject> todaysSchedule = new ArrayList<>();
@@ -304,12 +315,73 @@ public class Login extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            getAttendance(credential);
+        }
+    } //REARRANGE THE INFORMATION SCRAPPED FORM THE WEBPAGE
+
+    void getAttendance(Credential credential){
+        new HttpRequest(context,"/attendance")
+                .addAuthenticationHeader(credential.userName,credential.password)
+                .sendRequest(new HttpRequest.OnResponseListener() {
+                    @Override
+                    public void OnResponse(String response) {
+                        if(response!=null){
+                            Gson gson = new Gson();
+                            try {
+                                AttendanceDetail[] attendanceDetails = gson.fromJson(response, new TypeToken<AttendanceDetail[]>() {
+                                }.getType());
+                                (new compileAttendance(attendanceDetails, codeMap)).execute();
+                                Log.i("Response", response);
+                            }
+                            catch (Exception e){
+                                //ERROR SENT BY SERVER
+                                Error error = gson.fromJson(response,new TypeToken<Error>(){}.getType());
+                                Toast.makeText(context,error.message,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else{
+                            showRetry();
+                        }
+                    }
+                });
+    }
+
+    private class compileAttendance extends AsyncTask<Void,Void,Void>{
+
+        AttendanceDetail[] attendanceDetails;
+        Map<String,Integer> codeMap;
+        compileAttendance(AttendanceDetail[] attendanceEntries,Map<String,Integer> codeMap){
+            this.attendanceDetails=attendanceEntries;
+            this.codeMap=codeMap;
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            for (AttendanceDetail attendanceDetail : attendanceDetails){
+                Subject subject = DataContainer.subList.get(codeMap.get(attendanceDetail.code+attendanceDetail.type));
+                subject.attTrack.clear();
+
+                for(AttendanceEntry attendanceEntry : attendanceDetail.attArray){
+                    subject.attTrack.add(new subjectDay(attendanceEntry.date,(attendanceEntry.status.equals("Present"))));
+                }
+
+                int attLength= subject.attTrack.size();
+                if(attLength>0){
+                    subject.lastUpdated = subject.attTrack.get(attLength-1).date;
+                }
+            }
+            put(context, allSub, (new Gson()).toJson(DataContainer.subList));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
             WorkSpace.refreshedByScrapper=true;
             startActivity(new Intent(Login.this,WorkSpace.class));
             overridePendingTransition(R.anim.slide_in_up,R.anim.slide_out_up);
             finish();
+            super.onPostExecute(aVoid);
         }
-    } //REARRANGE THE INFORMATION SCRAPPED FORM THE WEBPAGE
+    }
 
     public static void createNotification(Context context,List<List<Subject>> timeTable){
         int day=2;
@@ -318,19 +390,25 @@ public class Login extends AppCompatActivity {
             for (Subject sub : today){
                 if(!sub.code.equals("")){
                     AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                    Intent toNotifyService = new Intent(context,NotifyService.class);
+                    Intent toNotifyService = new Intent(context.getApplicationContext(),NotifyService.class);
                     toNotifyService.putExtra("fromClass","scheduleNotification");
-                    Calendar calendar = GregorianCalendar.getInstance();
+                    Calendar calendarStart = GregorianCalendar.getInstance();
                     int startHour,startMin;
                     String time=formattedTime(sub.startTime);
                     startHour=Integer.parseInt(time.substring(0, 2));
                     startMin=Integer.parseInt(time.substring(3, 5));
 
-                    calendar.setLenient(false);
-                    calendar.set(GregorianCalendar.HOUR_OF_DAY,startHour);
-                    calendar.set(GregorianCalendar.MINUTE,startMin);
-                    calendar.set(GregorianCalendar.DAY_OF_WEEK,day);
-                    calendar.set(GregorianCalendar.SECOND,0);
+                    calendarStart.setLenient(false);
+                    calendarStart.set(GregorianCalendar.HOUR_OF_DAY,startHour);
+                    calendarStart.set(GregorianCalendar.MINUTE,startMin);
+                    calendarStart.set(GregorianCalendar.DAY_OF_WEEK,day);
+                    calendarStart.set(GregorianCalendar.SECOND,0);
+
+                    Calendar currentCalendar = Calendar.getInstance();
+
+                    if(currentCalendar.compareTo(calendarStart)>0){
+                        calendarStart.add(Calendar.MILLISECOND, 24 * 7 * 60 * 60 * 1000);
+                    }
 
                     Calendar calendarEnd = Calendar.getInstance();
                     int endHour,endMin;
@@ -344,17 +422,15 @@ public class Login extends AppCompatActivity {
                     calendarEnd.set(Calendar.DAY_OF_WEEK,day);
                     calendarEnd.set(Calendar.SECOND,0);
 
-                    Notification_Holder newNotification =  new Notification_Holder(calendar,calendarEnd,sub.title,sub.room,"Upcoming class in 5 minutes");
+                    Notification_Holder newNotification =  new Notification_Holder(calendarStart,calendarEnd,sub.title,sub.room,"Upcoming class in 5 minutes");
                     toNotifyService.putExtra("notificationContent",(new Gson()).toJson(newNotification));
-                    toNotifyService.putExtra("notificationCode",notificationCode);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context,notificationCode,toNotifyService,PendingIntent.FLAG_UPDATE_CURRENT);
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() - 5 * 60 * 1000, 24 * 7 * 60 * 60 * 1000, pendingIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendarStart.getTimeInMillis() - 5 * 60 * 1000, 24 * 7 * 60 * 60 * 1000, pendingIntent);
                     notificationCode++;
                 }
             }
             day++;
         }
-        put(context,scheduleNotificationCount,notificationCode);
     }
 
     void writeToPrefs(){
@@ -367,7 +443,7 @@ public class Login extends AppCompatActivity {
     public static boolean readFromPrefs(Context context){
         String allSubJson = get(context,allSub,null); //academicPrefs.getString("allSub",null);
         String scheduleJson = get(context,schedule,null);//academicPrefs.getString("Schedule",null);
-        return (allSubJson!=null && scheduleJson!=null);
+        return (allSubJson!= null && scheduleJson!=null);
     } //READ ACADEMIC CONTENT FROM SHARED PREFERENCES
 
     void saveCreds(){

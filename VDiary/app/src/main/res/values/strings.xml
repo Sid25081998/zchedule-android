@@ -8,6 +8,8 @@
     <string name="start">GOT IT</string>
     <string name="ServerKey">SidSparsha</string>
 
+    <string name="appid">ca-app-pub-1777730931585390/4239132461</string>
+
     <string name="privacyIntroduction">
         Zchedule provides complete information replica of what you see in your
         FFCS. Currently we only provide service to VIT Chennai Campus. Our
@@ -161,6 +163,7 @@ limitations under the License.
     authors and should not be interpreted as representing official policies, either expressed
     or implied, of Google, Inc.
     </string>
+
 
     <string name="gson">
         Licensed under the Apache License, Version 2.0 (the "License");

@@ -13,6 +13,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.os.Process;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -55,12 +56,16 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.sridh.vdiary.Classes.AllResponse;
 import com.example.sridh.vdiary.Classes.Attendance;
+import com.example.sridh.vdiary.Classes.AttendanceDetail;
+import com.example.sridh.vdiary.Classes.AttendanceEntry;
 import com.example.sridh.vdiary.Classes.Course;
 import com.example.sridh.vdiary.Classes.Credential;
+import com.example.sridh.vdiary.Classes.Error;
 import com.example.sridh.vdiary.Classes.Server;
 import com.example.sridh.vdiary.Classes.Subject;
 import com.example.sridh.vdiary.Classes.Holiday;
 import com.example.sridh.vdiary.Classes.Teacher;
+import com.example.sridh.vdiary.Classes.subjectDay;
 import com.example.sridh.vdiary.Classes.themeProperty;
 import com.example.sridh.vdiary.Classes.Notification_Holder;
 import com.example.sridh.vdiary.List_Adapters.CourseAdapter;
@@ -76,7 +81,9 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
@@ -92,9 +99,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.example.sridh.vdiary.Activities.Login.createNotification;
 import static com.example.sridh.vdiary.Activities.Login.getType;
 import static com.example.sridh.vdiary.Activities.Login.toTitleCase;
 import static com.example.sridh.vdiary.Utils.prefs.*;
+import static com.example.sridh.vdiary.Utils.prefs.get;
 import static com.example.sridh.vdiary.config.getCurrentTheme;
 
 
@@ -118,6 +127,7 @@ public class WorkSpace extends AppCompatActivity {
     private ViewPager mViewPager;
     static Context context;
     static Activity activity;
+    static View rootViewSummary;
 
     static int id = 1000;
 
@@ -125,11 +135,11 @@ public class WorkSpace extends AppCompatActivity {
     static ListView resultList;
     static EditText teacherSearch;
 
-    List<String> attList = new ArrayList<>();
-    List<String> ctdList = new ArrayList<>();
-    List<String> attendedList = new ArrayList<>();
-    List<Subject> courses = new ArrayList<>();
-    List<List<Subject>> scheduleList = new ArrayList<>();
+    static List<String> attList = new ArrayList<>();
+    static List<String> ctdList = new ArrayList<>();
+    static List<String> attendedList = new ArrayList<>();
+    static List<Subject> courses = new ArrayList<>();
+    static List<List<Subject>> scheduleList = new ArrayList<>();
     boolean attendanceStatus=true;
     public static boolean refreshing=false;
     public static boolean refreshedByScrapper=false;
@@ -142,13 +152,21 @@ public class WorkSpace extends AppCompatActivity {
 
     public static ShowSubject currentInView=null;
 
+    public static boolean isAdLoaded=false;
+
     boolean isPasswordChanged=false;
     static themeProperty ThemeProperty ;
     static ArrayAdapter<String> adapter;
+    InterstitialAd mInterstitialAd;
 
     static CourseAdapter courseAdapter;
     static View rootView;
     static TextView lastRef;
+    int adInterval = 10*1000;
+    Handler adHandler =new Handler();
+    static PieChart pie;
+    public static Credential tempCredentials;
+    public static Map<String,Integer> codeMap = new HashMap<>();
     @Override
     public void onBackPressed() {
         if (resultList.getVisibility() == View.VISIBLE) {
@@ -206,17 +224,69 @@ public class WorkSpace extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
         setTabLayout(tabLayout);
+
+
+        /*String id = getResources().getString(R.string.appid);
+        MobileAds.initialize(this, id);
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(id);
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+
+            @Override
+            public void onAdLoaded() {
+                super.onAdLoaded();
+            }
+
+            @Override
+            public void onAdClosed() {
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                adHandler.removeCallbacks(showAd);
+                adHandler.postDelayed(showAd,adInterval);
+                super.onAdClosed();
+            }
+        });*/
+
+
         if(!refreshedByScrapper){
             refreshing=true;
-            initWebViews();
+            initWebViews(WorkSpace.this);
         }
         else{
-            pb_syncing.setVisibility(View.GONE);
-            action_sync.setVisibility(View.VISIBLE);
+            stopLoading();
         }
+
+        //adHandler.postDelayed(showAd,adInterval);
     }
 
-    void getBestServer(){
+    /*Runnable showAd = new Runnable() {
+        @Override
+        public void run() {
+            if(mInterstitialAd.isLoaded())
+                mInterstitialAd.show();
+            adInterval=adInterval*2;
+        }
+    };*/
+
+    /*@Override
+    protected void onPause() {
+        adHandler.removeCallbacks(showAd);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        adHandler.postDelayed(showAd,adInterval);
+        super.onResume();
+    }*/
+
+    static void getBestServer(final Activity activity){
         new HttpRequest(context)
                 .getBestServer(new HttpRequest.OnResponseListener() {
                     @Override
@@ -226,10 +296,10 @@ public class WorkSpace extends AppCompatActivity {
                             }.getType());
                             put(context, SERVER, response);
                             Log.i("Response", response);
-                            requestAll(WorkSpace.this);
+                            requestAll(activity);
                         }
                         else{
-                            //TODO CANCEL LOADING
+                            stopLoading();
                         }
                     }
                 });
@@ -271,7 +341,7 @@ public class WorkSpace extends AppCompatActivity {
 
 
 
-    private void initWebViews(){
+    private static void initWebViews(Activity activity){
         pb_syncing.setVisibility(View.VISIBLE);
         action_sync.setVisibility(View.GONE);
         attList = new ArrayList<>();
@@ -284,11 +354,11 @@ public class WorkSpace extends AppCompatActivity {
         if(serverJson!=null) {
             config.server = (new Gson()).fromJson(serverJson, new TypeToken<Server>() {
             }.getType());
-            requestAll(WorkSpace.this);
+            requestAll(activity);
         }
 
         else
-            getBestServer();
+            getBestServer(activity);
 
     } //INITIALIZE THE WEBVIEWS AND LAST LOADING THE LOGIN PAGE
 
@@ -302,11 +372,11 @@ public class WorkSpace extends AppCompatActivity {
                         Log.i("response",response);
                         AllResponse allResponse = (new Gson()).fromJson(response,new TypeToken<AllResponse>(){}.getType());
                         if(!allResponse.error){
-                            new compileInf(allResponse).execute();
+                            new compileInf(allResponse,credential).execute();
                         }
                         else if(allResponse.message.equals("Bad Credentials")){
-                            pb_syncing.setVisibility(View.GONE);
-                            action_sync.setVisibility(View.VISIBLE);
+                            stopLoading();
+                            
                             new MaterialDialog.Builder(activity)
                                     .title("It seems, you have changed your password.")
                                     .inputType(InputType.TYPE_TEXT_VARIATION_PASSWORD)
@@ -326,39 +396,41 @@ public class WorkSpace extends AppCompatActivity {
                             requestAll(activity);
                         }
                         else{
-                            pb_syncing.setVisibility(View.GONE);
-                            action_sync.setVisibility(View.VISIBLE);
+                            stopLoading();
                             Toast.makeText(activity, allResponse.message, Toast.LENGTH_SHORT).show();
                         }
                     }
                     else{
-                        Snackbar.make(pb_syncing,"No Network Connectivity !",Snackbar.LENGTH_SHORT);
-                        pb_syncing.setVisibility(View.GONE);
-                        action_sync.setVisibility(View.VISIBLE);
+                        stopLoading();
                     }
-                    refreshing=false;
                 }
             });
         }
         else{
+            stopLoading();
             Toast.makeText(context, "You need to Login again", Toast.LENGTH_SHORT).show();
         }
     }
 
 
     private static class compileInf extends AsyncTask<Void,Void,Void>{
-        Map<String,Integer> codeMap = new HashMap<>();
+
         AllResponse response;
         Calendar cal;
+        int avg=0;
+        Credential credential;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
-        public compileInf(AllResponse allResponse){
+        public compileInf(AllResponse allResponse,Credential credential){
             this.response= allResponse;
+            this.credential =  credential;
+            codeMap = new HashMap<>();
         }
         @Override
         protected Void doInBackground(Void... params) {
+            cancelNotifications(context);
             DataContainer.subList = new ArrayList<>();
             DataContainer.timeTable =  new ArrayList<>();
             Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
@@ -369,6 +441,7 @@ public class WorkSpace extends AppCompatActivity {
             Attendance[] attendances = response.attendanceSummary;
 
             int index = 0;
+            int attSum=0;
             for(Course course : courses){
                 Subject subject = new Subject();
                 subject.code = course.code;
@@ -382,10 +455,13 @@ public class WorkSpace extends AppCompatActivity {
                 subject.ctd = Integer.parseInt(attendances[index].total);
                 subject.classAttended= Integer.parseInt(attendances[index].attended);
                 subject.attString = attendances[index].percentage+"%";
-
+                attSum+=Integer.parseInt(attendances[index].percentage);
                 DataContainer.subList.add(subject);
                 index++;
             }
+            avg = (int)Math.ceil(attSum/courses.length);
+            put(context,avgAttendance,avg);
+
             int rowIndex=0;
             for (String[] today : contents){
                 ArrayList<Subject> todaysSchedule = new ArrayList<>();
@@ -428,9 +504,7 @@ public class WorkSpace extends AppCompatActivity {
                 rowIndex++;
             }
             writeToPrefs();
-            //cancelNotifications(context);
             createNotification(context, DataContainer.timeTable);
-            Log.i("Updated","Updated");
             cal = Calendar.getInstance();
             put(context,lastRefreshed,(new Gson()).toJson(cal));//editor.putString("last_ref",last_ref);
             return null;
@@ -446,55 +520,78 @@ public class WorkSpace extends AppCompatActivity {
             catch (Exception e){
                 //COURSE ADAPTER NIT YET READY
             }
-            pb_syncing.setVisibility(View.GONE);
-            action_sync.setVisibility(View.VISIBLE);
+            setPieChart();
+            getAttendance(credential);
+            Log.i("Updated","Updated");
         }
     } //REARRANGE THE INFORMATION SCRAPPED FORM THE WEBPAGE
 
-    public static void createNotification(Context context,List<List<Subject>> timeTable){
-        int day=2;
-        int notificationCode=1;
-        for(List<Subject> today: timeTable){
-            for (Subject sub : today){
-                if(!sub.code.equals("")){
-                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-                    Intent toNotifyService = new Intent(context,NotifyService.class);
-                    toNotifyService.putExtra("fromClass","scheduleNotification");
-                    Calendar calendarStart = Calendar.getInstance();
-                    int startHour,startMin;
-                    String startTime=formattedTime(sub.startTime);
-                    startHour=Integer.parseInt(startTime.substring(0, 2));
-                    startMin=Integer.parseInt(startTime.substring(3, 5));
+    static void getAttendance(Credential credential){
+        new HttpRequest(context,"/attendance")
+                .addAuthenticationHeader(credential.userName,credential.password)
+                .sendRequest(new HttpRequest.OnResponseListener() {
+                    @Override
+                    public void OnResponse(String response) {
+                        if(response!=null){
+                            Gson gson = new Gson();
+                            try {
+                                AttendanceDetail[] attendanceDetails = gson.fromJson(response, new TypeToken<AttendanceDetail[]>() {
+                                }.getType());
+                                (new compileAttendance(attendanceDetails, codeMap)).execute();
+                                Log.i("Response", response);
+                            }
+                            catch (Exception e){
+                                //ERROR SENT BY SERVER
+                                Error error = gson.fromJson(response,new TypeToken<Error>(){}.getType());
+                                Toast.makeText(context,error.message,Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else{
+                            stopLoading();
+                        }
+                    }
+                });
+    }
+    
+    static void stopLoading(){
+        pb_syncing.setVisibility(View.GONE);
+        action_sync.setVisibility(View.VISIBLE);
+        refreshing=false;
+    }
 
-                    calendarStart.setLenient(false);
-                    calendarStart.set(Calendar.HOUR_OF_DAY,startHour);
-                    calendarStart.set(Calendar.MINUTE,startMin);
-                    calendarStart.set(Calendar.DAY_OF_WEEK,day);
-                    calendarStart.set(Calendar.SECOND,0);
+    private static class compileAttendance extends AsyncTask<Void,Void,Void>{
 
-                    Calendar calendarEnd = Calendar.getInstance();
-                    int endHour,endMin;
-                    String endTime=formattedTime(sub.endTime);
-                    endHour=Integer.parseInt(endTime.substring(0, 2));
-                    endMin=Integer.parseInt(endTime.substring(3, 5));
+        AttendanceDetail[] attendanceDetails;
+        Map<String,Integer> codeMap;
+        compileAttendance(AttendanceDetail[] attendanceEntries,Map<String,Integer> codeMap){
+            this.attendanceDetails=attendanceEntries;
+            this.codeMap=codeMap;
+        }
+        @Override
+        protected Void doInBackground(Void... params) {
+            for (AttendanceDetail attendanceDetail : attendanceDetails){
+                Subject subject = DataContainer.subList.get(codeMap.get(attendanceDetail.code+attendanceDetail.type));
+                subject.attTrack.clear();
 
-                    calendarEnd.setLenient(false);
-                    calendarEnd.set(Calendar.HOUR_OF_DAY,endHour);
-                    calendarEnd.set(Calendar.MINUTE,endMin);
-                    calendarEnd.set(Calendar.DAY_OF_WEEK,day);
-                    calendarEnd.set(Calendar.SECOND,0);
-
-                    Notification_Holder newNotification =  new Notification_Holder(calendarStart,calendarEnd,sub.title,sub.room,"Upcoming class in 5 minutes");
-                    toNotifyService.putExtra("notificationContent",(new Gson()).toJson(newNotification));
-                    toNotifyService.putExtra("notificationCode",notificationCode);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context,notificationCode,toNotifyService,PendingIntent.FLAG_CANCEL_CURRENT);
-                    notificationCode++;
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendarEnd.getTimeInMillis() - 5 * 60 * 1000, 24 * 7 * 60 * 60 * 1000, pendingIntent);
+                for(AttendanceEntry attendanceEntry : attendanceDetail.attArray){
+                    subject.attTrack.add(new subjectDay(attendanceEntry.date,attendanceEntry.status.equals("Present")));
+                }
+                int attLength= subject.attTrack.size();
+                if(attLength>0){
+                    subject.lastUpdated = subject.attTrack.get(attLength-1).date;
                 }
             }
-            day++;
+            put(context, allSub, (new Gson()).toJson(DataContainer.subList));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            stopLoading();
+            super.onPostExecute(aVoid);
         }
     }
+
 
     static void writeToPrefs(){
         if(get(context,isLoggedIn,false)) {
@@ -508,6 +605,34 @@ public class WorkSpace extends AppCompatActivity {
     static void updateWidget(){
         (new widgetServiceReceiver()).onReceive(context,(new Intent(context,widgetServiceReceiver.class)));
     }  // UPDATE THE CONTENTS OF WIDGET TO SHOW TODAYS SCHEDULE
+
+    static void setPieChart(){
+        WorkSpace.pie = (PieChart)rootViewSummary.findViewById(R.id.avgAtt);
+        WorkSpace.pie.setLayoutParams(new RelativeLayout.LayoutParams(((int)(config.width*0.53)),((int)(config.height*0.35))));
+        int avg = get(context,avgAttendance,0);
+        WorkSpace.pie.setCenterText("Avg\n"+get(context,avgAttendance,0)+"%");
+        WorkSpace.pie.setCenterTextTypeface(config.nunito_Extrabold);
+        if(avg<75 ) WorkSpace.pie.setCenterTextColor(Color.RED);
+        else WorkSpace.pie.setCenterTextColor(context.getResources().getColor(android.R.color.secondary_text_light));
+        WorkSpace.pie.setCenterTextSize(25);
+        ArrayList<Entry> pieEntry= new ArrayList<>();
+        pieEntry.add(new Entry(avg,0));
+        pieEntry.add(new Entry(100-avg,1));
+        ArrayList<String> labels=new ArrayList<>();
+        labels.add("");
+        labels.add("");
+        PieDataSet dataSet = new PieDataSet(pieEntry,"");
+        dataSet.setColors(ColorTemplate.createColors(context.getResources(),new int[]{ThemeProperty.colorPrimaryDark,ThemeProperty.colorPrimary})); //TODO APPLY CHNAGES ACORDING TO THE THEME OF THE APP
+        PieData data = new PieData(labels,dataSet);
+        WorkSpace.pie.setData(data);
+        WorkSpace.pie.setDescription("");
+        WorkSpace.pie.setDrawSliceText(false);
+        data.setDrawValues(false);
+        WorkSpace.pie.getLegend().setEnabled(false);
+
+        Highlight h = new Highlight(0, 0); // dataset index for piechart is always 0
+        WorkSpace.pie.highlightValues(new Highlight[] { h });
+    }
 
     static String formattedTime(String time){
         String rawTime[]= time.split(" ");
@@ -572,9 +697,7 @@ public class WorkSpace extends AppCompatActivity {
             public void onClick(View view) {
                 if(!refreshing){
                     refreshing=true;
-                    pb_syncing.setVisibility(View.VISIBLE);
-                    action_sync.setVisibility(View.GONE);
-                    requestAll(WorkSpace.this);
+                    initWebViews(WorkSpace.this);
                 }
             }
         });
@@ -674,9 +797,6 @@ public class WorkSpace extends AppCompatActivity {
                     calendar.set(GregorianCalendar.DAY_OF_WEEK,day);
                     calendar.set(GregorianCalendar.SECOND,0);
 
-                    Notification_Holder newNotification =  new Notification_Holder(calendar,sub.title,sub.room,"Upcoming class in 5 minutes");
-                    toNotifyService.putExtra("notificationContent",(new Gson()).toJson(newNotification));
-                    toNotifyService.putExtra("notificationCode",notificationCode);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context,notificationCode,toNotifyService,PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.cancel(pendingIntent);
                     notificationCode++;
@@ -734,10 +854,8 @@ public class WorkSpace extends AppCompatActivity {
                         public void onRefresh() {
                             swipeRefreshLayout.setRefreshing(false);
                             if(!refreshing) {
-                                pb_syncing.setVisibility(View.VISIBLE);
-                                action_sync.setVisibility(View.GONE);
                                 refreshing = true;
-                                requestAll(activity);
+                                initWebViews(activity);
                             }
 
                         }
@@ -826,7 +944,8 @@ public class WorkSpace extends AppCompatActivity {
                                             Notification_Holder n;
                                             if(c!=null) {
                                                 n = new Notification_Holder(c, title.getText().toString(), other.getText().toString(),"You have a deadline to meet");
-                                                schedule_todo_notification(n);
+                                                int noteId = schedule_todo_notification(n);
+                                                if(noteId!=0) n.id=noteId;
                                                 c=null;
                                             }
                                             else
@@ -853,37 +972,14 @@ public class WorkSpace extends AppCompatActivity {
                     });
                     return rootViewNotes;
                 case 3:
+                    WorkSpace.rootViewSummary = getActivity().getLayoutInflater().inflate(R.layout.fragment_summary,null);
                     return getSummaryView();
             }
             return null;
         }
-
         View getSummaryView(){
-            View rootViewSummary = getActivity().getLayoutInflater().inflate(R.layout.fragment_summary,null);
             setOnTouchListener(rootViewSummary,getActivity());
-            PieChart pie = (PieChart)rootViewSummary.findViewById(R.id.avgAtt);
-            pie.setLayoutParams(new RelativeLayout.LayoutParams(((int)(config.width*0.53)),((int)(config.height*0.35))));
-            int avg = get(context,avgAttendance,0);
-            pie.setCenterText("Avg\n"+get(context,avgAttendance,0)+"%");
-            pie.setCenterTextTypeface(config.nunito_Extrabold);
-            if(avg<75 ) pie.setCenterTextColor(Color.RED);
-            else pie.setCenterTextColor(Color.BLACK);
-            pie.setCenterTextSize(25);
-            ArrayList<Entry> pieEntry= new ArrayList<>();
-            pieEntry.add(new Entry(avg,0));
-            pieEntry.add(new Entry(100-avg,1));
-            ArrayList<String> labels=new ArrayList<>();
-            labels.add("");
-            labels.add("");
-            PieDataSet dataSet = new PieDataSet(pieEntry,"");
-            dataSet.setColors(ColorTemplate.createColors(getResources(),new int[]{ThemeProperty.colorPrimaryDark,ThemeProperty.colorPrimary})); //TODO APPLY CHNAGES ACORDING TO THE THEME OF THE APP
-            PieData data = new PieData(labels,dataSet);
-            pie.setData(data);
-            pie.setDescription("");
-            pie.setDrawSliceText(false);
-            data.setDrawValues(false);
-            pie.getLegend().setEnabled(false);
-
+            setPieChart();
             WorkSpace.lastRef= (TextView)rootViewSummary.findViewById(R.id.lastRefreshed);
             lastRef.setTypeface(config.nunito_bold);
             String lastSyncedJson = get(context,lastRefreshed,"");
@@ -957,9 +1053,9 @@ public class WorkSpace extends AppCompatActivity {
         {
             final AlertDialog alertDialog;
             View shareview=getActivity().getLayoutInflater().inflate(R.layout.shareview,null);
-            ImageButton messengershare,whatsappshare;
-            messengershare=(ImageButton)shareview.findViewById(R.id.messengershare);
-            whatsappshare=(ImageButton)shareview.findViewById(R.id.whatsappshare);
+            LinearLayout messengershare,whatsappshare;
+            messengershare=(LinearLayout)shareview.findViewById(R.id.messengershare);
+            whatsappshare=(LinearLayout)shareview.findViewById(R.id.whatsappshare);
             AlertDialog.Builder builder=new AlertDialog.Builder(context);
             builder.setView(shareview);
             alertDialog=builder.create();
@@ -1010,12 +1106,7 @@ public class WorkSpace extends AppCompatActivity {
 
         }
 
-
-
-
-
-
-        public void schedule_todo_notification(Notification_Holder n) {
+        public int schedule_todo_notification(Notification_Holder n) {
             if (n.startTime.getTimeInMillis() > System.currentTimeMillis()) {
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
                 Intent intent = new Intent(getActivity(), NotifyService.class);
@@ -1025,10 +1116,13 @@ public class WorkSpace extends AppCompatActivity {
                 intent.putExtra("notificationCode",id);
                 intent.putExtra("fromClass","WorkSpace");
                 id++;
+                n.id=id;
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                 put(context,notificationIdentifier,id);//editor.putInt("identifier", id);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, n.startTime.getTimeInMillis(), pendingIntent);
+                return id;
             }
+            return 0;
         }
         Calendar c;
         void showReminderSetter(final Switch reminderSwitch){
@@ -1419,11 +1513,13 @@ public class WorkSpace extends AppCompatActivity {
                 public boolean onMenuItemClick(MenuItem item) {
                     int id = item.getItemId();
                     if(id==R.id.action_add_todo) {
-                        if (!title.getText().toString().isEmpty() && !other.getText().toString().isEmpty() ) {
+                        if (!title.getText().toString().isEmpty()) {
                             Notification_Holder n;
                             if(c!=null) {
                                 n = new Notification_Holder(c, title.getText().toString(), other.getText().toString(),"You have a deadline to meet");
-                                schedule_todo_notification(n);
+                                int noteId = schedule_todo_notification(n);
+                                if(noteId!=0) n.id=noteId;
+                                c=null;
                             }
                             else
                                 n = new Notification_Holder(Calendar.getInstance(), title.getText().toString(), other.getText().toString(),"You have a deadline to meet");
@@ -1443,11 +1539,16 @@ public class WorkSpace extends AppCompatActivity {
                                 taskGridLeft.removeViewAt(indexOfView);
                                 taskGridLeft.addView(view,indexOfView);
                             }
-                            expanded.cancel();
                             WorkSpace.hideSoftKeyboard(getActivity());
                             alert.cancel();
+                            try{
+                                expanded.cancel();
+                            }
+                            catch (Exception e){
+                                //EDITED WITHOUT EXPANDING
+                            }
                         } else
-                            Toast.makeText(getContext(), "Both title and note must contain some text", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Title can't be empty", Toast.LENGTH_SHORT).show();
                         return true;
                     }
                     else {
@@ -1461,20 +1562,30 @@ public class WorkSpace extends AppCompatActivity {
 
 
         void delTask(Notification_Holder task) {
-            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(getActivity(), NotifyService.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), task.id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            alarmManager.cancel(pendingIntent);
+            try {
+                AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(getActivity(), NotifyService.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), task.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.cancel(pendingIntent);
+            }
+            catch (Exception e){
+                //ALARM NOT SET FOR THE TASK
+            }
             DataContainer.notes.remove(task);
             put(context,todolist,Notification_Holder.convert_to_jason(DataContainer.notes));//editor.putString("todolist", Notification_Holder.convert_to_jason(config.notes));
         }
 
         void updateTask(Notification_Holder newtask, int index){
             Notification_Holder oldTask= DataContainer.notes.get(index);
-            AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(getActivity(), NotifyService.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), oldTask.id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-            alarmManager.cancel(pendingIntent);
+            try {
+                AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
+                Intent intent = new Intent(getActivity(), NotifyService.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), oldTask.id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.cancel(pendingIntent);
+            }
+            catch (Exception e){
+                //ALARM NOT SET FOR THE TASK
+            }
             DataContainer.notes.set(index,newtask);
             put(context,todolist,Notification_Holder.convert_to_jason(DataContainer.notes));//editor.putString("todolist", Notification_Holder.convert_to_jason(config.notes));
         }
@@ -1559,7 +1670,7 @@ public class WorkSpace extends AppCompatActivity {
     }  //GET THE DIMENSIONS OF THE DEVICE
 
     public static String getDateTimeString(Calendar deadLine){
-        int today = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        int today =Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
         int taskDay= deadLine.get(Calendar.DAY_OF_YEAR);
         String dateString;
         String timeString = getHour(deadLine.get(Calendar.HOUR))+":"+getMinute(deadLine.get(Calendar.MINUTE))+getAMPM(deadLine.get(Calendar.AM_PM));

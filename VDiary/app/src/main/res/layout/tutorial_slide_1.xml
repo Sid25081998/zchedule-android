@@ -18,11 +18,11 @@
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="Get your time table at your finger tips"
+        android:text="Get your time table at your finger tips."
         android:textColor="@android:color/white"
         android:id="@+id/tv_tutorial_comment"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="40dp" />
     <ImageView

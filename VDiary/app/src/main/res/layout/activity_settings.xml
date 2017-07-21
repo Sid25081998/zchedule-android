@@ -94,7 +94,7 @@
             <Switch
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="Quiet Mode Beta"
+                android:text="Quiet Mode"
                 android:textSize="18sp"
                 android:id="@+id/toggle_changeProfile" />
             <TextView

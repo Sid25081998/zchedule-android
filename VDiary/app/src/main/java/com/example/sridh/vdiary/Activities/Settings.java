@@ -46,8 +46,8 @@ public class Settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context=getApplicationContext();
-        CircleIndex = getIdOf(CurrentTheme);
         setTheme(getCurrentTheme(this).theme);
+        CircleIndex = getIdOf(CurrentTheme);
         setContentView(R.layout.activity_settings);
         selectedCircle= (ImageButton)findViewById(circleIDs[CircleIndex]);
         selectedCircle.setImageDrawable(getResources().getDrawable(circleSId[CircleIndex]));
