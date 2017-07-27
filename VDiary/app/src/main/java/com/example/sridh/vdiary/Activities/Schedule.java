@@ -23,10 +23,13 @@ import android.widget.TextView;
 import com.example.sridh.vdiary.List_Adapters.listAdapter_schedule;
 import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.Utils.DataContainer;
+import com.example.sridh.vdiary.Utils.prefs;
+import com.google.firebase.crash.FirebaseCrash;
 
 import java.util.Calendar;
 
 import static com.example.sridh.vdiary.Activities.WorkSpace.ThemeProperty;
+import static com.example.sridh.vdiary.Utils.prefs.CREDENTIALS;
 import static com.example.sridh.vdiary.config.getCurrentTheme;
 
 public class Schedule extends AppCompatActivity {
@@ -125,11 +128,18 @@ public class Schedule extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_day_model, container, false);
-            ListView list=(ListView)rootView.findViewById(R.id.dayslist);
-            int todayIndex=getArguments().getInt(ARG_SECTION_NUMBER)-1;
-            listAdapter_schedule todaySchedule= new listAdapter_schedule(getActivity(), DataContainer.timeTable.get(todayIndex));
-            list.setAdapter(todaySchedule);
+            View rootView;
+            try {
+                rootView = inflater.inflate(R.layout.fragment_day_model, container, false);
+                ListView list = (ListView) rootView.findViewById(R.id.dayslist);
+                int todayIndex = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
+                listAdapter_schedule todaySchedule = new listAdapter_schedule(getActivity(), DataContainer.timeTable.get(todayIndex));
+                list.setAdapter(todaySchedule);
+            }
+            catch(Exception e){
+                FirebaseCrash.report(new Exception(prefs.get(s,CREDENTIALS,"\n")+e.getMessage()));
+                throw e;
+            }
             return rootView;
         }
 

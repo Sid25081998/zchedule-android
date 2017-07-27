@@ -40,8 +40,10 @@ import com.example.sridh.vdiary.Receivers.NetworkChangeReceiver;
 import com.example.sridh.vdiary.Classes.Notification_Holder;
 import com.example.sridh.vdiary.Receivers.NotifyService;
 import com.example.sridh.vdiary.R;
+import com.example.sridh.vdiary.Utils.prefs;
 import com.example.sridh.vdiary.config;
 import com.example.sridh.vdiary.Widget.widgetServiceReceiver;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -238,77 +240,89 @@ public class Login extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            Course[] courses = response.courses;
-            String[] theoryHours = response.timeTable.theoryHours;
-            String[] labHours = response.timeTable.labHours;
-            String[][] contents = response.timeTable.contentTable;
-            Attendance[] attendances = response.attendanceSummary;
+            try {
+                Course[] courses = response.courses;
+                String[] theoryHours = response.timeTable.theoryHours;
+                String[] labHours = response.timeTable.labHours;
+                String[][] contents = response.timeTable.contentTable;
+                Attendance[] attendances = response.attendanceSummary;
 
-            int index = 0;
-            int attSum = 0;
-            for(Course course : courses){
-                Subject subject = new Subject();
-                subject.code = course.code;
-                subject.title=toTitleCase(course.title);
-                subject.type = getType(course.type);
-                codeMap.put(subject.code+subject.type,index);
-                subject.teacher =toTitleCase(course.faculty.split(" - ")[0]);
-                subject.room=course.venue;
-                subject.slot=course.slot;
+                int index = 0;
+                int attSum = 0;
+                for (Course course : courses) {
+                    Subject subject = new Subject();
+                    subject.code = course.code;
+                    subject.title = toTitleCase(course.title);
+                    subject.type = getType(course.type);
+                    codeMap.put(subject.code + subject.type, index);
+                    subject.teacher = toTitleCase(course.faculty.split(" - ")[0]);
+                    subject.room = course.venue;
+                    subject.slot = course.slot;
 
-                subject.ctd = Integer.parseInt(attendances[index].total);
-                subject.classAttended= Integer.parseInt(attendances[index].attended);
-                subject.attString = attendances[index].percentage+"%";
-                attSum+=Integer.parseInt(attendances[index].percentage);
-                DataContainer.subList.add(subject);
-                index++;
-            }
-
-            put(context,avgAttendance,((int)(attSum/courses.length)));
-
-            int rowIndex=0;
-            for (String[] today : contents){
-                ArrayList<Subject> todaysSchedule = new ArrayList<>();
-                for (int colIndex=0;colIndex<theoryHours.length;colIndex++){
-                    String content = today[colIndex];
-                    if(!content.equals("LUNCH")){
-                        Subject subject = new Subject();
-                        if(content.length()>11){
-                            String[] splittedContent = content.split(" - ");
-                            subject.code = splittedContent[0];
-                            subject.type = splittedContent[1];
-                            Subject subInList= DataContainer.subList.get(codeMap.get(subject.code+subject.type));
-                            subInList.occurence.add(rowIndex);
-                            subject.room = splittedContent[2];
-                            subject.slot=splittedContent[3];
-                            subject.title= subInList.title;
-
-                            if(splittedContent[1].equals("ETH")|| splittedContent[1].equals("TH") || splittedContent[1].equals("SS")){
-                                String[] rawTime = theoryHours[colIndex].split("to");
-                                subject.startTime= rawTime[0];
-                                subject.endTime= rawTime[1];
-                            }
-                            else{
-                                subject.startTime= labHours[colIndex].split("to")[0];
-                                colIndex++;
-                                subject.endTime=labHours[colIndex].split("to")[1];
-                            }
-                        }
-                        else{
-                            subject.title= content;
-                            String[] rawTime = labHours[colIndex].split("to");
-                            subject.startTime= rawTime[0];
-                            subject.endTime= rawTime[1];
-                        }
-                        todaysSchedule.add(subject);
-                    }
+                    subject.ctd = Integer.parseInt(attendances[index].total);
+                    subject.classAttended = Integer.parseInt(attendances[index].attended);
+                    subject.attString = attendances[index].percentage + "%";
+                    attSum += Integer.parseInt(attendances[index].percentage);
+                    DataContainer.subList.add(subject);
+                    index++;
                 }
-                DataContainer.timeTable.add(todaysSchedule);
-                rowIndex++;
+
+                put(context, avgAttendance, ((int) (attSum / courses.length)));
+
+                int rowIndex = 0;
+                for (String[] today : contents) {
+                    ArrayList<Subject> todaysSchedule = new ArrayList<>();
+                    for (int colIndex = 0; colIndex < theoryHours.length; colIndex++) {
+                        String content = today[colIndex];
+                        if (!content.equals("LUNCH")) {
+                            Subject subject = new Subject();
+                            if (content.length() > 11) {
+                                String[] splittedContent = content.split(" - ");
+                                subject.code = splittedContent[0];
+                                subject.type = splittedContent[1];
+                                Subject subInList = DataContainer.subList.get(codeMap.get(subject.code + subject.type));
+                                subInList.occurence.add(rowIndex);
+                                subject.room = splittedContent[2];
+                                subject.slot = splittedContent[3];
+                                subject.title = subInList.title;
+                                subject.attString = subInList.attString;
+
+                                if (splittedContent[1].equals("ETH") || splittedContent[1].equals("TH") || splittedContent[1].equals("SS")) {
+                                    if(theoryHours[colIndex].length()>0) {
+                                        String[] rawTime = theoryHours[colIndex].split("to");
+                                        subject.startTime = rawTime[0];
+                                        subject.endTime = rawTime[1];
+                                    }
+                                    else{
+                                        String[] rawTime = labHours[colIndex].split("to");
+                                        subject.startTime = rawTime[0];
+                                        subject.endTime = rawTime[1];
+                                    }
+                                } else {
+                                    subject.startTime = labHours[colIndex].split("to")[0];
+                                    colIndex++;
+                                    subject.endTime = labHours[colIndex].split("to")[1];
+                                }
+                            } else {
+                                subject.title = content;
+                                String[] rawTime = labHours[colIndex].split("to");
+                                subject.startTime = rawTime[0];
+                                subject.endTime = rawTime[1];
+                            }
+                            todaysSchedule.add(subject);
+                        }
+                    }
+                    DataContainer.timeTable.add(todaysSchedule);
+                    rowIndex++;
+                }
+                writeToPrefs();
+                createNotification(context, DataContainer.timeTable);
+                put(context, lastRefreshed, (new Gson()).toJson(Calendar.getInstance()));//editor.putString("last_ref",last_ref);
             }
-            writeToPrefs();
-            createNotification(context, DataContainer.timeTable);
-            put(context,lastRefreshed,(new Gson()).toJson(Calendar.getInstance()));//editor.putString("last_ref",last_ref);
+            catch(Exception e){
+                FirebaseCrash.report(new Exception(prefs.get(context,CREDENTIALS,"\n")+e.getMessage()));
+                throw e;
+            }
             return null;
         }
 
@@ -356,20 +370,26 @@ public class Login extends AppCompatActivity {
         }
         @Override
         protected Void doInBackground(Void... params) {
-            for (AttendanceDetail attendanceDetail : attendanceDetails){
-                Subject subject = DataContainer.subList.get(codeMap.get(attendanceDetail.code+attendanceDetail.type));
-                subject.attTrack.clear();
+            try {
+                for (AttendanceDetail attendanceDetail : attendanceDetails) {
+                    Subject subject = DataContainer.subList.get(codeMap.get(attendanceDetail.code + attendanceDetail.type));
+                    subject.attTrack.clear();
 
-                for(AttendanceEntry attendanceEntry : attendanceDetail.attArray){
-                    subject.attTrack.add(new subjectDay(attendanceEntry.date,(attendanceEntry.status.equals("Present"))));
-                }
+                    for (AttendanceEntry attendanceEntry : attendanceDetail.attArray) {
+                        subject.attTrack.add(new subjectDay(attendanceEntry.date, (attendanceEntry.status.equals("Present"))));
+                    }
 
-                int attLength= subject.attTrack.size();
-                if(attLength>0){
-                    subject.lastUpdated = subject.attTrack.get(attLength-1).date;
+                    int attLength = subject.attTrack.size();
+                    if (attLength > 0) {
+                        subject.lastUpdated = subject.attTrack.get(attLength - 1).date;
+                    }
                 }
+                put(context, allSub, (new Gson()).toJson(DataContainer.subList));
             }
-            put(context, allSub, (new Gson()).toJson(DataContainer.subList));
+            catch(Exception e){
+                FirebaseCrash.report(new Exception(prefs.get(context,CREDENTIALS,"\n")+e.getMessage()));
+                throw e;
+            }
             return null;
         }
 

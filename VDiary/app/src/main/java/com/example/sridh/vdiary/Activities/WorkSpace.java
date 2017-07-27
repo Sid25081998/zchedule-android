@@ -74,6 +74,7 @@ import com.example.sridh.vdiary.Receivers.NotifyService;
 import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.Utils.DataContainer;
 import com.example.sridh.vdiary.Utils.HttpRequest;
+import com.example.sridh.vdiary.Utils.prefs;
 import com.example.sridh.vdiary.config;
 import com.example.sridh.vdiary.Widget.widgetServiceReceiver;
 
@@ -83,7 +84,11 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
@@ -226,7 +231,7 @@ public class WorkSpace extends AppCompatActivity {
         setTabLayout(tabLayout);
 
 
-        /*String id = getResources().getString(R.string.appid);
+        String id = getResources().getString(R.string.appid);
         MobileAds.initialize(this, id);
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(id);
@@ -250,7 +255,7 @@ public class WorkSpace extends AppCompatActivity {
                 adHandler.postDelayed(showAd,adInterval);
                 super.onAdClosed();
             }
-        });*/
+        });
 
 
         if(!refreshedByScrapper){
@@ -260,20 +265,19 @@ public class WorkSpace extends AppCompatActivity {
         else{
             stopLoading();
         }
-
-        //adHandler.postDelayed(showAd,adInterval);
+        adHandler.postDelayed(showAd,adInterval);
     }
 
-    /*Runnable showAd = new Runnable() {
+    Runnable showAd = new Runnable() {
         @Override
         public void run() {
             if(mInterstitialAd.isLoaded())
                 mInterstitialAd.show();
             adInterval=adInterval*2;
         }
-    };*/
+    };
 
-    /*@Override
+    @Override
     protected void onPause() {
         adHandler.removeCallbacks(showAd);
         super.onPause();
@@ -284,7 +288,7 @@ public class WorkSpace extends AppCompatActivity {
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
         adHandler.postDelayed(showAd,adInterval);
         super.onResume();
-    }*/
+    }
 
     static void getBestServer(final Activity activity){
         new HttpRequest(context)
@@ -430,83 +434,95 @@ public class WorkSpace extends AppCompatActivity {
         }
         @Override
         protected Void doInBackground(Void... params) {
-            cancelNotifications(context);
-            DataContainer.subList = new ArrayList<>();
-            DataContainer.timeTable =  new ArrayList<>();
-            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
-            Course[] courses = response.courses;
-            String[] theoryHours = response.timeTable.theoryHours;
-            String[] labHours = response.timeTable.labHours;
-            String[][] contents = response.timeTable.contentTable;
-            Attendance[] attendances = response.attendanceSummary;
+            try {
+                cancelNotifications(context);
+                DataContainer.subList = new ArrayList<>();
+                DataContainer.timeTable = new ArrayList<>();
+                Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+                Course[] courses = response.courses;
+                String[] theoryHours = response.timeTable.theoryHours;
+                String[] labHours = response.timeTable.labHours;
+                String[][] contents = response.timeTable.contentTable;
+                Attendance[] attendances =response.attendanceSummary;
 
-            int index = 0;
-            int attSum=0;
-            for(Course course : courses){
-                Subject subject = new Subject();
-                subject.code = course.code;
-                subject.title=toTitleCase(course.title);
-                subject.type = getType(course.type);
-                codeMap.put(subject.code+subject.type,index);
-                subject.teacher =toTitleCase(course.faculty.split(" - ")[0]);
-                subject.room=course.venue;
-                subject.slot=course.slot;
+                int index = 0;
+                int attSum = 0;
+                for (Course course : courses) {
+                    Subject subject = new Subject();
+                    subject.code = course.code;
+                    subject.title = toTitleCase(course.title);
+                    subject.type = getType(course.type);
+                    codeMap.put(subject.code + subject.type, index);
+                    subject.teacher = toTitleCase(course.faculty.split(" - ")[0]);
+                    subject.room = course.venue;
+                    subject.slot = course.slot;
 
-                subject.ctd = Integer.parseInt(attendances[index].total);
-                subject.classAttended= Integer.parseInt(attendances[index].attended);
-                subject.attString = attendances[index].percentage+"%";
-                attSum+=Integer.parseInt(attendances[index].percentage);
-                DataContainer.subList.add(subject);
-                index++;
-            }
-            avg = (int)Math.ceil(attSum/courses.length);
-            put(context,avgAttendance,avg);
-
-            int rowIndex=0;
-            for (String[] today : contents){
-                ArrayList<Subject> todaysSchedule = new ArrayList<>();
-                for (int colIndex=0;colIndex<theoryHours.length;colIndex++){
-                    String content = today[colIndex];
-                    if(!content.equals("LUNCH")){
-                        Subject subject = new Subject();
-                        if(content.length()>11){
-                            String[] splittedContent = content.split(" - ");
-                            subject.code = splittedContent[0];
-                            subject.type = splittedContent[1];
-                            Subject subInList= DataContainer.subList.get(codeMap.get(subject.code+subject.type));
-                            subInList.occurence.add(rowIndex);
-                            subject.room = splittedContent[2];
-                            subject.slot=splittedContent[3];
-                            subject.title= subInList.title;
-
-                            if(splittedContent[1].equals("ETH")|| splittedContent[1].equals("TH") || splittedContent[1].equals("SS")){
-                                String[] rawTime = theoryHours[colIndex].split("to");
-                                subject.startTime= rawTime[0];
-                                subject.endTime= rawTime[1];
-                            }
-                            else{
-                                subject.startTime= labHours[colIndex].split("to")[0];
-                                colIndex++;
-                                subject.endTime=labHours[colIndex].split("to")[1];
-                            }
-                        }
-                        else{
-                            subject.title= content;
-                            String[] rawTime = labHours[colIndex].split("to");
-                            subject.startTime= rawTime[0];
-                            subject.endTime= rawTime[1];
-                            subject.code= "";
-                        }
-                        todaysSchedule.add(subject);
-                    }
+                    subject.ctd = Integer.parseInt(attendances[index].total);
+                    subject.classAttended = Integer.parseInt(attendances[index].attended);
+                    subject.attString = attendances[index].percentage + "%";
+                    attSum += Integer.parseInt(attendances[index].percentage);
+                    DataContainer.subList.add(subject);
+                    index++;
                 }
-                DataContainer.timeTable.add(todaysSchedule);
-                rowIndex++;
+                avg = Math.round((float) attSum / courses.length);
+                put(context, avgAttendance, avg);
+
+                int rowIndex = 0;
+                for (String[] today : contents) {
+                    ArrayList<Subject> todaysSchedule = new ArrayList<>();
+                    for (int colIndex = 0; colIndex < theoryHours.length; colIndex++) {
+                        String content = today[colIndex];
+                        if (!content.equals("LUNCH")) {
+                            Subject subject = new Subject();
+                            if (content.length() > 11) {
+                                String[] splittedContent = content.split(" - ");
+                                subject.code = splittedContent[0];
+                                subject.type = splittedContent[1];
+                                Subject subInList = DataContainer.subList.get(codeMap.get(subject.code + subject.type));
+                                subInList.occurence.add(rowIndex);
+                                subject.room = splittedContent[2];
+                                subject.slot = splittedContent[3];
+                                subject.title = subInList.title;
+                                subject.attString = subInList.attString;
+
+                                if (splittedContent[1].equals("ETH") || splittedContent[1].equals("TH") || splittedContent[1].equals("SS")) {
+                                    if(theoryHours[colIndex].length()>0) {
+                                        String[] rawTime = theoryHours[colIndex].split("to");
+                                        subject.startTime = rawTime[0];
+                                        subject.endTime = rawTime[1];
+                                    }
+                                    else{
+                                        String[] rawTime = labHours[colIndex].split("to");
+                                        subject.startTime = rawTime[0];
+                                        subject.endTime = rawTime[1];
+                                    }
+                                } else {
+                                    subject.startTime = labHours[colIndex].split("to")[0];
+                                    colIndex++;
+                                    subject.endTime = labHours[colIndex].split("to")[1];
+                                }
+                            } else {
+                                subject.title = content;
+                                String[] rawTime = labHours[colIndex].split("to");
+                                subject.startTime = rawTime[0];
+                                subject.endTime = rawTime[1];
+                                subject.code = "";
+                            }
+                            todaysSchedule.add(subject);
+                        }
+                    }
+                    DataContainer.timeTable.add(todaysSchedule);
+                    rowIndex++;
+                }
+                writeToPrefs();
+                createNotification(context, DataContainer.timeTable);
+                cal = Calendar.getInstance();
+                put(context, lastRefreshed, (new Gson()).toJson(cal));//editor.putString("last_ref",last_ref);
             }
-            writeToPrefs();
-            createNotification(context, DataContainer.timeTable);
-            cal = Calendar.getInstance();
-            put(context,lastRefreshed,(new Gson()).toJson(cal));//editor.putString("last_ref",last_ref);
+            catch(Exception e){
+                FirebaseCrash.report(new Exception(prefs.get(context,CREDENTIALS,"\n")+e.getMessage()));
+                throw e;
+            }
             return null;
         }
 
