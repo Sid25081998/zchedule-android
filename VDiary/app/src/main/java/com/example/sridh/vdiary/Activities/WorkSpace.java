@@ -436,8 +436,9 @@ public class WorkSpace extends AppCompatActivity {
         protected Void doInBackground(Void... params) {
             try {
                 cancelNotifications(context);
-                DataContainer.subList = new ArrayList<>();
-                DataContainer.timeTable = new ArrayList<>();
+                List<Subject> subList = new ArrayList<>();
+                List<List<Subject>> timeTable = new ArrayList<>();
+
                 Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
                 Course[] courses = response.courses;
                 String[] theoryHours = response.timeTable.theoryHours;
@@ -461,7 +462,7 @@ public class WorkSpace extends AppCompatActivity {
                     subject.classAttended = Integer.parseInt(attendances[index].attended);
                     subject.attString = attendances[index].percentage + "%";
                     attSum += Integer.parseInt(attendances[index].percentage);
-                    DataContainer.subList.add(subject);
+                    subList.add(subject);
                     index++;
                 }
                 avg = Math.round((float) attSum / courses.length);
@@ -478,7 +479,7 @@ public class WorkSpace extends AppCompatActivity {
                                 String[] splittedContent = content.split(" - ");
                                 subject.code = splittedContent[0];
                                 subject.type = splittedContent[1];
-                                Subject subInList = DataContainer.subList.get(codeMap.get(subject.code + subject.type));
+                                Subject subInList = subList.get(codeMap.get(subject.code + subject.type));
                                 subInList.occurence.add(rowIndex);
                                 subject.room = splittedContent[2];
                                 subject.slot = splittedContent[3];
@@ -511,9 +512,12 @@ public class WorkSpace extends AppCompatActivity {
                             todaysSchedule.add(subject);
                         }
                     }
-                    DataContainer.timeTable.add(todaysSchedule);
+                    timeTable.add(todaysSchedule);
                     rowIndex++;
                 }
+
+                DataContainer.subList = subList;
+                DataContainer.timeTable = timeTable;
                 writeToPrefs();
                 createNotification(context, DataContainer.timeTable);
                 cal = Calendar.getInstance();
