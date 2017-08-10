@@ -7,12 +7,12 @@
         app:showAsAction="always"
         android:icon="@drawable/done"
         android:orderInCategory="200"
-        android:id="@+id/action_add_todo"/>
+        android:id="@+id/action_tick"/>
 
     <item
         android:title="cancel_todo"
         app:showAsAction="always"
         android:orderInCategory="300"
-        android:id="@+id/action_cancel_todo"
+        android:id="@+id/action_cross"
         android:icon="@drawable/ic_close"/>
 </menu>

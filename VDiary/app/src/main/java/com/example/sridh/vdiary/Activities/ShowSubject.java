@@ -7,9 +7,11 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -39,7 +41,7 @@ import static com.example.sridh.vdiary.config.nunito_bold;
 import static com.example.sridh.vdiary.config.nunito_reg;
 
 
-public class ShowSubject extends Activity {
+public class ShowSubject extends AppCompatActivity {
     Subject clicked;
     int att, noofdays;
     NumberPicker leave;
@@ -58,6 +60,9 @@ public class ShowSubject extends Activity {
 
     int toMul=1; // 1 if THEORY ELSE 2
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +77,7 @@ public class ShowSubject extends Activity {
         if (clicked.type.equals("ELA") || clicked.type.equals("LO")) toMul=2;
         WorkSpace.currentInView= this;
         setOccurrence();
+
     }
 
     @Override
@@ -183,7 +189,12 @@ public class ShowSubject extends Activity {
         hsvScrollFull();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.show_subject_toolbar);
+        setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(getResources().getColor(ThemeProperty.colorPrimaryDark));
+
+        /*getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);*/
 
         final Toolbar assignToolbar = (Toolbar)findViewById(R.id.show_sub_assignment);
         assignToolbar.setBackgroundColor(getResources().getColor(ThemeProperty.colorPrimary));
@@ -219,6 +230,16 @@ public class ShowSubject extends Activity {
         });
 
     }  //SETS THE LAYOUT OF THE SUBJECT TO BE SHOWN
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     int lastPicked=0;
     private class numberPickerValueChangeHandler implements NumberPicker.OnValueChangeListener{

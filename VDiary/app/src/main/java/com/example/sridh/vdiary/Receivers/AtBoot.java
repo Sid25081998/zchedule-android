@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.provider.ContactsContract;
 import android.widget.Toast;
 
 import static com.example.sridh.vdiary.Utils.prefs.*;
@@ -41,19 +42,22 @@ public class AtBoot extends BroadcastReceiver {
             DataContainer.notes = Notification_Holder.convert_from_jason(f);
 
         //to-do reschedule
-
+        Calendar now = Calendar.getInstance();
+        long millis = now.getTimeInMillis();
         for (int i = 0; i< DataContainer.notes.size(); i++)
         {
             try {
-                x = new Intent(context, NotifyService.class);
-                x.putExtra("fromClass", "WorkSpace");
-                Gson js = new Gson();
-                Notification_Holder n = DataContainer.notes.get(i);
-                String m = js.toJson(n);
-                x.putExtra("notificationContent", m);
-                x.putExtra("notificationCode", DataContainer.notes.get(i).id);
-                pendingIntent = PendingIntent.getBroadcast(context, DataContainer.notes.get(i).id, x, PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, DataContainer.notes.get(i).startTime.getTimeInMillis(), pendingIntent);
+                Notification_Holder note= DataContainer.notes.get(i);
+                if(DataContainer.notes.get(i).id>999 && note.startTime.getTimeInMillis()>=millis) {
+                    x = new Intent(context, NotifyService.class);
+                    x.putExtra("fromClass", "WorkSpace");
+                    Gson js = new Gson();
+                    String m = js.toJson(note);
+                    x.putExtra("notificationContent", m);
+                    x.putExtra("notificationCode", note.id);
+                    pendingIntent = PendingIntent.getBroadcast(context, note.id, x, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, note.startTime.getTimeInMillis(), pendingIntent);
+                }
             }
             catch (Exception e){
                 //ALARM WAS NOT SET FOR THE TASK

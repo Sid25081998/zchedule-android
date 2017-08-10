@@ -39,6 +39,8 @@ public class prefs {
     public static String SEM_START = "semStart";
     public static String SEM_END= "semEnd";
     public static String AUDIO_PROFILE = "audioProfile";
+    public static String NOTIFY_BEFORE = "notifyBefore";
+    public static String MOODLE_CREDS = "moodleCreds";
 
     //SHARED PREFERENCES INSTANCE OF THE APP
     public static SharedPreferences getPrefsInstance(Context context){

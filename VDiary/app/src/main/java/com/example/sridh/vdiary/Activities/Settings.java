@@ -11,20 +11,26 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.example.sridh.vdiary.Classes.Theme;
 import com.example.sridh.vdiary.R;
+import com.example.sridh.vdiary.Utils.DataContainer;
 import com.example.sridh.vdiary.Widget.widgetServiceReceiver;
 
 import static com.example.sridh.vdiary.Utils.prefs.CHANGE_PROFILE;
+import static com.example.sridh.vdiary.Utils.prefs.NOTIFY_BEFORE;
 import static com.example.sridh.vdiary.Utils.prefs.putTheme;
 import static com.example.sridh.vdiary.Utils.prefs.showAttendanceOnwidget;
 import static com.example.sridh.vdiary.Utils.prefs.showNotification;
@@ -42,6 +48,9 @@ public class Settings extends AppCompatActivity {
     int[] circleNotsId =new int[]{R.drawable.circle_red_nots,R.drawable.circle_blue_nots,R.drawable.circle_teal_nots,R.drawable.circle_yellow_nots,R.drawable.circle_pink_nots,R.drawable.circle_purple_nots,R.drawable.circle_gray_nots,R.drawable.circle_orange_nots,R.drawable.circle_green_nots};
     int[] circleSId= new int[]{R.drawable.circle_red_s,R.drawable.circle_blue_s,R.drawable.circle_teal_s,R.drawable.circle_yellow_s,R.drawable.circle_pink_s,R.drawable.circle_purple_s,R.drawable.circle_gray_s,R.drawable.circle_orange_s,R.drawable.circle_green_s};
     int CircleIndex;
+    Spinner notifyTimeSpinner;
+    LinearLayout notifyTimeLayout;
+    boolean readyFlag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +67,7 @@ public class Settings extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         toolbar.setTitleTextColor(Color.WHITE);
         initLayout(); //TODO UNCOMMENT THIS REGION
+
     }
 
     @Override
@@ -75,11 +85,37 @@ public class Settings extends AppCompatActivity {
         toggle_showNotification= (Switch)findViewById(R.id.toggle_showNotification);
         toggle_showAttendance=(Switch)findViewById(R.id.toggle_showAttendance);
         toggle_quiet = (Switch)findViewById(R.id.toggle_changeProfile);
+        notifyTimeLayout = (LinearLayout)findViewById(R.id.notifyTimeLayout);
+        notifyTimeSpinner = (Spinner)findViewById(R.id.notifyTimespinner);
+
+        ArrayAdapter<String> timeAdapter = new ArrayAdapter<>(context,R.layout.item_dropdown,R.id.dropDownItem,new String[]{"5 min","10 min"});
+
+        notifyTimeSpinner.setAdapter(timeAdapter);
+        notifyTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(readyFlag){
+                    Log.d("Spinner",position+"");
+                    put(context,NOTIFY_BEFORE,position==0?5:10);
+                    Login.createNotification(context, DataContainer.timeTable);
+                }
+                else{
+                    readyFlag=true;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         setSettingConfig();
         toggle_showNotification.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean toShowNotification) {
                 put(context,showNotification,toShowNotification);
+                notifyTimeLayout.setVisibility(toShowNotification ? View.VISIBLE:View.GONE);
             }
         });
         toggle_showAttendance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -107,13 +143,19 @@ public class Settings extends AppCompatActivity {
     }
 
     void setSettingConfig(){
-        toggle_showNotification.setChecked(get(context,showNotification,true));//settingPrefs.getBoolean(SHOW_NOTIF_KEY,true));
+        boolean shouldShowNotification = get(context,showNotification,true);
+        int notifyBefore = get(context,NOTIFY_BEFORE,5);
+        notifyTimeSpinner.setSelection(notifyBefore==5?0:1);
+        toggle_showNotification.setChecked(shouldShowNotification);//settingPrefs.getBoolean(SHOW_NOTIF_KEY,true));
+        notifyTimeLayout.setVisibility(shouldShowNotification ? View.VISIBLE:View.GONE);
         toggle_showAttendance.setChecked(get(context,showAttendanceOnwidget,false));//settingPrefs.getBoolean(SHOW_ATT_KEY,false));
         toggle_quiet.setChecked(get(context,CHANGE_PROFILE,true));  //SHOULD CHANGE AUDIO PROFILE TO VIBRATE OR NOT
     }
+
    void updateWidget(){
         (new widgetServiceReceiver()).onReceive(context,(new Intent(context,widgetServiceReceiver.class)));
     }
+
     public void onRedClick(View view) {
         handleThemeCircleSelection(Theme.red);
     }
@@ -164,7 +206,7 @@ public class Settings extends AppCompatActivity {
                         public void onClick(View v) {
                             Intent mStartActivity = new Intent(context, SplashScreen.class);
                             int mPendingIntentId = 6500;
-                            PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+                            PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
                             AlarmManager mgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
                             mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, mPendingIntent);
                             System.exit(0);

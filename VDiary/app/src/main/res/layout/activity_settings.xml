@@ -56,6 +56,30 @@
             android:layout_height="wrap_content"
             android:text="Notifies about room no. and course title of next class"
             android:maxWidth="300dp"/>
+
+            <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:id="@+id/notifyTimeLayout"
+                android:gravity="center_vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notify Before: "
+                android:maxWidth="300dp"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown"
+                    android:id="@+id/notifyTimespinner"/>
+
+                </LinearLayout>
+
+
+
         </LinearLayout>
         <TextView
             android:layout_height="1dp"
@@ -119,7 +143,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:id="@+id/themeSelectText"
                 android:text="App Theme"
                 android:textColor="@android:color/black" />
@@ -323,7 +347,6 @@
                     android:textSize="14sp"
                     android:id="@+id/build_version"/>
             </LinearLayout>
-
             </LinearLayout>
         </android.support.v7.widget.CardView>
         </LinearLayout>

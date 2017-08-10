@@ -5,7 +5,8 @@ package com.example.sridh.vdiary.Classes;
  */
 
 public class Assignment {
-    String date;
-    String status;
-    String link;
+    String duedate;
+    String intro;
+    String name;
+    Attachment[] attachments;
 }

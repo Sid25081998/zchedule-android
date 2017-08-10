@@ -54,27 +54,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.sridh.vdiary.Classes.AllResponse;
-import com.example.sridh.vdiary.Classes.Attendance;
-import com.example.sridh.vdiary.Classes.AttendanceDetail;
-import com.example.sridh.vdiary.Classes.AttendanceEntry;
-import com.example.sridh.vdiary.Classes.Course;
-import com.example.sridh.vdiary.Classes.Credential;
+import com.example.sridh.vdiary.Classes.*;
 import com.example.sridh.vdiary.Classes.Error;
-import com.example.sridh.vdiary.Classes.Server;
-import com.example.sridh.vdiary.Classes.Subject;
-import com.example.sridh.vdiary.Classes.Holiday;
-import com.example.sridh.vdiary.Classes.Teacher;
-import com.example.sridh.vdiary.Classes.subjectDay;
-import com.example.sridh.vdiary.Classes.themeProperty;
-import com.example.sridh.vdiary.Classes.Notification_Holder;
 import com.example.sridh.vdiary.List_Adapters.CourseAdapter;
 import com.example.sridh.vdiary.List_Adapters.listAdapter_teachers;
 import com.example.sridh.vdiary.Receivers.NotifyService;
 import com.example.sridh.vdiary.R;
-import com.example.sridh.vdiary.Utils.DataContainer;
-import com.example.sridh.vdiary.Utils.HttpRequest;
-import com.example.sridh.vdiary.Utils.prefs;
+import com.example.sridh.vdiary.Utils.*;
 import com.example.sridh.vdiary.config;
 import com.example.sridh.vdiary.Widget.widgetServiceReceiver;
 
@@ -157,9 +143,6 @@ public class WorkSpace extends AppCompatActivity {
 
     public static ShowSubject currentInView=null;
 
-    public static boolean isAdLoaded=false;
-
-    boolean isPasswordChanged=false;
     static themeProperty ThemeProperty ;
     static ArrayAdapter<String> adapter;
     InterstitialAd mInterstitialAd;
@@ -170,7 +153,6 @@ public class WorkSpace extends AppCompatActivity {
     int adInterval = 10*1000;
     Handler adHandler =new Handler();
     static PieChart pie;
-    public static Credential tempCredentials;
     public static Map<String,Integer> codeMap = new HashMap<>();
     @Override
     public void onBackPressed() {
@@ -533,20 +515,24 @@ public class WorkSpace extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            lastRef.setText("Last Synced:\n" + getDateTimeString(cal));
             try {
-                courseAdapter.update(DataContainer.subList);
+                lastRef.setText("Last Synced:\n" + getDateTimeString(cal));
+                try {
+                    courseAdapter.update(DataContainer.subList);
+                } catch (Exception e) {
+                    //COURSE ADAPTER NIT YET READY
+                }
+                setPieChart();
+                getAttendance(credential);
+                Log.i("Updated", "Updated");
             }
-            catch (Exception e){
-                //COURSE ADAPTER NIT YET READY
+            catch(Exception e){
+                e.printStackTrace();
             }
-            setPieChart();
-            getAttendance(credential);
-            Log.i("Updated","Updated");
         }
     } //REARRANGE THE INFORMATION SCRAPPED FORM THE WEBPAGE
 
-    static void getAttendance(Credential credential){
+    static void getAttendance(final Credential credential){
         new HttpRequest(context,"/attendance")
                 .addAuthenticationHeader(credential.userName,credential.password)
                 .sendRequest(new HttpRequest.OnResponseListener() {
@@ -565,12 +551,130 @@ public class WorkSpace extends AppCompatActivity {
                                 Error error = gson.fromJson(response,new TypeToken<Error>(){}.getType());
                                 Toast.makeText(context,error.message,Toast.LENGTH_LONG).show();
                             }
+                            checkAssignments(credential);
                         }
                         else{
                             stopLoading();
                         }
                     }
                 });
+    }
+
+    static void checkAssignments(final Credential ffcsCredentials) {
+        String moodleCreds = get(context, MOODLE_CREDS, null);
+        if (moodleCreds != null ) {
+            if(!moodleCreds.isEmpty()) {
+                Credential credential = (new Gson()).fromJson(moodleCreds, new TypeToken<Credential>() {
+                }.getType());
+                getAssignments(credential);
+            }
+        }
+        else{
+            AlertDialog.Builder moodleIntAlertBuilder = new AlertDialog.Builder(context);
+
+            moodleIntAlertBuilder.setMessage("Want to check assignments from moodle?");
+            moodleIntAlertBuilder.setTitle("Moodle");
+            moodleIntAlertBuilder.setCancelable(false);
+            moodleIntAlertBuilder.setPositiveButton("I'M IN", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    integrateMoodle(context,ffcsCredentials);
+                }
+            });
+            moodleIntAlertBuilder.setNeutralButton("Ask me later", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            moodleIntAlertBuilder.setNegativeButton("Never", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //ALERT CANCEL
+                    put(context,MOODLE_CREDS,"");
+                }
+            });
+            AlertDialog moodleDialog = moodleIntAlertBuilder.create();
+            moodleDialog.show();
+        }
+    }
+
+    static void getAssignments(Credential moodleCredential){
+        Log.d("Assignment","getAssignments");
+        (new HttpRequest(context, "/moodle"))
+                .addAuthenticationHeader(moodleCredential.userName, moodleCredential.password)
+                .sendRequest(new HttpRequest.OnResponseListener() {
+                    @Override
+                    public void OnResponse(String response) {
+                        Log.d("Assignments", response);
+                        if (response != null) {
+                            Gson gson = new Gson();
+                            try {
+                                Map<String, Assignment[]> assignmentDetails = gson.fromJson(response, new TypeToken<HashMap<String, Assignment[]>>() {
+                                }.getType());
+                                Log.d("Assignments", response);
+                                //TODO
+                                (new compileAssignments(assignmentDetails)).execute();
+                            } catch (Exception e) {
+                                //ERROR SENT BY SERVER
+                                e.printStackTrace();
+                                Error error = gson.fromJson(response, new TypeToken<Error>() {
+                                }.getType());
+                                Toast.makeText(context, error.message, Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else
+                        Log.d("Error","Error");
+                    }
+                });
+    }
+
+    static void integrateMoodle(final Context context, final Credential ffcsCredentials){
+        final AlertDialog.Builder moodleAlertBuilder = new AlertDialog.Builder(context);
+        moodleAlertBuilder.setCancelable(false);
+        View moodleView = View.inflate(context,R.layout.floatingview_add_moodle,null);
+        moodleAlertBuilder.setView(moodleView);
+        final AlertDialog moodleAlert= moodleAlertBuilder.create();
+        Toolbar toolbar = (Toolbar)moodleView.findViewById(R.id.moodleToolbar);
+        toolbar.setBackgroundColor(context.getResources().getColor(ThemeProperty.colorPrimaryDark));
+        toolbar.inflateMenu(R.menu.menu_add_todo);
+        final EditText moodlePasswordView = (EditText)moodleView.findViewById(R.id.moodle_password);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                switch (id){
+                    case R.id.action_tick:
+                        String password = moodlePasswordView.getText().toString();
+                        if(!password.isEmpty()) {
+                            Credential credential = new Credential(ffcsCredentials.userName,password);
+                            getAssignments(credential);
+                        }
+                        else{
+                            Toast.makeText(context,"I am sure that's not your password.",Toast.LENGTH_LONG).show();
+                        }
+                        return true;
+                    case R.id.action_cross:
+                        moodleAlert.cancel();
+                        return true;
+                }
+                return false;
+            }
+        });
+        moodleAlert.show();
+    }
+
+    private static class compileAssignments extends AsyncTask<Void,Void,Void>{
+        Map<String,Assignment[]> assignmentMap;
+
+        compileAssignments(Map<String,Assignment[]> assignmentMap){
+            this.assignmentMap = assignmentMap;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            return null;
+        }
     }
     
     static void stopLoading(){
@@ -642,7 +746,7 @@ public class WorkSpace extends AppCompatActivity {
         labels.add("");
         labels.add("");
         PieDataSet dataSet = new PieDataSet(pieEntry,"");
-        dataSet.setColors(ColorTemplate.createColors(context.getResources(),new int[]{ThemeProperty.colorPrimaryDark,ThemeProperty.colorPrimary})); //TODO APPLY CHNAGES ACORDING TO THE THEME OF THE APP
+        dataSet.setColors(ColorTemplate.createColors(context.getResources(),new int[]{ThemeProperty.colorPrimaryDark,ThemeProperty.colorPrimaryDark})); //TODO APPLY CHNAGES ACORDING TO THE THEME OF THE APP
         PieData data = new PieData(labels,dataSet);
         WorkSpace.pie.setData(data);
         WorkSpace.pie.setDescription("");
@@ -959,17 +1063,17 @@ public class WorkSpace extends AppCompatActivity {
                                 @Override
                                 public boolean onMenuItemClick(MenuItem item) {
                                     int id = item.getItemId();
-                                    if(id==R.id.action_add_todo) {
+                                    if(id==R.id.action_tick) {
                                         if (!title.getText().toString().isEmpty()) {
                                             Notification_Holder n;
                                             if(c!=null) {
-                                                n = new Notification_Holder(c, title.getText().toString(), other.getText().toString(),"You have a deadline to meet");
+                                                n = new Notification_Holder(c, title.getText().toString(), other.getText().toString(),"Reminder");
                                                 int noteId = schedule_todo_notification(n);
                                                 if(noteId!=0) n.id=noteId;
                                                 c=null;
                                             }
                                             else
-                                                n = new Notification_Holder(Calendar.getInstance(), title.getText().toString(), other.getText().toString(),"You have a deadline to meet");
+                                                n = new Notification_Holder(Calendar.getInstance(), title.getText().toString(), other.getText().toString(),"Reminder");
                                             DataContainer.notes.add(n);
                                             populateTaskGrid();
                                             Gson json = new Gson();
@@ -981,7 +1085,7 @@ public class WorkSpace extends AppCompatActivity {
                                             Toast.makeText(getContext(), "Title must not be empty", Toast.LENGTH_SHORT).show();
                                         return true;
                                     }
-                                    else if(id== R.id.action_cancel_todo){
+                                    else if(id== R.id.action_cross){
                                         WorkSpace.hideSoftKeyboard(getActivity());
                                         alert.cancel();
                                     }
@@ -1195,7 +1299,7 @@ public class WorkSpace extends AppCompatActivity {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     int id = item.getItemId();
-                    if(id==R.id.action_add_todo){
+                    if(id==R.id.action_tick){
                         String name = ((TextView) alertCabinView.findViewById(R.id.alert_cabin_teacherName)).getText().toString();
                         String cabin = ((TextView) alertCabinView.findViewById(R.id.alert_cabin_cabinAddress)).getText().toString();
                         if (name.trim().equals("") || cabin.trim().equals("")) {
@@ -1532,17 +1636,17 @@ public class WorkSpace extends AppCompatActivity {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     int id = item.getItemId();
-                    if(id==R.id.action_add_todo) {
+                    if(id==R.id.action_tick) {
                         if (!title.getText().toString().isEmpty()) {
                             Notification_Holder n;
                             if(c!=null) {
-                                n = new Notification_Holder(c, title.getText().toString(), other.getText().toString(),"You have a deadline to meet");
+                                n = new Notification_Holder(c, title.getText().toString(), other.getText().toString(),"Reminder");
                                 int noteId = schedule_todo_notification(n);
                                 if(noteId!=0) n.id=noteId;
                                 c=null;
                             }
                             else
-                                n = new Notification_Holder(Calendar.getInstance(), title.getText().toString(), other.getText().toString(),"You have a deadline to meet");
+                                n = new Notification_Holder(Calendar.getInstance(), title.getText().toString(), other.getText().toString(),"Reminder");
                             updateTask(n,index);
                             Gson json = new Gson();
                             String temporary = json.toJson(DataContainer.notes);

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="Moodle"
+        android:id="@+id/moodleToolbar"
+        app:titleTextColor="@android:color/white"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+        <android.support.design.widget.TextInputLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/moodle_input"
+            >
+        <EditText
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:hint="Moodle Password"
+            android:id="@+id/moodle_password"
+            android:textColor="@android:color/black"/>
+        </android.support.design.widget.TextInputLayout>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/moodle_input"
+            android:layout_marginEnd="10dp"
+            android:layout_alignBottom="@id/moodle_input"
+            android:layout_alignTop="@id/moodle_input"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_grey_view_pass"/>
+        </RelativeLayout>
+
+
+
+</LinearLayout>

@@ -15,7 +15,7 @@ public class Notification_Holder {
     public String title;
     public String content;
     public String ticker;
-    public int id;
+    public int id=999;
     public int dayofweek;
     public int hourOfDay;
     public int minute;
@@ -24,8 +24,8 @@ public class Notification_Holder {
     //long mills;
     public Notification_Holder(Calendar startTime,Calendar endTime,String title,String content,String ticker ){
         this.title=title;
+        this.ticker = ticker;
         this.content=content;
-        this.ticker=ticker;
         this.startTime =startTime;
         this.endTime= endTime;
         dayofweek= startTime.get(Calendar.DAY_OF_WEEK);
@@ -33,12 +33,11 @@ public class Notification_Holder {
         minute= startTime.get(Calendar.MINUTE);
     }
 
-    public Notification_Holder(Calendar startTime,String title,String content,String ticker ){
+    public Notification_Holder(Calendar startTime,String title,String content,String ticker){
         this.title=title;
         this.content=content;
-        this.ticker=ticker;
         this.startTime =startTime;
-        this.endTime= endTime;
+        this.ticker=ticker;
         dayofweek= startTime.get(Calendar.DAY_OF_WEEK);
         hourOfDay= startTime.get(Calendar.HOUR_OF_DAY);
         minute= startTime.get(Calendar.MINUTE);

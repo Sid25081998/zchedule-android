@@ -406,6 +406,7 @@ public class Login extends AppCompatActivity {
     public static void createNotification(Context context,List<List<Subject>> timeTable){
         int day=2;
         int notificationCode=1;
+        int beforeTime = get(context,NOTIFY_BEFORE,5);
         for(List<Subject> today: timeTable){
             for (Subject sub : today){
                 if(!sub.code.equals("")){
@@ -442,10 +443,10 @@ public class Login extends AppCompatActivity {
                     calendarEnd.set(Calendar.DAY_OF_WEEK,day);
                     calendarEnd.set(Calendar.SECOND,0);
 
-                    Notification_Holder newNotification =  new Notification_Holder(calendarStart,calendarEnd,sub.title,sub.room,"Upcoming class in 5 minutes");
+                    Notification_Holder newNotification =  new Notification_Holder(calendarStart,calendarEnd,sub.title,sub.room,"Class Coming Up");
                     toNotifyService.putExtra("notificationContent",(new Gson()).toJson(newNotification));
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(context,notificationCode,toNotifyService,PendingIntent.FLAG_UPDATE_CURRENT);
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendarStart.getTimeInMillis() - 5 * 60 * 1000, 24 * 7 * 60 * 60 * 1000, pendingIntent);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendarStart.getTimeInMillis() - beforeTime * 60 * 1000, 24 * 7 * 60 * 60 * 1000, pendingIntent);
                     notificationCode++;
                 }
             }

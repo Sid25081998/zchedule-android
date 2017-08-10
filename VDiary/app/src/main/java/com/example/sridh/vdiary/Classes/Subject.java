@@ -44,4 +44,5 @@ public class Subject {
     }
 
     public ArrayList<Integer> occurence=new ArrayList<>();
+    public ArrayList<Assignment> assignments = new ArrayList<>();
 }

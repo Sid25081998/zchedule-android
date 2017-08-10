@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.Activities.SplashScreen;
+import com.example.sridh.vdiary.Utils.DataContainer;
 
 import java.util.Calendar;
 
@@ -20,15 +21,15 @@ import java.util.Calendar;
 public class Notification_Creator {
     String title;
     String name_and_teachersname;
-    String ticker;
     Context context;
+    String ticker;
     public static PendingIntent pintent;
 
-    public Notification_Creator(String titl, String cont, String ticker,Context x) {
+    public Notification_Creator(String titl, String cont,String ticker,Context x) {
         title=titl;
         name_and_teachersname=cont;
+        this.ticker = ticker;
         context=x;
-        this.ticker=ticker;
     }
 
     public void create_notification(int id) {

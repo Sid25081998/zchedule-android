@@ -38,7 +38,7 @@ public class NotifyService extends BroadcastReceiver {
         if (fromClass!=null && fromClass.equals("WorkSpace")) {
             Notification_Holder notificationHolder = (new Gson()).fromJson(intent.getStringExtra("notificationContent"), new TypeToken<Notification_Holder>() {
             }.getType());
-                Notification_Creator notifcreator = new Notification_Creator(notificationHolder.title, notificationHolder.content, notificationHolder.ticker, context);
+                Notification_Creator notifcreator = new Notification_Creator(notificationHolder.title, notificationHolder.content,notificationHolder.ticker, context);
                 notifcreator.create_notification(code);
         } else {
             if (!isHolidayToday(context) && isNotificationOn(context)) {
@@ -49,7 +49,7 @@ public class NotifyService extends BroadcastReceiver {
                 Calendar CalendarStart = notificationHolder.startTime;
                 CalendarStart.setLenient(false);
                 if ((notificationHolder.dayofweek == cal.get(Calendar.DAY_OF_WEEK) && notificationHolder.hourOfDay >= cal.get(Calendar.HOUR_OF_DAY))) {
-                    Notification_Creator notifcreator = new Notification_Creator(notificationHolder.title, notificationHolder.content, notificationHolder.ticker, context);
+                    Notification_Creator notifcreator = new Notification_Creator(notificationHolder.title, notificationHolder.content,notificationHolder.ticker, context);
                     notifcreator.create_notification(0);
                     createQuietHour(context,notificationHolder.startTime,notificationHolder.endTime);
                 }
