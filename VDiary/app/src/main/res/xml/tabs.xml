@@ -1,0 +1,19 @@
+<tabs>
+    <tab
+        id="@+id/tab_dashboard"
+        icon = "@drawable/ic_dashboard" />
+    <tab
+        id="@+id/tab_schedule"
+        icon = "@drawable/ic_schedule" />
+    <tab
+        id="@+id/tab_moodle"
+        icon = "@drawable/ic_moodleraw" />
+
+    <tab
+        id="@+id/tab_exam"
+        icon = "@drawable/ic_exam" />
+    <tab
+        id="@+id/tab_syncing"
+        icon = "@drawable/ic_sync" />
+
+</tabs>

@@ -10,7 +10,7 @@ import android.view.WindowManager;
 
 import com.example.sridh.vdiary.Classes.Server;
 import com.example.sridh.vdiary.Classes.Theme;
-import com.example.sridh.vdiary.Classes.themeProperty;
+import com.example.sridh.vdiary.Classes.ThemeProperty;
 import com.example.sridh.vdiary.Utils.prefs;
 
 
@@ -53,28 +53,24 @@ public class config {
 
     public static Theme CurrentTheme;
 
-    public static Map<Theme,themeProperty> AppThemes= new HashMap<>();
+    private static Map<Theme,ThemeProperty> AppThemes= new HashMap<>();
     static {
-        AppThemes.put(Theme.red,new themeProperty(Theme.red));
-        AppThemes.put(Theme.blue,new themeProperty(Theme.blue));
-        AppThemes.put(Theme.teal,new themeProperty(Theme.teal));
-        AppThemes.put(Theme.yellow, new themeProperty(Theme.yellow));
-        AppThemes.put(Theme.pink, new themeProperty(Theme.pink));
-        AppThemes.put(Theme.purple, new themeProperty(Theme.purple));
-        AppThemes.put(Theme.gray, new themeProperty(Theme.gray));
-        AppThemes.put(Theme.green, new themeProperty(Theme.green));
-        AppThemes.put(Theme.orange, new themeProperty(Theme.orange));
+        AppThemes.put(Theme.red,new ThemeProperty(Theme.red));
+        AppThemes.put(Theme.blue,new ThemeProperty(Theme.blue));
+        AppThemes.put(Theme.teal,new ThemeProperty(Theme.teal));
+        AppThemes.put(Theme.yellow, new ThemeProperty(Theme.yellow));
+        AppThemes.put(Theme.pink, new ThemeProperty(Theme.pink));
+        AppThemes.put(Theme.purple, new ThemeProperty(Theme.purple));
+        AppThemes.put(Theme.gray, new ThemeProperty(Theme.gray));
+        AppThemes.put(Theme.green, new ThemeProperty(Theme.green));
+        AppThemes.put(Theme.orange, new ThemeProperty(Theme.orange));
     }
-    public static themeProperty getCurrentTheme(Context context){
+    public static ThemeProperty getCurrentTheme(Context context){
         if(CurrentTheme==null){
             CurrentTheme = prefs.getTheme(context); //GETTING THE THEME FROM THE SHARED PREFERENCES
         }
         return AppThemes.get(CurrentTheme);
     }
-    public static String CHENNAI_URL = "https://academicscc.vit.ac.in/";
-    public static String VELLORE_URL = "https://vtop.vit.ac.in/";
-
-    public static String MY_CAMPUS="https://academicscc.vit.ac.in/";
 
 
 }

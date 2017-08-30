@@ -14,7 +14,8 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import static com.example.sridh.vdiary.Utils.prefs.schedule;
+
+import static com.example.sridh.vdiary.Utils.prefs.SCHEDULE;
 import static com.example.sridh.vdiary.Utils.prefs.get;
 import static com.example.sridh.vdiary.Utils.prefs.showAttendanceOnwidget;
 
@@ -37,7 +38,7 @@ public class widgetListFactory implements RemoteViewsService.RemoteViewsFactory 
     @Override
     public void onDataSetChanged() {
         today = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        String scheduleJson = get(context,schedule,null);//prefs.getString("Schedule", null);
+        String scheduleJson = get(context,SCHEDULE,null);//prefs.getString("Schedule", null);
         if (scheduleJson != null && today>1 && today<7) {
             Gson g = new Gson();
             timeTable = g.fromJson(scheduleJson, new TypeToken<ArrayList<List<Subject>>>() {
@@ -78,7 +79,13 @@ public class widgetListFactory implements RemoteViewsService.RemoteViewsFactory 
                 row = new RemoteViews(context.getPackageName(), R.layout.rowview_widget_class_slot);
             row.setTextViewText(R.id.widget_title, session.title);
             row.setTextViewText(R.id.widget_Time, session.startTime.toLowerCase());
-            row.setTextViewText(R.id.widget_type, session.type);
+            //row.setTextViewText(R.id.widget_type, session.type);
+            if(session.type.equals("ETH") || session.type.equals("TH")|| session.type.equals("SS")){
+                row.setImageViewResource(R.id.widget_type,R.drawable.ic_theory);
+            }
+            else{
+                row.setImageViewResource(R.id.widget_type,R.drawable.ic_lab);
+            }
             row.setTextViewText(R.id.widget_room, session.room);
         }
         row.setOnClickFillInIntent(R.id.widget_layout,new Intent());

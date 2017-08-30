@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@android:color/white"
+    tools:context="com.example.sridh.vdiary.Activities.WorkSpace">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:gravity="bottom|center_horizontal">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:id="@+id/rl_pie"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingBottom="40dp">
+    <com.github.mikephil.charting.charts.PieChart
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/avgAtt"/>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:paddingTop="7dp"
+            android:id="@+id/lastRefreshed"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/rl_share"
+            android:layout_marginBottom="10dp">
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:srcCompat="@drawable/ic_share"
+                android:id="@+id/iv_share"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share"
+                android:textSize="20sp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="7dp"
+                android:id="@+id/tv_share"
+                android:layout_toEndOf="@id/iv_share"/>
+        </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/rl_about"
+        android:layout_marginBottom="10dp">
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:srcCompat="@drawable/ic_about"
+            android:id="@+id/iv_about"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About"
+            android:textSize="20sp"
+            android:layout_toEndOf="@id/iv_about"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginStart="7dp"
+            android:id="@+id/tv_about"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/rl_setting"
+        android:layout_marginBottom="10dp">
+        <ImageView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:srcCompat="@drawable/ic_settings"
+            android:id="@+id/iv_setting"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textSize="20sp"
+            android:layout_toEndOf="@id/iv_setting"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="7dp"
+            android:id="@+id/tv_setting"/>
+    </RelativeLayout>
+        <RelativeLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:id="@+id/rl_logout">
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                app:srcCompat="@drawable/ic_logout"
+                android:id="@+id/iv_logout"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Log Out"
+                android:textSize="20sp"
+                android:layout_toEndOf="@id/iv_logout"
+                android:layout_centerVertical="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_marginStart="7dp"
+                android:id="@+id/tv_logout"/>
+        </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

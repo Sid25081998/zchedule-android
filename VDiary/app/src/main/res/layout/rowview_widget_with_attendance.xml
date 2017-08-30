@@ -5,22 +5,24 @@
     android:paddingBottom="7dp"
     android:paddingTop="7dp"
     android:id="@+id/widget_layout">
-    <TextView
-        android:text="ELA"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:id="@+id/widget_type"
         android:minHeight="40dp"
         android:width="25dp"
-        android:textAlignment="center"
-        android:layout_marginStart="7dp"
+        android:layout_centerVertical="true"
         android:gravity="center_vertical"
-        android:background="@drawable/widget_background_type"
+        android:background="@drawable/background_type_circle"
+        android:src="@drawable/ic_lab"
         android:textColor="@android:color/white"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="9dp"
         android:layout_marginBottom="2dp"
+        android:padding="10dp"
         android:textSize="12sp"
-        android:layout_marginEnd="7dp"/>
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="7dp"
+        android:text="ETH"/>
 
     <TextView
         android:layout_width="wrap_content"

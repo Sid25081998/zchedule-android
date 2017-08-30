@@ -1,5 +1,7 @@
 package com.example.sridh.vdiary.Utils;
 
+import com.example.sridh.vdiary.Classes.Assignment;
+import com.example.sridh.vdiary.Classes.MoodleSummary;
 import com.example.sridh.vdiary.Classes.Notification_Holder;
 import com.example.sridh.vdiary.Classes.Subject;
 import com.example.sridh.vdiary.Classes.Holiday;
@@ -22,4 +24,5 @@ public class DataContainer {
     public static  List<Teacher> cablist=new ArrayList<>();
     public static List<Holiday> holidays= new ArrayList<>();
     public static List<Teacher> toBeUpdated = new ArrayList<>();
+    public static Map<String,MoodleSummary> assignmentSummary = new HashMap<>();
 }

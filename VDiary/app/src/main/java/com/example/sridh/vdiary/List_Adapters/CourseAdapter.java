@@ -3,9 +3,6 @@ package com.example.sridh.vdiary.List_Adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -14,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.sridh.vdiary.Classes.Subject;
-import com.example.sridh.vdiary.Classes.themeProperty;
 import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.config;
 
@@ -34,7 +30,7 @@ import static com.example.sridh.vdiary.config.getCurrentTheme;
 
         List<Subject> list;
         Context context;
-        themeProperty ThemeProperty;
+        com.example.sridh.vdiary.Classes.ThemeProperty ThemeProperty;
         private int lastPosition = -1;
         OnItemClickListener onItemClickListener;
 

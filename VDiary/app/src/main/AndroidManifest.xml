@@ -14,24 +14,20 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".Activities.Login"
             android:clearTaskOnLaunch="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".Activities.Schedule"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyAppBar.Workspace" />
-        <activity
             android:name=".Activities.WorkSpace"
             android:screenOrientation="portrait"
             android:theme="@style/MyAppBar.Workspace"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
 
-        <receiver android:name=".Widget.widget"
+        <receiver
+            android:name=".Widget.widget"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -46,12 +42,14 @@
             android:name=".Widget.widgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <receiver android:name=".Receivers.ChangeProfileReceiver"
-            android:enabled="true"/>
-
-        <receiver android:name=".Receivers.NotifyService"
-            android:enabled="true"/>
-        <receiver android:name=".Receivers.NetworkChangeReceiver"
+        <receiver
+            android:name=".Receivers.ChangeProfileReceiver"
+            android:enabled="true" />
+        <receiver
+            android:name=".Receivers.NotifyService"
+            android:enabled="true" />
+        <receiver
+            android:name=".Receivers.NetworkChangeReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -82,7 +80,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-                <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
                 <action android:name="android.intent.action.TIME_SET" />
             </intent-filter>
@@ -118,6 +116,7 @@
 
         <activity android:name=".Activities.Privacy" />
         <activity android:name=".Activities.Licenses" />
+        <activity android:name=".Activities.ShowMoodle"></activity>
     </application>
 
 </manifest>

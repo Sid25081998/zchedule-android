@@ -3,11 +3,13 @@ package com.example.sridh.vdiary.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.sridh.vdiary.Classes.Credential;
 import com.example.sridh.vdiary.Classes.Method;
 import com.example.sridh.vdiary.config;
 import com.google.gson.Gson;
+import com.squareup.okhttp.HttpUrl;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
@@ -113,6 +115,13 @@ public class HttpRequest {
     }
 
     private Request buildRequest(boolean isLogoutRequest){
+
+        HttpUrl.Builder builder  = HttpUrl.parse(url).newBuilder();
+        for(Map.Entry<String,String> param : params.entrySet()){
+            builder.addQueryParameter(param.getKey(),param.getValue());
+        }
+        url = builder.build().url().toString();
+
         Request.Builder requestBuilder = null;
         if(method.equals(Method.GET)) {
             requestBuilder= new Request.Builder()
@@ -124,6 +133,7 @@ public class HttpRequest {
                     .url(url)
                     .post(RequestBody.create(null,new byte[0]));
         }
+
 
         if(authentication!=null)
             requestBuilder.addHeader("Authorization", authentication);

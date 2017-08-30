@@ -267,7 +267,7 @@ public class Login extends AppCompatActivity {
                     index++;
                 }
 
-                put(context, avgAttendance, ((int) (attSum / courses.length)));
+                put(context, avgAttendance,Math.round((float) attSum / courses.length));
 
                 int rowIndex = 0;
                 for (String[] today : contents) {
@@ -456,14 +456,14 @@ public class Login extends AppCompatActivity {
 
     void writeToPrefs(){
         put(context,allSub,jsonBuilder.toJson(DataContainer.subList));//editor.putString("allSub",jsonBuilder.toJson(config.subList));
-        put(context,schedule,jsonBuilder.toJson(DataContainer.timeTable));//editor.putString("Schedule",jsonBuilder.toJson(config.timeTable));
+        put(context,SCHEDULE,jsonBuilder.toJson(DataContainer.timeTable));//editor.putString("Schedule",jsonBuilder.toJson(config.timeTable));
         put(context,isLoggedIn,true);//editor.putBoolean("isLoggedIn",true);
         updateWidget();
     } //WRITE ACADEMIC CONTENT TO SHARED PREFERENCES
 
     public static boolean readFromPrefs(Context context){
         String allSubJson = get(context,allSub,null); //academicPrefs.getString("allSub",null);
-        String scheduleJson = get(context,schedule,null);//academicPrefs.getString("Schedule",null);
+        String scheduleJson = get(context,SCHEDULE,null);//academicPrefs.getString("Schedule",null);
         return (allSubJson!= null && scheduleJson!=null);
     } //READ ACADEMIC CONTENT FROM SHARED PREFERENCES
 

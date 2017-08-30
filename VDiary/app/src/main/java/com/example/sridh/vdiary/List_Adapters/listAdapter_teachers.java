@@ -71,7 +71,7 @@ public class listAdapter_teachers extends BaseAdapter// LIST ADAPTER FOR CABIN V
             public void onClick(View view) {
                 DataContainer.cablist.remove(position);
                 updatecontent(DataContainer.cablist);
-                WorkSpace.writeCabListToPrefs();
+                WorkSpace.writeCabListToPrefs(context);
             }
         });
         return view;

@@ -63,7 +63,7 @@ public class AtBoot extends BroadcastReceiver {
                 //ALARM WAS NOT SET FOR THE TASK
             }
         }
-        String timeTableJson = get(context,schedule,null);//sharedPreferences.getString("Schedule",null);
+        String timeTableJson = get(context,SCHEDULE,null);//sharedPreferences.getString("Schedule",null);
         List<List<Subject>> timeTable = (new Gson()).fromJson(timeTableJson,new TypeToken<List<List<Subject>>>(){}.getType());
 
         try {

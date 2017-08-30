@@ -6,4 +6,5 @@ package com.example.sridh.vdiary.Classes;
 
 public class Attachment {
     String fileurl;
+    String filename;
 }

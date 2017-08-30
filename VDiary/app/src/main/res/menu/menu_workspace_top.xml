@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.sridh.vdiary.Activities.WorkSpace">
     <item
+        android:id="@+id/toMoodle"
+        android:orderInCategory="0"
+
+        android:title="Time Table"
+        app:showAsAction="always"
+        />
+    <item
         android:id="@+id/toSchedule"
         android:orderInCategory="0"
         android:icon="@drawable/ic_schedule"

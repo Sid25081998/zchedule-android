@@ -1,5 +1,4 @@
 package com.example.sridh.vdiary.Activities;
-import android.app.Activity;
 import android.content.Context;
 
 import android.graphics.Color;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 import com.example.sridh.vdiary.Classes.Subject;
 import com.example.sridh.vdiary.Classes.Holiday;
 import com.example.sridh.vdiary.Classes.subjectDay;
-import com.example.sridh.vdiary.Classes.themeProperty;
 import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.Utils.DataContainer;
 import com.example.sridh.vdiary.config;
@@ -54,7 +52,7 @@ public class ShowSubject extends AppCompatActivity {
 
     double class_att,tempClassAtt,tempTotalClass;
 
-    themeProperty ThemeProperty;
+    com.example.sridh.vdiary.Classes.ThemeProperty ThemeProperty;
     SlidingUpPanelLayout pane;
 
 

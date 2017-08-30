@@ -2,13 +2,10 @@ package com.example.sridh.vdiary.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.sridh.vdiary.Classes.themeProperty;
 import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.config;
 
@@ -16,7 +13,7 @@ import static com.example.sridh.vdiary.config.getCurrentTheme;
 
 public class About extends AppCompatActivity {
 
-    themeProperty ThemeProperty;
+    com.example.sridh.vdiary.Classes.ThemeProperty ThemeProperty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

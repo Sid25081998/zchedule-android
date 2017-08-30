@@ -5,14 +5,14 @@ import com.example.sridh.vdiary.R;
 /**
  * Created by sid on 6/15/17.
  */
-public class themeProperty{
+public class ThemeProperty {
     public int colorPrimaryDark;
     public int colorPrimary;
     public int colorAccent;
     public int theme;
 
     //TODO GENERATE THE THEME COLORS AND ADD THEM HERE
-    public themeProperty(Theme theme){
+    public ThemeProperty(Theme theme){
         switch (theme){
             case blue:
                 colorPrimaryDark= R.color.colorPrimaryDarkBlue;

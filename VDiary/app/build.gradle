@@ -8,8 +8,8 @@ android {
         applicationId "com.fourthstatelabs.zchedule2"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 10
-        versionName "2.1.5"
+        versionCode 11
+        versionName "2.2.0"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -46,7 +46,14 @@ dependencies {
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.google.android.gms:play-services-ads:10.2.0'
+    compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.1'
     testCompile 'junit:junit:4.12'
 }
+
+
+
+
+
+
 
 apply plugin: 'com.google.gms.google-services'

@@ -2,83 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.example.sridh.vdiary.Activities.WorkSpace"
     android:background="@android:color/white">
-<android.support.design.widget.CoordinatorLayout
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
+
+    <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:paddingTop="10dp"
-        android:gravity="bottom"
-        android:background="@drawable/background_toolbar"
-        app:elevation="10dp">
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/menu_workspace_bottom"
+        app:itemIconTint="@color/nav_selector" />
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/workspacetoptoolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/transparent"
-            android:paddingRight="14dp">
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Zchedule"
-                android:textSize="30dp"
-                android:textColor="@android:color/white"
-                android:id="@+id/workSpace_title"
-                />
-            <ProgressBar
-                android:layout_height="30dp"
-                android:layout_width="30dp"
-                android:indeterminate="true"
-                android:visibility="gone"
-                android:layout_gravity="end"
-                android:id="@+id/pb_syncing"
-                android:layout_alignParentEnd="true"
-                android:theme="@style/AppTheme.WhiteAccent" />
-            <ImageButton
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/refresh"
-                android:background="@android:color/transparent"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/action_sync"
-                />
-            </RelativeLayout>
-
-        </android.support.v7.widget.Toolbar>
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabTextColor="@color/opac_transparent"
-            app:tabSelectedTextColor="@android:color/white"
-            android:background="@android:color/transparent"
-            app:tabIndicatorColor="@android:color/white"
-            app:tabIndicatorHeight="2dp"
-            android:layout_gravity="bottom"/>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/container"
-        android:layout_width="match_parent"
+    <ViewFlipper
         android:layout_height="match_parent"
-        android:layout_gravity="top"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:layout_width="match_parent"
+        android:layout_above="@id/bottomBar"
+        android:id="@+id/dashboard_container"/>
 
+    <!--
+        app:bb_showShadow="true"
+        app:bb_inActiveTabAlpha="0.3"
+        app:bb_activeTabColor="@android:color/black"
+        app:bb_tabXmlResource="@xml/tabs"
+         -->
 
-</android.support.design.widget.CoordinatorLayout>
     </RelativeLayout>

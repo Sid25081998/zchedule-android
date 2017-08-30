@@ -2,8 +2,13 @@ package com.example.sridh.vdiary.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+
 
 import com.example.sridh.vdiary.Classes.Theme;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 
 /**
  * Created by sid on 2/13/17.
@@ -11,11 +16,11 @@ import com.example.sridh.vdiary.Classes.Theme;
 
 public class prefs {
     public static String allSub="allSub";
-    public static String schedule="Schedule";
+    public static String SCHEDULE="Schedule";
     public static String teachers="teachers";
     public static String holidays="holidays";
     public static String customTeachers="customTeachers";
-    public static String prefName="zchedulePrefs";
+    private static String prefName="zchedulePrefs";
     public static String isLoggedIn="isLoggedIn";
     public static String regNo ="regNo";
     public static String password="password";
@@ -32,7 +37,7 @@ public class prefs {
     public static String tipid="tipId";
     public static String scheduleNotificationCount="notificationCount";
     public static String avgAttendance="avgAttendance";
-    public static String THEME ="theme";
+    private static String THEME ="theme";
     public static String TEACHER_NAMES= "teacher_names";
     public static String SERVER = "server";
     public static String CREDENTIALS = "credentials";
@@ -41,25 +46,16 @@ public class prefs {
     public static String AUDIO_PROFILE = "audioProfile";
     public static String NOTIFY_BEFORE = "notifyBefore";
     public static String MOODLE_CREDS = "moodleCreds";
+    public static String MOODLE_SUMMARY = "moodleSummary";
 
     //SHARED PREFERENCES INSTANCE OF THE APP
-    public static SharedPreferences getPrefsInstance(Context context){
+    private static SharedPreferences getPrefsInstance(Context context){
         return context.getSharedPreferences(prefName,Context.MODE_PRIVATE);
     }
 
     //SHARED PREFERENCES EDITOR INSTANCE OF THE APP
-    public static SharedPreferences.Editor getPrefEditor(Context context){
+    private static SharedPreferences.Editor getPrefEditor(Context context){
         return getPrefsInstance(context).edit();
-    }
-
-    //STRING PREFERENCES
-    public static void put(Context context, String name, String value){
-        SharedPreferences.Editor editor= getPrefEditor(context);
-        editor.putString(name,value);
-        editor.apply();
-    }
-    public static String get(Context context,String name,String defaultValue){
-        return getPrefsInstance(context).getString(name,defaultValue);
     }
 
     //BOOLEAN PREFERENCES
@@ -92,5 +88,29 @@ public class prefs {
         SharedPreferences prefsInstance =  getPrefsInstance(context);
         String themeString=prefsInstance.getString(THEME,Theme.pink.toString());
         return Theme.valueOf(themeString);
+    }
+
+    //GENERICS
+    public static <E> void put(Context context,String key,E value){
+        if(value==null || value.getClass().getSimpleName().equals("String")){
+            getPrefEditor(context).putString(key,(String)value).apply();
+        }
+        else {
+            String toSave = (new Gson()).toJson(value);
+            getPrefEditor(context).putString(key, toSave).apply();
+        }
+    }
+    public static <E> E get (Context context,String key,@NonNull TypeToken<E> typeToken, E defaultValue){
+        String json = getPrefsInstance(context).getString(key,null);
+        if(json==null) {
+            return defaultValue;
+        }
+        else{
+            return (new Gson()).fromJson(json, typeToken.getType());
+        }
+    }
+
+    public static String get(Context context,String key,String defaultValue){
+        return getPrefsInstance(context).getString(key,defaultValue);
     }
 }

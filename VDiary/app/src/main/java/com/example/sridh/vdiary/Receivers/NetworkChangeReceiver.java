@@ -9,6 +9,7 @@ import com.example.sridh.vdiary.Activities.WorkSpace;
 import com.example.sridh.vdiary.Classes.Holiday;
 import com.example.sridh.vdiary.Classes.Teacher;
 import com.example.sridh.vdiary.Utils.DataContainer;
+import com.example.sridh.vdiary.Views.Dashboard;
 import com.example.sridh.vdiary.Widget.widgetServiceReceiver;
 import com.example.sridh.vdiary.config;
 import com.firebase.client.Firebase;
@@ -89,7 +90,7 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
                             String teacherJsonTest = serializer.toJson(DataContainer.teachers);
                             put(context, teachers, teacherJsonTest);
                             try {
-                                WorkSpace.updateSearcher();
+                                Dashboard.updateSearcher(context);
                             }
                             catch (Exception e){
                                 //APP NOT RUNNING
@@ -163,4 +164,5 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
     static void updateWidget(Context context){
         (new widgetServiceReceiver()).onReceive(context,(new Intent(context,widgetServiceReceiver.class)));
     }  //UPDATE THE WIDGET TO SHOW TODAYS SCHEDULE
+
 }

@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.sridh.vdiary.Classes.themeProperty;
+import com.example.sridh.vdiary.Classes.ThemeProperty;
 import com.example.sridh.vdiary.R;
 
 import static com.example.sridh.vdiary.config.getCurrentTheme;
 
 public class Licenses extends AppCompatActivity {
 
-    themeProperty Theme;
+    ThemeProperty Theme;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

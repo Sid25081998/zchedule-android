@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab_dashboard"
+        android:icon = "@drawable/ic_dashboard"
+        android:title=""/>
+    <item
+        android:id="@+id/tab_schedule"
+        android:icon = "@drawable/ic_schedule"
+        android:title=""/>
+    <item
+        android:id="@+id/tab_syncing"
+        android:icon = "@drawable/ic_sync"
+        android:title=""/>
+    <item
+        android:id="@+id/tab_moodle"
+        android:icon = "@drawable/ic_moodleraw"
+        android:title=""/>
+    <item
+        android:id="@+id/tab_summary"
+        android:icon = "@drawable/ic_menu"
+        android:title=""/>
+</menu>
