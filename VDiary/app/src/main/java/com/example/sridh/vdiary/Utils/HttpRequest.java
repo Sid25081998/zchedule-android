@@ -3,7 +3,6 @@ package com.example.sridh.vdiary.Utils;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.example.sridh.vdiary.Classes.Credential;
 import com.example.sridh.vdiary.Classes.Method;
@@ -73,8 +72,9 @@ public class HttpRequest {
         (new ApiExecuter(onResponseListener)).execute(true);
     }
 
-    public void addParam(String key,String value){
+    public HttpRequest addParam(String key,String value){
         params.put(key,value);
+        return this;
     }
 
     public HttpRequest addAuthenticationHeader(String reg,String password){
@@ -120,17 +120,17 @@ public class HttpRequest {
         for(Map.Entry<String,String> param : params.entrySet()){
             builder.addQueryParameter(param.getKey(),param.getValue());
         }
-        url = builder.build().url().toString();
+        HttpUrl urlwithquery = builder.build();
 
         Request.Builder requestBuilder = null;
         if(method.equals(Method.GET)) {
             requestBuilder= new Request.Builder()
-                    .url(url)
+                    .url(urlwithquery)
                     .get();
         }
         else{
             requestBuilder= new Request.Builder()
-                    .url(url)
+                    .url(urlwithquery)
                     .post(RequestBody.create(null,new byte[0]));
         }
 

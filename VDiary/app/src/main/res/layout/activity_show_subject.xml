@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.sothree.slidinguppanel.SlidingUpPanelLayout
-    xmlns:sothree="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/show_sub_sliding_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="bottom"
-    sothree:umanoPanelHeight="63dp"
-    sothree:umanoShadowHeight="4dp">
 <LinearLayout
     android:id="@+id/activity_show_subject"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical">
     <android.support.v7.widget.Toolbar
         android:id="@+id/show_subject_toolbar"
@@ -102,55 +94,3 @@
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
-    <LinearLayout
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:orientation="vertical">
-    <android.support.v7.widget.Toolbar
-        android:layout_height="65dp"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:background="@color/colorPrimary"
-        android:id="@+id/show_sub_assignment"
-        android:titleTextColor="@android:color/white">
-        <RelativeLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent">
-            <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                >
-                <TextView
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:text="Assignments"
-                    android:textSize="30sp"
-                    android:id="@+id/show_sub_ass_head"
-                    android:padding="10dp"
-                    android:alpha="0"
-                    android:textColor="@android:color/white"/>
-                </LinearLayout>
-        <LinearLayout
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_height="20dp"
-                android:layout_width="20dp"
-                android:src="@drawable/ic_swipe_up"
-                android:id="@+id/pane_slide_indicator"/>
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="match_parent"
-                android:textSize="20dp"
-                android:text="Assignments"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:id="@+id/show_sub_assignment_head"/>
-        </LinearLayout>
-        </RelativeLayout>
-        </android.support.v7.widget.Toolbar>
-        </LinearLayout>
-    </com.sothree.slidinguppanel.SlidingUpPanelLayout>

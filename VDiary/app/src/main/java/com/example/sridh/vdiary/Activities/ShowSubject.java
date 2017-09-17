@@ -28,7 +28,6 @@ import com.example.sridh.vdiary.Classes.subjectDay;
 import com.example.sridh.vdiary.R;
 import com.example.sridh.vdiary.Utils.DataContainer;
 import com.example.sridh.vdiary.config;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -53,7 +52,6 @@ public class ShowSubject extends AppCompatActivity {
     double class_att,tempClassAtt,tempTotalClass;
 
     com.example.sridh.vdiary.Classes.ThemeProperty ThemeProperty;
-    SlidingUpPanelLayout pane;
 
 
     int toMul=1; // 1 if THEORY ELSE 2
@@ -76,15 +74,6 @@ public class ShowSubject extends AppCompatActivity {
         WorkSpace.currentInView= this;
         setOccurrence();
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (pane != null && (pane.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || pane.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-            pane.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     void setOccurrence(){
@@ -194,38 +183,6 @@ public class ShowSubject extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);*/
 
-        final Toolbar assignToolbar = (Toolbar)findViewById(R.id.show_sub_assignment);
-        assignToolbar.setBackgroundColor(getResources().getColor(ThemeProperty.colorPrimary));
-        final TextView assignmentHead  = (TextView)findViewById(R.id.show_sub_assignment_head);
-        assignmentHead.setTypeface(nunito_bold);
-        final ImageView pane_slide_indicator = (ImageView)findViewById(R.id.pane_slide_indicator);
-        final TextView show_sub_ass_head = (TextView)findViewById(R.id.show_sub_ass_head);
-        show_sub_ass_head.setTypeface(nunito_bold);
-
-        pane = (SlidingUpPanelLayout)findViewById(R.id.show_sub_sliding_layout);
-
-        assignToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(pane.getPanelState() != SlidingUpPanelLayout.PanelState.EXPANDED)
-                    pane.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-                else
-                    pane.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-            }
-        });
-        pane.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-                assignmentHead.setAlpha(1-slideOffset);
-                pane_slide_indicator.setAlpha(1-slideOffset);
-                show_sub_ass_head.setAlpha(slideOffset);
-            }
-
-            @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-
-            }
-        });
 
     }  //SETS THE LAYOUT OF THE SUBJECT TO BE SHOWN
 

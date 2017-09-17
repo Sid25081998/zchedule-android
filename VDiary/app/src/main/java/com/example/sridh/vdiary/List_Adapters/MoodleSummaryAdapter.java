@@ -51,7 +51,7 @@ public class MoodleSummaryAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, final View convertView, ViewGroup parent) {
+    public View getView(final int position, final View convertView, ViewGroup parent) {
         View rowview = View.inflate(context,R.layout.rowview_moodle,null);
         TextView courseNameView = (TextView)rowview.findViewById(R.id.moodle_course_name),
                 courseCodeView = (TextView)rowview.findViewById(R.id.moodle_course_code),
@@ -78,7 +78,7 @@ public class MoodleSummaryAdapter extends BaseAdapter {
             public void onClick(View v) {
                 course.newActivity=0;
                 Intent toMoodleDetails =  new Intent(context, ShowMoodle.class);
-                toMoodleDetails.putExtra("COURSE_ID",course.id);
+                toMoodleDetails.putExtra("COURSE_SLUG",keySet[position]);
                 context.startActivity(toMoodleDetails);
             }
         });
